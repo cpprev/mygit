@@ -1,23 +1,20 @@
-#include <openssl/sha.h>
-#include <cstdio>
-#include <cstring>
+#include <string>
 #include <iostream>
 
-int main()
+#include "commands/init.hh"
+
+int main(int argc, char *argv[])
 {
-    char string[] = "compute sha2ompute sha2ompute sha2ompute sha2ompute sha2";
-    unsigned char digest[SHA_DIGEST_LENGTH];
-
-    SHA1((unsigned char*) &string, strlen(string), (unsigned char*) &digest);
-
-    std::string temp;
-    int i;
-    for (i = 0; i < 20; i++) {
-        temp += (char) digest[i];
-        printf("%02x", digest[i]);
+    if (argc == 1)
+    {
+        throw std::runtime_error("FIXME Later");
     }
-    printf("\n");
-    std::cout << temp << "\n";
+
+    std::string command = argv[1];
+    if (command == "init")
+    {
+        mygit::init();
+    }
 
     return 0;
 }
