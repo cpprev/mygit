@@ -12,6 +12,8 @@ set(SRC_FILES
         # Commands
         src/commands/init.cc
         src/commands/add.cc
+        src/commands/ls-files.cc
+        src/commands/hash-object.cc
 
         # Utils
         src/utils/files.cc
@@ -19,7 +21,7 @@ set(SRC_FILES
         src/utils/zlib.cc
 
         # Objects
-        src/objects/blob.cc src/commands/ls-files.cc)
+        src/objects/blob.cc src/objects/object_type.cc src/objects/object_type.hh)
 
 # Compilation flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -pedantic -std=c++17")

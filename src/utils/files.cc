@@ -122,26 +122,6 @@ namespace utils
         return res;
     }
 
-    std::string CreateBlob (const std::string& pathToDotMyGit, const std::string& pathFileFromDotMyGit)
-    {
-        /// Create the blob and generate the hash from it
-        objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToDotMyGit + '/' + pathFileFromDotMyGit);
-        //std::cout << blob.ToString() << "\n";
-        std::string hash = blob.ToHash();
-
-        /// Store the blob
-        std::string blobDirName = pathToDotMyGit + "/.mygit/objects/" + hash.substr(0, 2);
-        //std::cout << blobDirName << "\n";
-        if (not IsDirExists(blobDirName))
-            CreateDir(blobDirName);
-
-        /// Fill in the contents of the blob (compressed file)
-        std::string blobFilePath = blobDirName + "/" + hash.substr(2);
-        WriteFile(blobFilePath, CompressString(blob.GetContentsFile()));
-
-        return hash;
-    }
-
     std::map<std::string, std::string> GetEntriesFromIndex (const std::string& input)
     {
         std::map<std::string, std::string> res;

@@ -20,4 +20,8 @@ namespace objects
         std::string _fullPath;
         std::string _contentsFile;
     };
+
+    std::string CreateBlob (const std::string& pathToDotMyGit, const std::string& pathFileFromDotMyGit);
+
+    void SetupBlob(const objects::Blob& blob, const std::string& hash, const std::string& pathToDotMyGit);
 }

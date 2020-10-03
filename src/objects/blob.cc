@@ -34,4 +34,28 @@ namespace objects
         }
         return res;
     }
+
+    void SetupBlob(const objects::Blob& blob, const std::string& hash, const std::string& pathToDotMyGit)
+    {
+        /// Store the blob
+        std::string blobDirName = pathToDotMyGit + "/.mygit/objects/" + hash.substr(0, 2);
+        if (not utils::IsDirExists(blobDirName))
+            utils::CreateDir(blobDirName);
+
+        /// Fill in the contents of the blob (compressed file)
+        std::string blobFilePath = blobDirName + "/" + hash.substr(2);
+        utils::WriteFile(blobFilePath, utils::CompressString(blob.GetContentsFile()));
+    }
+
+    std::string CreateBlob (const std::string& pathToDotMyGit, const std::string& pathFileFromDotMyGit)
+    {
+        /// Create the blob and generate the hash from it
+        objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToDotMyGit + '/' + pathFileFromDotMyGit);
+        std::string hash = blob.ToHash();
+
+        /// Setup blob (directory and file filling)
+        SetupBlob(blob, hash, pathToDotMyGit);
+
+        return hash;
+    }
 }

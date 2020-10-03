@@ -13,7 +13,7 @@ namespace mygit
         /// Case where 'path' leads to a directory
         if (utils::IsDirExists(path))
         {
-            std::cout << "DIR" << std::endl;
+            std::cout << "DIR (TODO)" << std::endl;
             /// Retreive all files from this directory
         }
         /// Case where 'path' lads to a regular file
@@ -39,7 +39,7 @@ namespace mygit
         //std::cout << "test: " << pathFileFromDotMyGit << "\n";
 
         /// Create blob (hash + compressed file) in .mygit/objects
-        std::string hash = utils::CreateBlob(pathToDotMyGit, pathFileFromDotMyGit);
+        std::string hash = objects::CreateBlob(pathToDotMyGit, pathFileFromDotMyGit);
 
         /// Read contents of 'index' file
         std::string indexPath = pathToDotMyGit + ".mygit/index";

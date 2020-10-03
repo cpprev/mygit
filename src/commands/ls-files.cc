@@ -11,6 +11,7 @@ namespace mygit
         }
         std::cout << "Files currently in the 'staging area' / 'index' :\n\n";
         std::string indexContents = utils::ReadFile(pathToDotMyGit + "/.mygit/index");
-        std::cout << utils::DecompressString(indexContents);
+        if (not indexContents.empty())
+            std::cout << utils::DecompressString(indexContents);
     }
 }
