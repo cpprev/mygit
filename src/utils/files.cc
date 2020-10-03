@@ -131,7 +131,7 @@ namespace utils
 
         /// Store the blob
         std::string blobDirName = pathToDotMyGit + "/.mygit/objects/" + hash.substr(0, 2);
-        std::cout << blobDirName << "\n";
+        //std::cout << blobDirName << "\n";
         if (not IsDirExists(blobDirName))
             CreateDir(blobDirName);
 

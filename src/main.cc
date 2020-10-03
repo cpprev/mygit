@@ -23,6 +23,14 @@ int main(int argc, char *argv[])
         }
         mygit::add(argv[2]);
     }
+    else if (command == "ls-files")
+    {
+        mygit::ls_files();
+    }
+    else
+    {
+        utils::ExitProgramWithMessage(1, "Unknown command.");
+    }
 
     return 0;
 }

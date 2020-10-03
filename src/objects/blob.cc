@@ -9,6 +9,11 @@ namespace objects
         _contentsFile = utils::ReadFile(fullPath);
     }
 
+    std::string Blob::GetContentsFile() const
+    {
+        return _contentsFile;
+    }
+
     std::string Blob::ToString() const
     {
         return "blob;" + _pathFileFromDotMyGit + ';' + _contentsFile + ';';
@@ -28,10 +33,5 @@ namespace objects
             sprintf(&res[i*2], "%02x", (unsigned int)digest[i]);
         }
         return res;
-    }
-
-    std::string Blob::GetContentsFile() const
-    {
-        return _contentsFile;
     }
 }

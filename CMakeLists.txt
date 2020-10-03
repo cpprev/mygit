@@ -19,7 +19,7 @@ set(SRC_FILES
         src/utils/zlib.cc
 
         # Objects
-        src/objects/blob.cc)
+        src/objects/blob.cc src/commands/ls-files.cc)
 
 # Compilation flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -pedantic -std=c++17")

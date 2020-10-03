@@ -19,7 +19,7 @@ namespace mygit
         /// Case where 'path' lads to a regular file
         else if (utils::IsFileExists(path))
         {
-            std::cout << "FILE" << std::endl;
+            //std::cout << "FILE" << std::endl;
             UpdateIndex(path, pathToDotMyGit);
         }
         /// Wrongly formatted argument case
@@ -32,7 +32,7 @@ namespace mygit
     void UpdateIndex(const std::string& pathToFile, const std::string& pathToDotMyGit)
     {
         /// TODEL
-        std::cout << pathToFile << ' ' << pathToDotMyGit << "\n";
+        //std::cout << pathToFile << ' ' << pathToDotMyGit << "\n";
 
         /// Get path to file relative to .mygit file
         std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(pathToFile, pathToDotMyGit);
