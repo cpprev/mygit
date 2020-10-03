@@ -11,10 +11,15 @@ include_directories(src/)
 set(SRC_FILES
         # Commands
         src/commands/init.cc
+        src/commands/add.cc
 
         # Utils
         src/utils/files.cc
-        src/utils/wrappers.cc)
+        src/utils/wrappers.cc
+        src/utils/zlib.cc
+
+        # Objects
+        src/objects/blob.cc)
 
 # Compilation flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -pedantic -std=c++17")
@@ -25,5 +30,8 @@ add_executable(mygit src/main.cc ${SRC_FILES})
 
 add_executable(hash src/mainHash.cc)
 
-target_link_libraries(mygit crypto)
+add_executable(compress src/mainCompress.cc)
+
+target_link_libraries(mygit crypto z)
 target_link_libraries(hash crypto)
+target_link_libraries(compress z)

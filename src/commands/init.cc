@@ -1,4 +1,4 @@
-#include "init.hh"
+#include "commands.hh"
 
 namespace mygit
 {
@@ -15,7 +15,9 @@ namespace mygit
         }
 
         utils::CreateFile(".mygit/HEAD");
+
         utils::CreateDir(".mygit/objects/");
+
         utils::CreateDir(".mygit/refs/");
         utils::CreateDir(".mygit/refs/heads/");
         utils::CreateDir(".mygit/refs/remotes/");
