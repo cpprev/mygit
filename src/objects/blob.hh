@@ -14,6 +14,7 @@ namespace objects
         std::string ToString () const;
         std::string ToHash();
         std::string GetContentsFile() const;
+        std::string GetPathFromDotMyGit() const;
         Blob(const std::string& pathFileFromDotMyGit, const std::string& fullPath);
     private:
         std::string _pathFileFromDotMyGit;
@@ -24,4 +25,10 @@ namespace objects
     std::string CreateBlob (const std::string& pathToDotMyGit, const std::string& pathFileFromDotMyGit);
 
     void SetupBlob(const objects::Blob& blob, const std::string& hash, const std::string& pathToDotMyGit);
+
+    std::string GetTypeBlobDecompressed (const std::string& input);
+
+    std::string GetFilepathBlobDecompressed (const std::string& input);
+
+    std::string GetContentBlobDecompressed (const std::string& input);
 }

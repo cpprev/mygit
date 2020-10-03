@@ -33,7 +33,11 @@ int main(int argc, char *argv[])
     }
     else if (command == "cat-file")
     {
-        /// FIXME
+        if (argc <= 2)
+        {
+            utils::ExitProgramWithMessage(1, "You need to specify a parameter to the 'cat-file' command.");
+        }
+        mygit::cat_file(mygit::CatFileOptions(argc, argv));
     }
     else if (command == "ls-files")
     {
