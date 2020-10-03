@@ -11,7 +11,7 @@ namespace objects
 
     std::string Blob::ToString() const
     {
-        return _pathFileFromDotMyGit + ';' + _contentsFile + ';';
+        return "blob;" + _pathFileFromDotMyGit + ';' + _contentsFile + ';';
     }
 
     std::string Blob::ToHash()
@@ -28,5 +28,10 @@ namespace objects
             sprintf(&res[i*2], "%02x", (unsigned int)digest[i]);
         }
         return res;
+    }
+
+    std::string Blob::GetContentsFile() const
+    {
+        return _contentsFile;
     }
 }

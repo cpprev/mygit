@@ -50,13 +50,19 @@ namespace mygit
         if (not contents.empty())
             decompressed = utils::DecompressString(contents);
 
-        ///
-        //std::vector<std::string> entries = utils::GetEntriesFromIndex(decompressed);
+        /// Get entries from 'index' file
+        std::map<std::string, std::string> entries = utils::GetEntriesFromIndex(decompressed);
+
+        entries[pathFileFromDotMyGit] = hash;
 
         /// Update the contents
-        decompressed += hash + ' ' + pathFileFromDotMyGit + "\n";
+        decompressed.clear();
+        for (const auto& p : entries)
+        {
+            decompressed += p.second + ' ' + p.first + "\n";
+        }
 
-        std::cout << decompressed << "\n";
+        //std::cout << decompressed << "\n";
 
         /// Compress and update .mygit/index file
         std::string compressed = utils::CompressString(decompressed);

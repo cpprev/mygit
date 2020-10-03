@@ -13,8 +13,8 @@ namespace objects
     public:
         std::string ToString () const;
         std::string ToHash();
+        std::string GetContentsFile() const;
         Blob(const std::string& pathFileFromDotMyGit, const std::string& fullPath);
-
     private:
         std::string _pathFileFromDotMyGit;
         std::string _fullPath;

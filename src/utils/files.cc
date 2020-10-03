@@ -135,8 +135,40 @@ namespace utils
         if (not IsDirExists(blobDirName))
             CreateDir(blobDirName);
 
-        CreateFile(blobDirName + "/" + hash.substr(2));
+        /// Fill in the contents of the blob (compressed file)
+        std::string blobFilePath = blobDirName + "/" + hash.substr(2);
+        WriteFile(blobFilePath, CompressString(blob.GetContentsFile()));
 
         return hash;
+    }
+
+    std::map<std::string, std::string> GetEntriesFromIndex (const std::string& input)
+    {
+        std::map<std::string, std::string> res;
+        std::string filePath, hash;
+        bool hit_middle = false;
+        for (size_t i = 0; i < input.size(); i++)
+        {
+            if (input[i] == '\n')
+            {
+                res.insert({filePath, hash});
+
+                hit_middle = false;
+                filePath.clear();
+                hash.clear();
+            }
+            else if (input[i] == ' ')
+            {
+                hit_middle = true;
+            }
+            else
+            {
+                if (not hit_middle)
+                    hash += input[i];
+                else
+                    filePath += input[i];
+            }
+        }
+        return res;
     }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <map>
 #include <iostream>
 #include <string>
 #include <unistd.h>
@@ -12,6 +13,7 @@
 #include <cstring>
 
 #include "objects/blob.hh"
+#include "zlib.hh"
 
 namespace utils
 {
@@ -36,4 +38,6 @@ namespace utils
     std::string GetPathRelativeToDotMyGit(const std::string& pathToFile, const std::string& pathToDotMyGit);
 
     std::string CreateBlob (const std::string& pathToDotMyGit, const std::string& pathFileFromDotMyGit);
+
+    std::map<std::string, std::string> GetEntriesFromIndex (const std::string& input);
 }
