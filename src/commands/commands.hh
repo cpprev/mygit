@@ -37,15 +37,24 @@ namespace mygit
         bool where = false;
     };
 
+    class AddOptions
+    {
+    public:
+        AddOptions(int argc, char *argv[]);
+
+        std::vector<std::string> pathArguments;
+        bool force = false;
+    };
+
     /// MyGit commands
     void init();
-    void add(const std::string& path);
+    void add(const AddOptions& opt);
     void ls_files ();
     void hash_object (const HashObjectOptions& opt);
     void cat_file (const CatFileOptions& opt);
     void status();
 
     /// Sub functions
-    void UpdateIndex(const std::string& pathToFile, const std::string& pathToDotMyGit);
-    void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsFiles, const std::string& pathToDotMyGit);
+    void UpdateIndex(const std::string& pathToFile, const std::string& pathToDotMyGit, const AddOptions& opt);
+    void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsFiles, const std::string& pathToDotMyGit, const AddOptions& opt);
 }

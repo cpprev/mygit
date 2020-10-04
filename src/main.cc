@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
         {
             utils::ExitProgramWithMessage(1, "You need to specify a parameter to the 'add' command.");
         }
-        mygit::add(argv[2]);
+        mygit::add(mygit::AddOptions(argc, argv));
     }
     else if (command == "status")
     {

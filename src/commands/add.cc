@@ -2,7 +2,22 @@
 
 namespace mygit
 {
-    void add(const std::string& path)
+    AddOptions::AddOptions(int argc, char *argv[])
+    {
+        for (int i = 2; i < argc; i++)
+        {
+            if (strcmp(argv[i], "-f") == 0)
+            {
+                force = true;
+            }
+            else
+            {
+                pathArguments.push_back(argv[i]);
+            }
+        }
+    }
+
+    void add(const AddOptions& opt)
     {
         std::string pathToDotMyGit = utils::FindPathToDotMyGit();
         if (pathToDotMyGit.empty())
@@ -10,19 +25,20 @@ namespace mygit
             utils::ExitProgramWithMessage(1, "You are not in a MyGit repository.");
         }
 
+        /// FIXME For now we handle only one path argument
+        std::string path = opt.pathArguments[0];
+
         /// Case where 'path' leads to a directory
         if (utils::IsDirExists(path))
         {
             /// Retreive all files from this directory
             std::vector<std::string> entries = utils::GetCurrentDirectoryFiles(path);
-            //for (auto e : entries)
-            //    std::cout << e << "\n";
-            UpdateIndexMultipleFiles(entries, pathToDotMyGit);
+            UpdateIndexMultipleFiles(entries, pathToDotMyGit, opt);
         }
         /// Case where 'path' lads to a regular file
         else if (utils::IsFileExists(path))
         {
-            UpdateIndex(path, pathToDotMyGit);
+            UpdateIndex(path, pathToDotMyGit, opt);
         }
         /// Wrongly formatted argument case
         else
@@ -31,11 +47,11 @@ namespace mygit
         }
     }
 
-    void UpdateIndex(const std::string& pathToFile, const std::string& pathToDotMyGit)
+    void UpdateIndex(const std::string& pathToFile, const std::string& pathToDotMyGit, const AddOptions& opt)
     {
         /// Get path to file relative to .mygit file
         std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(pathToFile, pathToDotMyGit);
-        if (utils::IsFileExcluded(pathFileFromDotMyGit))
+        if (not opt.force and utils::IsFileExcluded(pathFileFromDotMyGit))
         {
             std::cout << "File \'" << pathFileFromDotMyGit << "\' is supposed to be ignored, therefore was not added.\n";
             return;
@@ -70,14 +86,14 @@ namespace mygit
         utils::WriteFile(indexPath, compressed);
     }
 
-    void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsToFiles, const std::string& pathToDotMyGit)
+    void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsToFiles, const std::string& pathToDotMyGit, const AddOptions& opt)
     {
         std::map<std::string, std::string> hashesAndPaths;
         for (const auto& pathToFile : pathsToFiles)
         {
             /// Get path to file relative to .mygit file
             std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(pathToFile, pathToDotMyGit);
-            if (utils::IsFileExcluded(pathFileFromDotMyGit))
+            if (not opt.force and utils::IsFileExcluded(pathFileFromDotMyGit))
             {
                 std::cout << "File \'" << pathFileFromDotMyGit << "\' is supposed to be ignored, therefore was not added.\n";
                 continue;
