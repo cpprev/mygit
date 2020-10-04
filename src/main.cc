@@ -23,6 +23,10 @@ int main(int argc, char *argv[])
         }
         mygit::add(argv[2]);
     }
+    else if (command == "status")
+    {
+        mygit::status();
+    }
     else if (command == "hash-object")
     {
         if (argc <= 2)

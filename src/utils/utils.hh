@@ -4,6 +4,7 @@
 #include <map>
 #include <iostream>
 #include <string>
+#include <vector>
 #include <unistd.h>
 #include <dirent.h>
 #include <sys/stat.h>
@@ -38,4 +39,12 @@ namespace utils
     std::string GetPathRelativeToDotMyGit(const std::string& pathToFile, const std::string& pathToDotMyGit);
 
     std::map<std::string, std::string> GetEntriesFromIndex (const std::string& input);
+
+    std::vector<std::string> GetEntriesFromIndexAsList (const std::string& input);
+
+    std::vector<std::string> ReadIndexAndGetEntriesIndexAsList (const std::string& pathToDotMyGit);
+
+    void IterateDir (const std::string& path, std::vector<std::string>& files);
+
+    std::vector<std::string> GetWorkingDirectoryFiles (const std::string& pathToDotMyGit);
 }

@@ -23,7 +23,7 @@ set(SRC_FILES
 
         # Objects
         src/objects/blob.cc
-        src/objects/object_type.cc)
+        src/objects/object_type.cc src/commands/status.cc)
 
 # Compilation flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -pedantic -std=c++17")

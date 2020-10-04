@@ -78,10 +78,18 @@ namespace utils
             {
                 newPath += "../";
                 i += 3;
+                while (i < path.size() and path[i] == '/')
+                {
+                    i += 1;
+                }
             }
             else if (i + 1 < path.size() and path[i] == '.' and path[i + 1] == '/')
             {
                 i += 2;
+                while (i < path.size() and path[i] == '/')
+                {
+                    i += 1;
+                }
             }
             else if (i + 1 < path.size() and path[i] == '/' and path[i + 1] == '/')
             {
@@ -150,5 +158,70 @@ namespace utils
             }
         }
         return res;
+    }
+
+    std::vector<std::string> GetEntriesFromIndexAsList (const std::string& input)
+    {
+        std::map<std::string, std::string> map = GetEntriesFromIndex(input);
+        std::vector<std::string> res;
+        res.reserve(map.size());
+        for (const auto& elm : map)
+        {
+            res.push_back(elm.first);
+        }
+        return res;
+    }
+
+    std::vector<std::string> ReadIndexAndGetEntriesIndexAsList (const std::string& pathToDotMyGit)
+    {
+        std::string indexContents = utils::ReadFile(pathToDotMyGit + "/.mygit/index");
+        std::string decompressed;
+        if (not indexContents.empty())
+            decompressed = utils::DecompressString(indexContents);
+        return GetEntriesFromIndexAsList(decompressed);
+    }
+
+    void IterateDir (const std::string& path, std::vector<std::string>& files)
+    {
+        DIR *dir = opendir(path.c_str());
+        if (dir == nullptr)
+            return;
+        else
+        {
+            struct dirent *ent;
+            while ((ent = readdir(dir)))
+            {
+                // Do not go through ".." or "." directories
+                std::string tmp = ent->d_name;
+                if (tmp == "." or tmp == "..")
+                    continue;
+                // Update path
+                std::string new_path;
+                if (path[path.size() - 1] == '/')
+                    new_path = path + ent->d_name;
+                else
+                    new_path = path + "/" + ent->d_name;
+
+                // Update files (only put regular files)
+                if (IsFileExists(new_path))
+                    files.push_back(RemoveUselessCharInPath(new_path));
+
+                // Recurse (since its a directory)
+                DIR *tstdir = opendir(new_path.c_str());
+                if (tstdir != nullptr)
+                {
+                    IterateDir(new_path, files);
+                    closedir(tstdir);
+                }
+            }
+        }
+        closedir(dir);
+    }
+
+    std::vector<std::string> GetWorkingDirectoryFiles (const std::string& pathToDotMyGit)
+    {
+        std::vector<std::string> files;
+        IterateDir(pathToDotMyGit, files);
+        return files;
     }
 }

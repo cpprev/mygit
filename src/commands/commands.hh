@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cstring>
+#include <algorithm>
 #include <map>
 
 #include "objects/object_type.hh"
@@ -41,6 +42,7 @@ namespace mygit
     void ls_files ();
     void hash_object (const HashObjectOptions& opt);
     void cat_file (const CatFileOptions& opt);
+    void status();
 
     /// Sub functions
     void UpdateIndex(const std::string& pathToFile, const std::string& pathToDotMyGit);
