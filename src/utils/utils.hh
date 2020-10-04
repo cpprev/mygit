@@ -12,9 +12,12 @@
 #include <openssl/sha.h>
 #include <cstdio>
 #include <cstring>
+#include <fnmatch.h>
 
 #include "objects/blob.hh"
 #include "zlib.hh"
+
+extern std::vector<std::string> g_myGitIgnorePatterns;
 
 namespace utils
 {
@@ -38,6 +41,8 @@ namespace utils
 
     std::string GetPathRelativeToDotMyGit(const std::string& pathToFile, const std::string& pathToDotMyGit);
 
+    bool IsFileExcluded (const std::string& path);
+
     std::map<std::string, std::string> GetEntriesFromIndex (const std::string& input);
 
     std::vector<std::string> GetEntriesFromIndexAsList (const std::string& input);
@@ -47,4 +52,8 @@ namespace utils
     void IterateDir (const std::string& path, std::vector<std::string>& files);
 
     std::vector<std::string> GetWorkingDirectoryFiles (const std::string& pathToDotMyGit);
+
+    std::vector<std::string> GetCurrentDirectoryFiles (const std::string& pathToDir);
+
+    std::vector<std::string> ReadMyGitIgnorePatterns(const std::string& contents);
 }

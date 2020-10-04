@@ -52,7 +52,8 @@ namespace mygit
         {
             if (std::find(workDirEntries.begin(), workDirEntries.end(), indEntry) == workDirEntries.end())
             {
-                std::cout << "\033[0;31m" << "\tDeleted:\t" << indEntry << "\033[0m" << "\n";
+                if (not utils::IsFileExcluded(indEntry))
+                    std::cout << "\033[0;31m" << "\tDeleted:\t" << indEntry << "\033[0m" << "\n";
             }
         }
         std::cout << "\n";

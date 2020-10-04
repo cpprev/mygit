@@ -3,12 +3,19 @@
 #include "utils/utils.hh"
 #include "commands/commands.hh"
 
+std::vector<std::string> g_myGitIgnorePatterns = std::vector<std::string>();
+
 int main(int argc, char *argv[])
 {
     if (argc == 1)
     {
         utils::ExitProgramWithMessage(1, "You need to specify a MyGit command.");
     }
+
+    /// Set gitignore patterns global variable
+    std::string pathToDotMyGit = utils::FindPathToDotMyGit();
+    std::string myGitIgnoreContents = utils::ReadFile(pathToDotMyGit + "/.mygitignore");
+    g_myGitIgnorePatterns = utils::ReadMyGitIgnorePatterns(myGitIgnoreContents);
 
     std::string command = argv[1];
     if (command == "init")

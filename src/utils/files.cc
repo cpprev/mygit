@@ -112,22 +112,24 @@ namespace utils
 
     std::string GetPathRelativeToDotMyGit(const std::string& pathToFile, const std::string& pathToDotMyGit)
     {
-        std::string newPathToFile = RemoveUselessCharInPath(pathToFile);
-        std::string newToDotMyGit = RemoveUselessCharInPath(pathToDotMyGit);
 
-        std::string res;
-        size_t i = 0;
-        while (i < newPathToFile.size() and i < newToDotMyGit.size() and newPathToFile[i] == newToDotMyGit[i])
-        {
-            i += 1;
-        }
+        /// Get current dir
+        char buf[256];
+        std::string cwd = getcwd(buf, sizeof(buf));
+        /// cd to root dir
+        chdir(pathToDotMyGit.c_str());
+        /// Fullpath of root directory (containing .mygit/)
+        char buf2[256];
+        std::string cwd2 = getcwd(buf2, sizeof(buf2));
+        /// cd back to origin dir
+        chdir(cwd.c_str());
+        if (cwd == cwd2)
+            return RemoveUselessCharInPath(pathToFile);
 
-        while (i < newPathToFile.size())
-        {
-            res += newPathToFile[i++];
-        }
+        size_t ind_diff = cwd.find(cwd2) + cwd2.size() + 1;
+        std::string diff = cwd.substr(ind_diff);
 
-        return res;
+        return RemoveUselessCharInPath(diff + '/' + pathToFile);
     }
 
     std::map<std::string, std::string> GetEntriesFromIndex (const std::string& input)
@@ -202,6 +204,9 @@ namespace utils
                 else
                     new_path = path + "/" + ent->d_name;
 
+                if (IsFileExcluded(new_path))
+                    continue;
+
                 // Update files (only put regular files)
                 if (IsFileExists(new_path))
                     files.push_back(RemoveUselessCharInPath(new_path));
@@ -218,10 +223,56 @@ namespace utils
         closedir(dir);
     }
 
+    bool IsFileExcluded (const std::string& path)
+    {
+        /// Exclude .mygit/ and .mygitignore files
+        if (not fnmatch("*.mygit*", path.c_str(), 0))
+            return true;
+
+        std::string pathToDotMyGit = utils::FindPathToDotMyGit();
+
+        for (const auto& pattern : g_myGitIgnorePatterns)
+        {
+            //std::cout << "pattern: " << pattern << "\n";
+            if (not fnmatch(pattern.c_str(), path.c_str(), 0))
+                return true;
+        }
+
+        return false;
+    }
+
+    std::vector<std::string> ReadMyGitIgnorePatterns(const std::string& contents)
+    {
+        std::vector<std::string> res;
+        std::string cur;
+        for (size_t i = 0; i < contents.size(); i++)
+        {
+            if (contents[i] == '\n' or i == contents.size() - 1)
+            {
+                if (i == contents.size() - 1 and contents[i] != '\n')
+                    cur += contents[i];
+                res.push_back(cur);
+                cur.clear();
+            }
+            else
+            {
+                cur += contents[i];
+            }
+        }
+        return res;
+    }
+
     std::vector<std::string> GetWorkingDirectoryFiles (const std::string& pathToDotMyGit)
     {
         std::vector<std::string> files;
         IterateDir(pathToDotMyGit, files);
+        return files;
+    }
+
+    std::vector<std::string> GetCurrentDirectoryFiles (const std::string& pathToDir)
+    {
+        std::vector<std::string> files;
+        IterateDir(pathToDir, files);
         return files;
     }
 }

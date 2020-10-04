@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include <cstring>
 #include <algorithm>
 #include <map>
@@ -46,4 +47,5 @@ namespace mygit
 
     /// Sub functions
     void UpdateIndex(const std::string& pathToFile, const std::string& pathToDotMyGit);
+    void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsFiles, const std::string& pathToDotMyGit);
 }
