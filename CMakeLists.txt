@@ -34,16 +34,14 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g3")
 # Executables
 add_executable(mygit src/main.cc ${SRC_FILES})
 add_executable(add_test src/tests/main_add_test.cc ${SRC_FILES})
+add_executable(status_test src/tests/main_status_test.cc ${SRC_FILES})
 
-add_executable(hash src/tests/mainHash.cc)
-add_executable(compress src/tests/mainCompress.cc)
-
-# Launch testsuite
-add_custom_target(test COMMAND cd ../tests && ./testsuite.sh && cd - > /dev/null)
-add_custom_target(tests COMMAND cd ../tests && ./testsuite.sh && cd - > /dev/null)
 
 # Linked libraries targetting
 target_link_libraries(mygit crypto z)
 target_link_libraries(add_test crypto z)
-target_link_libraries(hash crypto)
-target_link_libraries(compress z)
+target_link_libraries(status_test crypto z)
+
+# Launch testsuite
+add_custom_target(test COMMAND cd ../tests && ./testsuite.sh && cd - > /dev/null)
+add_custom_target(tests COMMAND cd ../tests && ./testsuite.sh && cd - > /dev/null)

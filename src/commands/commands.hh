@@ -55,6 +55,7 @@ namespace mygit
     void status();
 
     /// Sub functions
+    std::string status_str ();
     void UpdateIndex(const std::string& pathToFile, const std::string& pathToDotMyGit, const AddOptions& opt);
     void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsFiles, const std::string& pathToDotMyGit, const AddOptions& opt);
 }

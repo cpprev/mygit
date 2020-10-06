@@ -137,6 +137,79 @@ namespace utils
         return RemoveUselessCharInPath(diff + '/' + pathToFile);
     }
 
+    std::string CutFileInPath(std::string& pathRelativeToYouLong)
+    {
+        int i = pathRelativeToYouLong.size() - 1;
+        if (IsDirExists(pathRelativeToYouLong))
+            return "";
+        std::string res;
+        while (i >= 0 and pathRelativeToYouLong[i] != '/')
+        {
+            res = pathRelativeToYouLong[i] + res;
+            i--;
+        }
+        pathRelativeToYouLong = pathRelativeToYouLong.substr(0, i);
+        return res;
+    }
+
+    int CalcHeightDir (const std::string& dir1, const std::string& dir2)
+    {
+        int countSlash = 0;
+        if (dir1.size() > dir2.size())
+        {
+            size_t i = dir1.size() - 1;
+            while (i >= dir2.size())
+            {
+                if (dir1[i] == '/')
+                    countSlash += 1;
+                i--;
+            }
+        }
+        else
+            utils::ExitProgramWithMessage(1, "Not implemented");
+        return countSlash;
+    }
+
+    std::string GetPathRelativeToYourself(const std::string& pathRelativeToYouLongCpy)
+    {
+        /// Get current dir
+        std::string cwd = GetCwd();
+        /// cd to target dir
+        std::string pathRelativeToYouLong = pathRelativeToYouLongCpy;
+        std::string fileName = CutFileInPath(pathRelativeToYouLong);
+        //std::cout << "path: " << pathRelativeToYouLong << "\n";
+        //std::cout << "filename: " << fileName << "\n";
+        chdir(pathRelativeToYouLong.c_str());
+        /// Fullpath of root directory (containing .mygit/)
+        std::string cwd2 = GetCwd();
+
+        //std::cout << cwd << "\n";
+        //std::cout << cwd2 << "\n";
+        /// cd back to origin dir
+        chdir(cwd.c_str());
+        if (cwd == cwd2)
+            return fileName;
+        else if (cwd2.size() > cwd.size())
+        {
+            size_t ind_diff = cwd2.find(cwd) + cwd.size() + 1;
+            std::string res = cwd2.substr(ind_diff);
+            //std::cout << "RES: " << utils::RemoveUselessCharInPath(res + "/" + fileName) << "\n";
+            return utils::RemoveUselessCharInPath(res + "/" + fileName);
+        }
+        else
+        {
+            int diffHeight = CalcHeightDir(cwd, cwd2);
+            std::string res;
+            while (diffHeight > 0)
+            {
+                res += "../";
+                diffHeight--;
+            }
+            return utils::RemoveUselessCharInPath(res + fileName);
+        }
+        return "";
+    }
+
     std::map<std::string, std::string> GetEntriesFromIndex (const std::string& input)
     {
         std::map<std::string, std::string> res;

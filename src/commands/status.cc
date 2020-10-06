@@ -2,7 +2,7 @@
 
 namespace mygit
 {
-    void status()
+    std::string status_str ()
     {
         std::string pathToDotMyGit = utils::FindPathToDotMyGit();
         if (pathToDotMyGit.empty())
@@ -23,13 +23,24 @@ namespace mygit
 
         /// Read working directory files
         std::vector<std::string> workDirEntries = utils::GetWorkingDirectoryFiles(pathToDotMyGit);
-
-        //for (auto e : workDirEntries)
-        //    std::cout << "2222: " << e << "\n";
-
-        std::cout << "\033[0;31m" << "Changed not staged for commit :" << "\033[0m" << "\n\n";
-        for (const auto& wdFile : workDirEntries)
+        std::vector<std::string> workDirEntriesFromActualPos = workDirEntries;
+        for (size_t i = 0; i < workDirEntries.size(); i++)
         {
+            workDirEntriesFromActualPos[i] = utils::GetPathRelativeToYourself(workDirEntries[i]);
+        }
+        /*for (auto e : workDirEntries)
+        {
+            //std::cout << "entry: " << e << "\n";
+            //std::string r = utils::GetPathRelativeToYourself(utils::RemoveUselessCharInPath(e));
+            //std::cout << "IZIZIZI: " << r << "\n";
+        }*/
+
+        std::string output;
+        output += "\033[0;31mChanged not staged for commit : \033[0m\n\n";
+        for (size_t i = 0; i < workDirEntries.size(); i++)
+        {
+            std::string wdFile = workDirEntries[i];
+            std::string wdFileFromActualPos = workDirEntriesFromActualPos[i];
             if (std::find(indexEntriesFromActualPos.begin(), indexEntriesFromActualPos.end(), wdFile) != indexEntriesFromActualPos.end())
             {
                 std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(wdFile, pathToDotMyGit);
@@ -38,13 +49,13 @@ namespace mygit
                 std::string blobPath = pathToDotMyGit + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
                 if (not utils::IsFileExists(blobPath))
                 {
-                    std::cout << "\033[0;31m" << "\tModifed:\t" << wdFile << "\033[0m" << "\n";
+                    output += "\033[0;31m\tModifed:\t" + wdFileFromActualPos + "\033[0m\n";
                 }
             }
             /// File not in index, there was added
             else
             {
-                std::cout << "\033[0;31m" << "\tAdded:  \t" << wdFile << "\033[0m" << "\n";
+                output += "\033[0;31m\tAdded:  \t" + wdFileFromActualPos + "\033[0m\n";
             }
         }
 
@@ -53,9 +64,16 @@ namespace mygit
             if (std::find(workDirEntries.begin(), workDirEntries.end(), indEntry) == workDirEntries.end())
             {
                 if (not utils::IsFileExcluded(indEntry))
-                    std::cout << "\033[0;31m" << "\tDeleted:\t" << indEntry << "\033[0m" << "\n";
+                    output += "\033[0;31m\tDeleted:\t" + indEntry + "\033[0m\n";
             }
         }
-        std::cout << "\n";
+        output += "\n";
+
+        return output;
+    }
+
+    void status()
+    {
+        std::cout << status_str();
     }
 }

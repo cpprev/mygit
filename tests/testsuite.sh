@@ -22,10 +22,6 @@ fi
 # Logging
 echo -e "$cyan""Current directory:" $PWD
 
-# Counters initialization
-total_tests=0
-total_passed=0
-
 is_argument ()
 {
     arg=$1
@@ -46,6 +42,7 @@ is_argument ()
 if is_argument "$*" "$#" "init"; then
     . subscripts/init_test.sh
 fi
+
 # add tests
 if is_argument "$*" "$#" "add"; then
     cd ../build
@@ -53,8 +50,12 @@ if is_argument "$*" "$#" "add"; then
     cd - &> /dev/null
 fi
 
-# Logging
-echo -e "$green\n[$total_passed/$total_tests tests passed!]"
+# status tests
+if is_argument "$*" "$#" "status"; then
+    cd ../build
+    ./status_test
+    cd - &> /dev/null
+fi
 
 # Reset print color
 echo -ne $reset

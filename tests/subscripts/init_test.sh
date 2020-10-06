@@ -2,8 +2,6 @@
 
 function init_test ()
 {
-    total_tests=$((total_tests+1))
-
     test_name=$1
 
     ./../build/mygit init &> /dev/null
@@ -19,7 +17,6 @@ function init_test ()
     if ! [ -d "$FILE1" ] || ! [ -d "$FILE2" ] || ! [ -d "$FILE3" ]; then
         echo -e "$red[KO]""$cyan""[$test_name]"
     else
-        total_passed=$((total_passed+1))
         echo -e "$green[OK]""$cyan""[$test_name]"
     fi
 
