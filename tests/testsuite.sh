@@ -48,19 +48,13 @@ if is_argument "$*" "$#" "init"; then
 fi
 # add tests
 if is_argument "$*" "$#" "add"; then
-    . subscripts/add_test.sh
-fi
-# status tests
-if is_argument "$*" "$#" "status"; then
-    . subscripts/status_test.sh
-fi
-# ls-files tests
-if is_argument "$*" "$#" "ls-files"; then
-    . subscripts/ls-files_test.sh
+    cd ../build
+    ./add_test
+    cd - &> /dev/null
 fi
 
 # Logging
-echo -e "$green\n[$tests_passed/$total_tests tests passed!]"
+echo -e "$green\n[$total_passed/$total_tests tests passed!]"
 
 # Reset print color
 echo -ne $reset

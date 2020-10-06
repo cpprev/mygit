@@ -39,6 +39,8 @@ namespace utils
 
     std::string RemoveUselessCharInPath (const std::string& path);
 
+    std::string GetCwd ();
+
     std::string GetPathRelativeToDotMyGit(const std::string& pathToFile, const std::string& pathToDotMyGit);
 
     bool IsFileExcluded (const std::string& path);

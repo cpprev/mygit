@@ -110,17 +110,22 @@ namespace utils
         return newPath;
     }
 
+    std::string GetCwd ()
+    {
+        char buf[256];
+        std::string cwd = getcwd(buf, sizeof(buf));
+        return buf;
+    }
+
     std::string GetPathRelativeToDotMyGit(const std::string& pathToFile, const std::string& pathToDotMyGit)
     {
 
         /// Get current dir
-        char buf[256];
-        std::string cwd = getcwd(buf, sizeof(buf));
+        std::string cwd = GetCwd();
         /// cd to root dir
         chdir(pathToDotMyGit.c_str());
         /// Fullpath of root directory (containing .mygit/)
-        char buf2[256];
-        std::string cwd2 = getcwd(buf2, sizeof(buf2));
+        std::string cwd2 = GetCwd();
         /// cd back to origin dir
         chdir(cwd.c_str());
         if (cwd == cwd2)
