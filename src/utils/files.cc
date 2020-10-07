@@ -117,24 +117,36 @@ namespace utils
         return buf;
     }
 
-    std::string GetPathRelativeToDotMyGit(const std::string& pathToFile, const std::string& pathToDotMyGit)
+    std::string GetPathRelativeToDotMyGit(const std::string& pathToFileCpy, const std::string& pathToDotMyGitCpy)
     {
-
+        (void) pathToDotMyGitCpy;
         /// Get current dir
+        std::string origin = GetCwd();
+
+        std::string pathToFile = pathToFileCpy;
+        std::string filename = CutFileInPath(pathToFile);
+
+        if (pathToFile.empty())
+            pathToFile = ".";
+        chdir(pathToFile.c_str());
+
+        std::string pathToDotMyGit = utils::FindPathToDotMyGit();
+
         std::string cwd = GetCwd();
+
         /// cd to root dir
         chdir(pathToDotMyGit.c_str());
         /// Fullpath of root directory (containing .mygit/)
-        std::string cwd2 = GetCwd();
+        std::string rootWD = GetCwd();
         /// cd back to origin dir
-        chdir(cwd.c_str());
-        if (cwd == cwd2)
-            return RemoveUselessCharInPath(pathToFile);
+        chdir(origin.c_str());
+        if (cwd == rootWD)
+            return RemoveUselessCharInPath(filename);
 
-        size_t ind_diff = cwd.find(cwd2) + cwd2.size() + 1;
+        size_t ind_diff = cwd.find(rootWD) + rootWD.size() + 1;
         std::string diff = cwd.substr(ind_diff);
 
-        return RemoveUselessCharInPath(diff + '/' + pathToFile);
+        return RemoveUselessCharInPath(diff + '/' + filename);
     }
 
     std::string CutFileInPath(std::string& pathRelativeToYouLong)

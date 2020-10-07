@@ -41,6 +41,8 @@ namespace utils
 
     std::string GetCwd ();
 
+    std::string CutFileInPath(std::string& pathRelativeToYouLong);
+
     std::string GetPathRelativeToYourself(const std::string& pathRelativeToYouLong);
 
     std::string GetPathRelativeToDotMyGit(const std::string& pathToFile, const std::string& pathToDotMyGit);
