@@ -41,6 +41,8 @@ namespace utils
 
     std::string GetCwd ();
 
+    std::string SHA1_Wrapper (const std::string& input);
+
     std::string CutFileInPath(std::string& pathRelativeToYouLong);
 
     std::string GetPathRelativeToYourself(const std::string& pathRelativeToYouLong);
