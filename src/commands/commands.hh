@@ -34,7 +34,6 @@ namespace mygit
         bool type = false;
         bool content = false;
         bool raw = false;
-        bool where = false;
     };
 
     class AddOptions

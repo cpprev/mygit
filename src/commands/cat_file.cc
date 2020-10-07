@@ -18,7 +18,7 @@ namespace mygit
 
         std::string contentsFile = utils::ReadFile(hashPath);
         std::string decompressed = utils::DecompressString(contentsFile);
-        if (opt.type or opt.size or opt.where)
+        if (opt.type or opt.size)
         {
             if (opt.type)
                 std::cout << "Type of object : " << objects::GetTypeBlobDecompressed(decompressed) << "\n";
@@ -27,8 +27,6 @@ namespace mygit
                 std::cout << "Size of compressed file : " << contentsFile.size() << "\n";
                 std::cout << "Size of decompressed file : " << decompressed.size() << "\n";
             }
-            if (opt.where)
-                std::cout << "Filepath : " << objects::GetFilepathBlobDecompressed(decompressed) << "\n";
         }
         else
         {
@@ -57,8 +55,6 @@ namespace mygit
                 content = true;
             else if (strcmp(argv[i], "-r") == 0)
                 raw = true;
-            else if (strcmp(argv[i], "-w") == 0)
-                where = true;
         }
     }
 }

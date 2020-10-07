@@ -86,27 +86,6 @@ namespace objects
         return "";
     }
 
-    std::string GetFilepathBlobDecompressed (const std::string& input)
-    {
-        int count = 0;
-        for (size_t i = 0; i < input.size(); i++)
-        {
-            if (input[i] == '=')
-                count += 1;
-            if (input[i] == '=' and count == 2)
-            {
-                i += 1;
-                std::string res;
-                while (i < input.size() and input[i] != '\n')
-                {
-                    res += input[i++];
-                }
-                return res;
-            }
-        }
-        return "";
-    }
-
     std::string GetContentBlobDecompressed (const std::string& input)
     {
         for (size_t i = 0; i < input.size(); i++)

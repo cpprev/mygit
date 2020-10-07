@@ -28,7 +28,5 @@ namespace objects
 
     std::string GetTypeBlobDecompressed (const std::string& input);
 
-    std::string GetFilepathBlobDecompressed (const std::string& input);
-
     std::string GetContentBlobDecompressed (const std::string& input);
 }
