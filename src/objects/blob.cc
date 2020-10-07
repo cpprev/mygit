@@ -31,10 +31,10 @@ namespace objects
         return _pathFileFromDotMyGit;
     }
 
-    void SetupBlob(const objects::Blob& blob, const std::string& hash, const std::string& pathToDotMyGit)
+    void SetupBlob(const objects::Blob& blob, const std::string& hash, const std::string& pathToRootRepo)
     {
         /// Store the blob
-        std::string blobDirName = pathToDotMyGit + "/.mygit/objects/" + hash.substr(0, 2);
+        std::string blobDirName = pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2);
         if (not utils::IsDirExists(blobDirName))
             utils::CreateDir(blobDirName);
 
@@ -47,14 +47,14 @@ namespace objects
         utils::WriteFile(blobFilePath, utils::CompressString(blob_data));
     }
 
-    std::string CreateBlob (const std::string& pathToDotMyGit, const std::string& pathFileFromDotMyGit)
+    std::string CreateBlob (const std::string& pathToRootRepo, const std::string& pathFileFromDotMyGit)
     {
         /// Create the blob and generate the hash from it
-        objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToDotMyGit + '/' + pathFileFromDotMyGit);
+        objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToRootRepo + '/' + pathFileFromDotMyGit);
         std::string hash = blob.ToHash();
 
         /// Setup blob (directory and file filling)
-        SetupBlob(blob, hash, pathToDotMyGit);
+        SetupBlob(blob, hash, pathToRootRepo);
 
         return hash;
     }

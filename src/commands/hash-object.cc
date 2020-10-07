@@ -4,7 +4,7 @@ namespace mygit
 {
     void hash_object (const HashObjectOptions& opt)
     {
-        std::string pathToDotMyGit = utils::FindPathToDotMyGit();
+        std::string pathToRootRepo = utils::FindPathToRootRepo();
 
         if (not utils::IsFileExists(opt.first_param))
         {
@@ -13,17 +13,17 @@ namespace mygit
 
         std::string filename = opt.first_param;
         std::string contentsFile = utils::ReadFile(filename);
-        std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToDotMyGit);
+        std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo);
 
         if (opt.type == objects::BLOB)
         {
-            objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToDotMyGit + '/' + pathFileFromDotMyGit);
+            objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToRootRepo + '/' + pathFileFromDotMyGit);
             std::string hash = blob.ToHash();
             std::cout << hash << "\n";
 
             if (opt.write)
             {
-                objects::SetupBlob(blob, hash, pathToDotMyGit);
+                objects::SetupBlob(blob, hash, pathToRootRepo);
             }
         }
         else if (opt.type == objects::COMMIT or opt.type == objects::TREE)

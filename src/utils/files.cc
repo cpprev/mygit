@@ -33,7 +33,7 @@ namespace utils
         return true;
     }
 
-    std::string FindPathToDotMyGit()
+    std::string FindPathToRootRepo()
     {
         std::string currentPath = "./";
         while (true)
@@ -117,9 +117,9 @@ namespace utils
         return buf;
     }
 
-    std::string GetPathRelativeToDotMyGit(const std::string& pathToFileCpy, const std::string& pathToDotMyGitCpy)
+    std::string GetPathRelativeToDotMyGit(const std::string& pathToFileCpy, const std::string& pathToRootRepoCpy)
     {
-        (void) pathToDotMyGitCpy;
+        (void) pathToRootRepoCpy;
         /// Get current dir
         std::string origin = GetCwd();
 
@@ -130,12 +130,12 @@ namespace utils
             pathToFile = ".";
         chdir(pathToFile.c_str());
 
-        std::string pathToDotMyGit = utils::FindPathToDotMyGit();
+        std::string pathToRootRepo = utils::FindPathToRootRepo();
 
         std::string cwd = GetCwd();
 
         /// cd to root dir
-        chdir(pathToDotMyGit.c_str());
+        chdir(pathToRootRepo.c_str());
         /// Fullpath of root directory (containing .mygit/)
         std::string rootWD = GetCwd();
         /// cd back to origin dir
@@ -264,9 +264,9 @@ namespace utils
         return res;
     }
 
-    std::vector<std::string> ReadIndexAndGetEntriesIndexAsList (const std::string& pathToDotMyGit)
+    std::vector<std::string> ReadIndexAndGetEntriesIndexAsList (const std::string& pathToRootRepo)
     {
-        std::string indexContents = utils::ReadFile(pathToDotMyGit + "/.mygit/index");
+        std::string indexContents = utils::ReadFile(pathToRootRepo + "/.mygit/index");
         std::string decompressed;
         if (not indexContents.empty())
             decompressed = utils::DecompressString(indexContents);
@@ -319,8 +319,6 @@ namespace utils
         if (not fnmatch("*.mygit*", path.c_str(), 0))
             return true;
 
-        std::string pathToDotMyGit = utils::FindPathToDotMyGit();
-
         for (const auto& pattern : g_myGitIgnorePatterns)
         {
             //std::cout << "pattern: " << pattern << "\n";
@@ -352,10 +350,10 @@ namespace utils
         return res;
     }
 
-    std::vector<std::string> GetWorkingDirectoryFiles (const std::string& pathToDotMyGit)
+    std::vector<std::string> GetWorkingDirectoryFiles (const std::string& pathToRootRepo)
     {
         std::vector<std::string> files;
-        IterateDir(pathToDotMyGit, files);
+        IterateDir(pathToRootRepo, files);
         return files;
     }
 

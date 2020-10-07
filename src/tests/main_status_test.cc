@@ -12,16 +12,16 @@ std::string init_test ()
 
     /// Git init
     mygit::init();
-    std::string pathToDotMyGit = utils::FindPathToDotMyGit();
+    std::string pathToRootRepo = utils::FindPathToRootRepo();
 
-    return pathToDotMyGit;
+    return pathToRootRepo;
 }
 
-void clean_test (std::string& pathToDotMyGit)
+void clean_test (std::string& pathToRootRepo)
 {
-    std::string command = "rm -rf " + pathToDotMyGit + "/.mygit";
+    std::string command = "rm -rf " + pathToRootRepo + "/.mygit";
     system(command.c_str());
-    std::string cmd2 = "rm -rf " + pathToDotMyGit + "/../testarea/";
+    std::string cmd2 = "rm -rf " + pathToRootRepo + "/../testarea/";
     system(cmd2.c_str());
 }
 
@@ -53,7 +53,7 @@ void TestStatusOneFileAtRoot ()
     process_test_findstr(output.find("\tAdded:  \t" + filename), "TestStatusOneFileAtRoot");
 }
 
-void TestStatusOneFileInSubdirWhileInSubDir (std::string pathToDotMyGit)
+void TestStatusOneFileInSubdirWhileInSubDir (std::string pathToRootRepo)
 {
     std::string cwd = utils::GetCwd();
     utils::CreateDir("dummySubDir000/");
@@ -65,7 +65,7 @@ void TestStatusOneFileInSubdirWhileInSubDir (std::string pathToDotMyGit)
     utils::WriteFile(filename, fileContents);
 
 
-    pathToDotMyGit = utils::FindPathToDotMyGit();
+    pathToRootRepo = utils::FindPathToRootRepo();
 
     /// Verify that filename is in mygit status output
     std::string output = mygit::status_str();
@@ -89,7 +89,7 @@ void TestStatusOneFileInSubdirWhileNotInSubDir ()
     process_test_findstr(output.find("\tAdded:  \t" + filename), "TestStatusOneFileInSubdirWhileNotInSubDir");
 }
 
-void TestStatusOneFileAtRootWhileInSubDir (std::string pathToDotMyGit)
+void TestStatusOneFileAtRootWhileInSubDir (std::string pathToRootRepo)
 {
     /// setup file
     std::string filename = "hezazazazaeazeazhehehe.txt";
@@ -100,7 +100,7 @@ void TestStatusOneFileAtRootWhileInSubDir (std::string pathToDotMyGit)
     utils::CreateDir("dummySubDir102/");
     chdir("dummySubDir102/");
 
-    pathToDotMyGit = utils::FindPathToDotMyGit();
+    pathToRootRepo = utils::FindPathToRootRepo();
 
     /// Verify that filename is in mygit status output
     std::string output = mygit::status_str();
@@ -295,13 +295,13 @@ void TestStatusOneFileInSubdirDeletedWhileAtRoot ()
 int main()
 {
     /// Init test env (start)
-    std::string pathToDotMyGit = init_test();
+    std::string pathToRootRepo = init_test();
 
     TestStatusOneFileAtRoot();
     /// Clear dummy files
     system("rm -rf *");
 
-    TestStatusOneFileInSubdirWhileInSubDir(pathToDotMyGit);
+    TestStatusOneFileInSubdirWhileInSubDir(pathToRootRepo);
     /// Clear dummy files
     system("rm -rf *");
 
@@ -309,7 +309,7 @@ int main()
     /// Clear dummy files
     system("rm -rf *");
 
-    TestStatusOneFileAtRootWhileInSubDir(pathToDotMyGit);
+    TestStatusOneFileAtRootWhileInSubDir(pathToRootRepo);
     /// Clear dummy files
     system("rm -rf *");
 
@@ -350,7 +350,7 @@ int main()
     system("rm -rf *");
 
     /// Clean files (end)
-    clean_test(pathToDotMyGit);
+    clean_test(pathToRootRepo);
 
     return 0;
 }

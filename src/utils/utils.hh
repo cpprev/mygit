@@ -36,7 +36,7 @@ namespace utils
 
     bool CreateFile(const std::string &name);
 
-    std::string FindPathToDotMyGit();
+    std::string FindPathToRootRepo();
 
     std::string ReadFile (const std::string& path);
 
@@ -52,7 +52,7 @@ namespace utils
 
     std::string GetPathRelativeToYourself(const std::string& pathRelativeToYouLong);
 
-    std::string GetPathRelativeToDotMyGit(const std::string& pathToFile, const std::string& pathToDotMyGit);
+    std::string GetPathRelativeToDotMyGit(const std::string& pathToFile, const std::string& pathToRootRepo);
 
     bool IsFileExcluded (const std::string& path);
 
@@ -60,11 +60,11 @@ namespace utils
 
     std::vector<std::string> GetEntriesFromIndexAsList (const std::string& input);
 
-    std::vector<std::string> ReadIndexAndGetEntriesIndexAsList (const std::string& pathToDotMyGit);
+    std::vector<std::string> ReadIndexAndGetEntriesIndexAsList (const std::string& pathToRootRepo);
 
     void IterateDir (const std::string& path, std::vector<std::string>& files);
 
-    std::vector<std::string> GetWorkingDirectoryFiles (const std::string& pathToDotMyGit);
+    std::vector<std::string> GetWorkingDirectoryFiles (const std::string& pathToRootRepo);
 
     std::vector<std::string> GetCurrentDirectoryFiles (const std::string& pathToDir);
 

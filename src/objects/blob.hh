@@ -22,9 +22,9 @@ namespace objects
         std::string _contentsFile;
     };
 
-    std::string CreateBlob (const std::string& pathToDotMyGit, const std::string& pathFileFromDotMyGit);
+    std::string CreateBlob (const std::string& pathToRootRepo, const std::string& pathFileFromDotMyGit);
 
-    void SetupBlob(const objects::Blob& blob, const std::string& hash, const std::string& pathToDotMyGit);
+    void SetupBlob(const objects::Blob& blob, const std::string& hash, const std::string& pathToRootRepo);
 
     std::string GetTypeBlobDecompressed (const std::string& input);
 

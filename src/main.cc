@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
         utils::ExitProgramWithMessage(1, "You need to specify a MyGit command.");
     }
     /// Set globals
-    g_pathToRepoRoot = utils::FindPathToDotMyGit();
+    g_pathToRepoRoot = utils::FindPathToRootRepo();
     std::string myGitIgnoreContents = utils::ReadFile(g_pathToRepoRoot + "/.mygitignore");
     g_myGitIgnorePatterns = utils::ReadMyGitIgnorePatterns(myGitIgnoreContents);
 

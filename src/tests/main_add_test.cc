@@ -12,16 +12,16 @@ std::string init_test ()
 
     /// Git init
     mygit::init();
-    std::string pathToDotMyGit = utils::FindPathToDotMyGit();
+    std::string pathToRootRepo = utils::FindPathToRootRepo();
 
-    return pathToDotMyGit;
+    return pathToRootRepo;
 }
 
-void clean_test (std::string& pathToDotMyGit)
+void clean_test (std::string& pathToRootRepo)
 {
-    std::string command = "rm -rf " + pathToDotMyGit + "/.mygit";
+    std::string command = "rm -rf " + pathToRootRepo + "/.mygit";
     system(command.c_str());
-    std::string cmd2 = "rm -rf " + pathToDotMyGit + "/../testarea/";
+    std::string cmd2 = "rm -rf " + pathToRootRepo + "/../testarea/";
     system(cmd2.c_str());
 }
 
@@ -41,7 +41,7 @@ void process_test_findstr (std::string::size_type cond, std::string test_name = 
         std::cout << "\033[1;31m" << "[KO] [" << test_name << "]" << "\033[0m" << "\n";
 }
 
-void TestAddOneFileAtRoot (std::string pathToDotMyGit)
+void TestAddOneFileAtRoot (std::string pathToRootRepo)
 {
     std::cout << "TEST 1: 'TestAddOneFileAtRoot'\n";
 
@@ -54,20 +54,20 @@ void TestAddOneFileAtRoot (std::string pathToDotMyGit)
     mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
 
     /// Check that .mygit/index exists
-    process_test_bool(utils::IsFileExists(pathToDotMyGit + "/.mygit/index"), "index file exists");
+    process_test_bool(utils::IsFileExists(pathToRootRepo + "/.mygit/index"), "index file exists");
 
     /// Decompress ./mygit/index
-    std::string pathToIndex = pathToDotMyGit + "/.mygit/index";
+    std::string pathToIndex = pathToRootRepo + "/.mygit/index";
     std::string indexDecompressed = utils::DecompressString(utils::ReadFile(pathToIndex));
 
     /// Verify that filename is in index
-    process_test_findstr(indexDecompressed.find(utils::GetPathRelativeToDotMyGit(filename, pathToDotMyGit)), "is filename in index");
+    process_test_findstr(indexDecompressed.find(utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo)), "is filename in index");
 
     /// Get hash-object
-    std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToDotMyGit);
-    objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToDotMyGit + '/' + pathFileFromDotMyGit);
+    std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo);
+    objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToRootRepo + '/' + pathFileFromDotMyGit);
     std::string hash = blob.ToHash();
-    std::string blobPath = pathToDotMyGit + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+    std::string blobPath = pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
     process_test_findstr(indexDecompressed.find(hash), "is hash in index");
 
     /// Decompress the blob
@@ -81,7 +81,7 @@ void TestAddOneFileAtRoot (std::string pathToDotMyGit)
     process_test_bool(objects::GetContentBlobDecompressed(blobDecompressed) == fileContents, "decompressed contents is correct");
 }
 
-void TestAddOneFileInSubdirWhileInSubDir (std::string pathToDotMyGit)
+void TestAddOneFileInSubdirWhileInSubDir (std::string pathToRootRepo)
 {
     std::cout << "TEST 2: 'TestAddOneFileInSubdirWhileInSubDir'\n";
 
@@ -89,7 +89,7 @@ void TestAddOneFileInSubdirWhileInSubDir (std::string pathToDotMyGit)
     utils::CreateDir("dummySubDir/");
     chdir("dummySubDir/");
 
-    pathToDotMyGit = utils::FindPathToDotMyGit();
+    pathToRootRepo = utils::FindPathToRootRepo();
 
     /// git add
     const char* filename = "hehehehe.txt";
@@ -100,20 +100,20 @@ void TestAddOneFileInSubdirWhileInSubDir (std::string pathToDotMyGit)
     mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
 
     /// Check that .mygit/index exists
-    process_test_bool(utils::IsFileExists(pathToDotMyGit + "/.mygit/index"), "index file exists");
+    process_test_bool(utils::IsFileExists(pathToRootRepo + "/.mygit/index"), "index file exists");
 
     /// Decompress ./mygit/index
-    std::string pathToIndex = pathToDotMyGit + "/.mygit/index";
+    std::string pathToIndex = pathToRootRepo + "/.mygit/index";
     std::string indexDecompressed = utils::DecompressString(utils::ReadFile(pathToIndex));
 
     /// Verify that filename is in index
-    process_test_findstr(indexDecompressed.find(utils::GetPathRelativeToDotMyGit(filename, pathToDotMyGit)), "is filename in index");
+    process_test_findstr(indexDecompressed.find(utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo)), "is filename in index");
 
     /// Get hash-object
-    std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToDotMyGit);
-    objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToDotMyGit + '/' + pathFileFromDotMyGit);
+    std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo);
+    objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToRootRepo + '/' + pathFileFromDotMyGit);
     std::string hash = blob.ToHash();
-    std::string blobPath = pathToDotMyGit + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+    std::string blobPath = pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
     process_test_findstr(indexDecompressed.find(hash), "is hash in index");
 
     /// Decompress the blob
@@ -130,7 +130,7 @@ void TestAddOneFileInSubdirWhileInSubDir (std::string pathToDotMyGit)
     chdir(cwd.c_str());
 }
 
-void TestAddOneFileInSubdirWhileNotInSubDir (std::string pathToDotMyGit)
+void TestAddOneFileInSubdirWhileNotInSubDir (std::string pathToRootRepo)
 {
     std::cout << "TEST 3: 'TestAddOneFileInSubdirWhileNotInSubDir'\n";
 
@@ -145,20 +145,20 @@ void TestAddOneFileInSubdirWhileNotInSubDir (std::string pathToDotMyGit)
     mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
 
     /// Check that .mygit/index exists
-    process_test_bool(utils::IsFileExists(pathToDotMyGit + "/.mygit/index"), "index file exists");
+    process_test_bool(utils::IsFileExists(pathToRootRepo + "/.mygit/index"), "index file exists");
 
     /// Decompress ./mygit/index
-    std::string pathToIndex = pathToDotMyGit + "/.mygit/index";
+    std::string pathToIndex = pathToRootRepo + "/.mygit/index";
     std::string indexDecompressed = utils::DecompressString(utils::ReadFile(pathToIndex));
 
     /// Verify that filename is in index
-    process_test_findstr(indexDecompressed.find(utils::GetPathRelativeToDotMyGit(filename, pathToDotMyGit)), "is filename in index");
+    process_test_findstr(indexDecompressed.find(utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo)), "is filename in index");
 
     /// Get hash-object
-    std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToDotMyGit);
-    objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToDotMyGit + '/' + pathFileFromDotMyGit);
+    std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo);
+    objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToRootRepo + '/' + pathFileFromDotMyGit);
     std::string hash = blob.ToHash();
-    std::string blobPath = pathToDotMyGit + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+    std::string blobPath = pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
     process_test_findstr(indexDecompressed.find(hash), "is hash in index");
 
     /// Decompress the blob
@@ -172,7 +172,7 @@ void TestAddOneFileInSubdirWhileNotInSubDir (std::string pathToDotMyGit)
     process_test_bool(objects::GetContentBlobDecompressed(blobDecompressed) == fileContents, "decompressed contents is correct");
 }
 
-void TestAddMultipleFilesAtRoot (std::string pathToDotMyGit)
+void TestAddMultipleFilesAtRoot (std::string pathToRootRepo)
 {
     std::cout << "TEST 4: 'TestAddMultipleFilesAtRoot'\n";
 
@@ -196,10 +196,10 @@ void TestAddMultipleFilesAtRoot (std::string pathToDotMyGit)
     mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
 
     /// Check that .mygit/index exists
-    process_test_bool(utils::IsFileExists(pathToDotMyGit + "/.mygit/index"), "index file exists");
+    process_test_bool(utils::IsFileExists(pathToRootRepo + "/.mygit/index"), "index file exists");
 
     /// Decompress ./mygit/index
-    std::string pathToIndex = pathToDotMyGit + "/.mygit/index";
+    std::string pathToIndex = pathToRootRepo + "/.mygit/index";
     std::string indexDecompressed = utils::DecompressString(utils::ReadFile(pathToIndex));
 
     /// Verify that filename is in index
@@ -207,12 +207,12 @@ void TestAddMultipleFilesAtRoot (std::string pathToDotMyGit)
     {
         std::string filename = pair.first;
         std::string fileContents = pair.second;
-        process_test_findstr(indexDecompressed.find(utils::GetPathRelativeToDotMyGit(filename, pathToDotMyGit)), "is filename in index");
+        process_test_findstr(indexDecompressed.find(utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo)), "is filename in index");
         /// Get hash-object
-        std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToDotMyGit);
-        objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToDotMyGit + '/' + pathFileFromDotMyGit);
+        std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo);
+        objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToRootRepo + '/' + pathFileFromDotMyGit);
         std::string hash = blob.ToHash();
-        std::string blobPath = pathToDotMyGit + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+        std::string blobPath = pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
         process_test_findstr(indexDecompressed.find(hash), "is hash in index");
 
         /// Decompress the blob
@@ -227,7 +227,7 @@ void TestAddMultipleFilesAtRoot (std::string pathToDotMyGit)
     }
 }
 
-void TestAddMultipleFilesInSubdirWhileInSubdir(std::string pathToDotMyGit)
+void TestAddMultipleFilesInSubdirWhileInSubdir(std::string pathToRootRepo)
 {
     std::cout << "TEST 5: 'TestAddMultipleFilesInSubdirWhileInSubdir'\n";
 
@@ -235,7 +235,7 @@ void TestAddMultipleFilesInSubdirWhileInSubdir(std::string pathToDotMyGit)
     utils::CreateDir("dummySubDir/");
     chdir("dummySubDir/");
 
-    pathToDotMyGit = utils::FindPathToDotMyGit();
+    pathToRootRepo = utils::FindPathToRootRepo();
 
     /// git add
     const char* filename1 = "test1.txt";
@@ -257,10 +257,10 @@ void TestAddMultipleFilesInSubdirWhileInSubdir(std::string pathToDotMyGit)
     mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
 
     /// Check that .mygit/index exists
-    process_test_bool(utils::IsFileExists(pathToDotMyGit + "/.mygit/index"), "index file exists");
+    process_test_bool(utils::IsFileExists(pathToRootRepo + "/.mygit/index"), "index file exists");
 
     /// Decompress ./mygit/index
-    std::string pathToIndex = pathToDotMyGit + "/.mygit/index";
+    std::string pathToIndex = pathToRootRepo + "/.mygit/index";
     std::string indexDecompressed = utils::DecompressString(utils::ReadFile(pathToIndex));
 
     /// Verify that filename is in index
@@ -268,12 +268,12 @@ void TestAddMultipleFilesInSubdirWhileInSubdir(std::string pathToDotMyGit)
     {
         std::string filename = pair.first;
         std::string fileContents = pair.second;
-        process_test_findstr(indexDecompressed.find(utils::GetPathRelativeToDotMyGit(filename, pathToDotMyGit)), "is filename in index");
+        process_test_findstr(indexDecompressed.find(utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo)), "is filename in index");
         /// Get hash-object
-        std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToDotMyGit);
-        objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToDotMyGit + '/' + pathFileFromDotMyGit);
+        std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo);
+        objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToRootRepo + '/' + pathFileFromDotMyGit);
         std::string hash = blob.ToHash();
-        std::string blobPath = pathToDotMyGit + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+        std::string blobPath = pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
         process_test_findstr(indexDecompressed.find(hash), "is hash in index");
 
         /// Decompress the blob
@@ -294,26 +294,26 @@ void TestAddMultipleFilesInSubdirWhileInSubdir(std::string pathToDotMyGit)
 int main()
 {
     /// Init test env
-    std::string pathToDotMyGit = init_test();
+    std::string pathToRootRepo = init_test();
 
-    TestAddOneFileAtRoot(pathToDotMyGit);
+    TestAddOneFileAtRoot(pathToRootRepo);
 
-    TestAddOneFileInSubdirWhileInSubDir(pathToDotMyGit);
+    TestAddOneFileInSubdirWhileInSubDir(pathToRootRepo);
 
-    TestAddOneFileInSubdirWhileNotInSubDir(pathToDotMyGit);
-
-    /// Clear dummy files
-    system("rm -rf *");
-
-    TestAddMultipleFilesAtRoot(pathToDotMyGit);
+    TestAddOneFileInSubdirWhileNotInSubDir(pathToRootRepo);
 
     /// Clear dummy files
     system("rm -rf *");
 
-    TestAddMultipleFilesInSubdirWhileInSubdir(pathToDotMyGit);
+    TestAddMultipleFilesAtRoot(pathToRootRepo);
+
+    /// Clear dummy files
+    system("rm -rf *");
+
+    TestAddMultipleFilesInSubdirWhileInSubdir(pathToRootRepo);
 
     /// Clean test
-    clean_test(pathToDotMyGit);
+    clean_test(pathToRootRepo);
 
     return 0;
 }
