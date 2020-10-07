@@ -22,7 +22,9 @@ extern std::vector<std::string> g_myGitIgnorePatterns;
 extern std::string g_pathToRootRepo;
 
 /// Constexprs
-constexpr const char *RequireRepoCommands[] = {"add", "status", "diff", "commit", "push", "pull", "hash-object", "cat-file", "ls-files"};
+constexpr const char *RequireRepoCommands[] = { "add", "status", "diff", "commit", "push", "pull", "hash-object", "cat-file", "ls-files" };
+constexpr const char *RequireOneOrMoreArguments[] = { "add", "commit", "push", "pull", "hash-object", "cat-file" };
+
 
 namespace utils
 {
@@ -71,4 +73,6 @@ namespace utils
     std::vector<std::string> ReadMyGitIgnorePatterns(const std::string& contents);
 
     bool DoesRequireRepo (const std::string& command);
+
+    bool DoesRequireOneOrMoreArguments (const std::string& command);
 }

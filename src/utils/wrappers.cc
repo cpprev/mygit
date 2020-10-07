@@ -16,4 +16,13 @@ namespace utils
                 return true;
         return false;
     }
+
+    bool DoesRequireOneOrMoreArguments (const std::string& command)
+    {
+        int len = sizeof(RequireOneOrMoreArguments) / sizeof(const char *);
+        for (int i = 0; i < len; i++)
+            if (command == RequireOneOrMoreArguments[i])
+                return true;
+        return false;
+    }
 }
