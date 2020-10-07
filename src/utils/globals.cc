@@ -5,4 +5,4 @@
 
 /// Init globals
 std::vector<std::string> g_myGitIgnorePatterns = std::vector<std::string>();
-std::string g_pathToRepoRoot = "";
+std::string g_pathToRootRepo = "";

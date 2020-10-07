@@ -19,7 +19,7 @@
 
 /// Globals
 extern std::vector<std::string> g_myGitIgnorePatterns;
-extern std::string g_pathToRepoRoot;
+extern std::string g_pathToRootRepo;
 
 /// Constexprs
 constexpr const char *RequireRepoCommands[] = {"add", "status", "diff", "commit", "push", "pull", "hash-object", "cat-file", "ls-files"};

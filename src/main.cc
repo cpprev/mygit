@@ -10,14 +10,14 @@ int main(int argc, char *argv[])
         utils::ExitProgramWithMessage(1, "You need to specify a MyGit command.");
     }
     /// Set globals
-    g_pathToRepoRoot = utils::FindPathToRootRepo();
-    std::string myGitIgnoreContents = utils::ReadFile(g_pathToRepoRoot + "/.mygitignore");
+    g_pathToRootRepo = utils::FindPathToRootRepo();
+    std::string myGitIgnoreContents = utils::ReadFile(g_pathToRootRepo + "/.mygitignore");
     g_myGitIgnorePatterns = utils::ReadMyGitIgnorePatterns(myGitIgnoreContents);
 
     std::string command = argv[1];
 
 
-    if (utils::DoesRequireRepo(command) and g_pathToRepoRoot.empty())
+    if (utils::DoesRequireRepo(command) and g_pathToRootRepo.empty())
     {
         utils::ExitProgramWithMessage(1, "You are not in a MyGit repository.");
     }
