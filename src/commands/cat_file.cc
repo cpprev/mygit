@@ -5,10 +5,7 @@ namespace mygit
     void cat_file (const CatFileOptions& opt)
     {
         std::string pathToDotMyGit = utils::FindPathToDotMyGit();
-        if (pathToDotMyGit.empty())
-        {
-            utils::ExitProgramWithMessage(1, "You are not in a MyGit repository.");
-        }
+
         std::string hash = opt.first_param;
         std::string hashPath = pathToDotMyGit + "/.mygit/objects/" + hash.substr(0, 2) + '/' + hash.substr(2);
         if (not utils::IsFileExists(hashPath))

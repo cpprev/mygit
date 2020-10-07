@@ -17,7 +17,12 @@
 #include "objects/blob.hh"
 #include "zlib.hh"
 
+/// Globals
 extern std::vector<std::string> g_myGitIgnorePatterns;
+extern std::string g_pathToRepoRoot;
+
+/// Constexprs
+constexpr const char *RequireRepoCommands[] = {"add", "status", "diff", "commit", "push", "pull", "hash-object", "cat-file", "ls-files"};
 
 namespace utils
 {
@@ -64,4 +69,6 @@ namespace utils
     std::vector<std::string> GetCurrentDirectoryFiles (const std::string& pathToDir);
 
     std::vector<std::string> ReadMyGitIgnorePatterns(const std::string& contents);
+
+    bool DoesRequireRepo (const std::string& command);
 }

@@ -4,8 +4,6 @@
 #include "utils/utils.hh"
 #include "commands/commands.hh"
 
-std::vector<std::string> g_myGitIgnorePatterns = std::vector<std::string>();
-
 std::string init_test ()
 {
     /// Setup test area

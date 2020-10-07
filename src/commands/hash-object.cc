@@ -5,10 +5,7 @@ namespace mygit
     void hash_object (const HashObjectOptions& opt)
     {
         std::string pathToDotMyGit = utils::FindPathToDotMyGit();
-        if (pathToDotMyGit.empty())
-        {
-            utils::ExitProgramWithMessage(1, "You are not in a MyGit repository.");
-        }
+
         if (not utils::IsFileExists(opt.first_param))
         {
             utils::ExitProgramWithMessage(1, "First parameter to hash-object has to be a file.");

@@ -20,10 +20,6 @@ namespace mygit
     void add(const AddOptions& opt)
     {
         std::string pathToDotMyGit = utils::FindPathToDotMyGit();
-        if (pathToDotMyGit.empty())
-        {
-            utils::ExitProgramWithMessage(1, "You are not in a MyGit repository.");
-        }
 
         /// FIXME For now we handle only one path argument
         std::string path = opt.pathArguments[0];

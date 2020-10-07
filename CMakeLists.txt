@@ -9,6 +9,9 @@ include_directories(src/)
 
 #List of source files
 set(SRC_FILES
+        # Globals
+        src/utils/globals.cc
+
         # Commands
         src/commands/init.cc
         src/commands/add.cc

@@ -5,10 +5,6 @@ namespace mygit
     std::string status_str ()
     {
         std::string pathToDotMyGit = utils::FindPathToDotMyGit();
-        if (pathToDotMyGit.empty())
-        {
-            utils::ExitProgramWithMessage(1, "You are not in a MyGit repository.");
-        }
 
         /// Read index files
         std::vector<std::string> indexEntries = utils::ReadIndexAndGetEntriesIndexAsList(pathToDotMyGit);
