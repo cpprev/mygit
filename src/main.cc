@@ -9,14 +9,13 @@ int main(int argc, char *argv[])
     {
         utils::ExitProgramWithMessage(1, "You need to specify a MyGit command.");
     }
-    std::string command = argv[1];
-
-    /// Set gitignore patterns global variable
-    std::string pathToDotMyGit = utils::FindPathToDotMyGit();
-    std::string myGitIgnoreContents = utils::ReadFile(pathToDotMyGit + "/.mygitignore");
+    /// Set globals
+    g_pathToRepoRoot = utils::FindPathToDotMyGit();
+    std::string myGitIgnoreContents = utils::ReadFile(g_pathToRepoRoot + "/.mygitignore");
     g_myGitIgnorePatterns = utils::ReadMyGitIgnorePatterns(myGitIgnoreContents);
 
-    g_pathToRepoRoot = utils::FindPathToDotMyGit();
+    std::string command = argv[1];
+
 
     if (utils::DoesRequireRepo(command) and g_pathToRepoRoot.empty())
     {
