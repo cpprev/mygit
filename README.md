@@ -4,22 +4,16 @@ This project's purpose is only to learn how git works internally.
 
 
 
-| Libraries Required      | 
-| ----------------- |
-| <zlib.h>       | 
-| <openssl/sha.h>  |
+| Libraries Required        | 
+| -----------------         |
+| <zlib.h>                  | 
+| <openssl/sha.h>           |
 
-Current commands implemented : 
-
-    mygit init
-    
-    mygit add PATH [-f]
-    
-    mygit status
-    
-    mygit ls-files
-    
-    mygit hash-object FILE [--write] [--type blob/tree/commit]
-    
-    mygit cat-file HASH [-t (Type)] [-p (Contents)]
-                        [-r (Raw data)] [-w (Where/Filepath)]
+| Commands implemented      | Usage                 |
+|---------------------------|-----------------------|
+| init                      | mygit init            |
+| add                       | mygit add PATH [-f]   |
+| status                    | mygit status          |
+| ls-files                  | mygit ls-files        |
+| cat-file                  | mygit cat-file HASH [-t] [-p] [-r] |
+| hash-object               | mygit hash-object FILE [--write] [--type blob/tree/commit]|
