@@ -2,10 +2,8 @@
 
 ---
 
-:::info
 :pushpin: The Project was made in C++ for the implementation and Bash for the testsuite
 This project's aim is to learn how git works internally.
-:::
 
 ---
 
