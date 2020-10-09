@@ -25,4 +25,15 @@ namespace utils
                 return true;
         return false;
     }
+
+    bool ChangeDirWrapper(const std::string& path)
+    {
+        // Change dir
+        chdir(path.c_str());
+
+        // Update g_pathToRootRepo
+        g_pathToRootRepo = utils::FindPathToRootRepo();
+
+        return true;
+    }
 }

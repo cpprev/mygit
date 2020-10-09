@@ -8,7 +8,7 @@ std::string init_test ()
 {
     /// Setup test area
     utils::CreateDir("testarea/");
-    chdir("testarea/");
+    utils::ChangeDirWrapper("testarea/");
 
     /// Git init
     mygit::init();
@@ -51,13 +51,18 @@ void TestStatusOneFileAtRoot ()
     /// Verify that filename is in mygit status output
     std::string output = mygit::status_str();
     process_test_findstr(output.find("\tAdded:  \t" + filename), "TestStatusOneFileAtRoot");
+
+    /// Remove files
+    remove(filename.c_str());
 }
 
 void TestStatusOneFileInSubdirWhileInSubDir (std::string pathToRootRepo)
 {
+    std::string dirPath = "dummySubDir000/";
+
     std::string cwd = utils::GetCwd();
-    utils::CreateDir("dummySubDir000/");
-    chdir("dummySubDir000/");
+    utils::CreateDir(dirPath);
+    utils::ChangeDirWrapper(dirPath);
 
     /// setup file
     std::string filename = "heheaaaahehe.txt";
@@ -72,7 +77,11 @@ void TestStatusOneFileInSubdirWhileInSubDir (std::string pathToRootRepo)
     process_test_findstr(output.find("\tAdded:  \t" + filename), "TestStatusOneFileInSubdirWhileInSubDir");
 
     /// chdir back to origin
-    chdir(cwd.c_str());
+    utils::ChangeDirWrapper(cwd);
+
+    /// Remove files
+    remove((dirPath + filename).c_str());
+    rmdir(dirPath.c_str());
 }
 
 void TestStatusOneFileInSubdirWhileNotInSubDir ()
@@ -87,6 +96,10 @@ void TestStatusOneFileInSubdirWhileNotInSubDir ()
     /// Verify that filename is in mygit status output
     std::string output = mygit::status_str();
     process_test_findstr(output.find("\tAdded:  \t" + filename), "TestStatusOneFileInSubdirWhileNotInSubDir");
+
+    /// Remove files
+    remove("dummySubDir111/hehehehzzaeezaezaze.txt");
+    rmdir("dummySubDir111/");
 }
 
 void TestStatusOneFileAtRootWhileInSubDir (std::string pathToRootRepo)
@@ -98,7 +111,7 @@ void TestStatusOneFileAtRootWhileInSubDir (std::string pathToRootRepo)
 
     std::string cwd = utils::GetCwd();
     utils::CreateDir("dummySubDir102/");
-    chdir("dummySubDir102/");
+    utils::ChangeDirWrapper("dummySubDir102/");
 
     pathToRootRepo = utils::FindPathToRootRepo();
 
@@ -107,7 +120,11 @@ void TestStatusOneFileAtRootWhileInSubDir (std::string pathToRootRepo)
     process_test_findstr(output.find("\tAdded:  \t../" + filename), "TestStatusOneFileAtRootWhileInSubDir");
 
     /// chdir back to origin
-    chdir(cwd.c_str());
+    utils::ChangeDirWrapper(cwd);
+
+    /// Remove files
+    remove("hezazazazaeazeazhehehe.txt");
+    rmdir("dummySubDir102/");
 }
 
 void TestStatusOneFileAtRootDisappearWhileAtRoot ()
@@ -132,8 +149,8 @@ void TestStatusOneFileAtRootDisappearWhileInSubdir ()
     utils::WriteFile(filename, fileContents);
 
     std::string cwd = utils::GetCwd();
-    utils::CreateDir("dummySubDir101/");
-    chdir("dummySubDir101/");
+    utils::CreateDir("dummySubDir1011/");
+    utils::ChangeDirWrapper("dummySubDir1011/");
 
     std::string newPath = "../" + filename;
     remove(newPath.c_str());
@@ -143,15 +160,18 @@ void TestStatusOneFileAtRootDisappearWhileInSubdir ()
     process_test_findstr(not output.find("\tAdded:\t" + newPath), "TestStatusOneFileAtRootDisappearWhileInSubdir");
 
     /// chdir back to origin
-    chdir(cwd.c_str());
+    utils::ChangeDirWrapper(cwd);
+
+    /// Remove files
+    rmdir("dummySubDir1011/");
 }
 
 void TestStatusOneFileInSubdirDisappearWhileAtRoot ()
 {
-    utils::CreateDir("dummySubDir100/");
+    utils::CreateDir("dummySubDir123/");
 
     /// setup file
-    std::string filename = "dummySubDir100/tezzzt.txt";
+    std::string filename = "dummySubDir123/tezzzt.txt";
     std::string fileContents = "this is some aazzaduany text!!!!z!!z!zz,ikoaejniazazoazojine\naijajijizazajizz\nauiahuiaukhi\n";
     utils::WriteFile(filename, fileContents);
 
@@ -160,16 +180,19 @@ void TestStatusOneFileInSubdirDisappearWhileAtRoot ()
     /// Verify that filename is in mygit status output
     std::string output = mygit::status_str();
     process_test_findstr(not output.find("\tAdded:\t" + filename), "TestStatusOneFileInSubdirDisappearWhileAtRoot");
+
+    /// Remove files
+    rmdir("dummySubDir123/");
 }
 
 void TestStatusOneFileAtRootModifiedWhileAtRoot ()
 {
     /// setup file
-    std::string filename = "test.txt";
+    std::string filename = "test123.txt";
     std::string fileContents = "this is some dummy text!!!!z!!z!zz,ikoaejnioazojine\naijajijiazajizz\nauiahuiauhi\n";
     utils::WriteFile(filename, fileContents);
 
-    const char *argv[] = { "mygit", "add", "test.txt" };
+    const char *argv[] = { "mygit", "add", "test123.txt" };
     int argc = sizeof(argv) / sizeof(char *);
     mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
 
@@ -178,6 +201,9 @@ void TestStatusOneFileAtRootModifiedWhileAtRoot ()
     /// Verify that filename is in mygit status output
     std::string output = mygit::status_str();
     process_test_findstr(output.find("\tModified:\t" + filename), "TestStatusOneFileAtRootModifiedWhileAtRoot");
+
+    /// Remove files
+    remove("test123.txt");
 }
 
 void TestStatusOneFileAtRootModifiedWhileInSubdir ()
@@ -190,7 +216,7 @@ void TestStatusOneFileAtRootModifiedWhileInSubdir ()
 
     std::string cwd = utils::GetCwd();
     utils::CreateDir("dummySubDir90/");
-    chdir("dummySubDir90/");
+    utils::ChangeDirWrapper("dummySubDir90/");
 
     const char *argv[] = { "mygit", "add", "../teskkkt.txt" };
     int argc = sizeof(argv) / sizeof(char *);
@@ -203,15 +229,19 @@ void TestStatusOneFileAtRootModifiedWhileInSubdir ()
     process_test_findstr(output.find("\tModified:\t../" + filename), "TestStatusOneFileAtRootModifiedWhileInSubdir");
 
     /// chdir back to origin
-    chdir(cwd.c_str());
+    utils::ChangeDirWrapper(cwd);
+
+    /// Remove files
+    remove("teskkkt.txt");
+    rmdir("dummySubDir90/");
 }
 
 void TestStatusOneFileInSubdirModifiedWhileAtRoot ()
 {
-    utils::CreateDir("dummy1/");
+    utils::CreateDir("dummy12345/");
 
     /// setup file
-    std::string filename = "dummy1/tez.txt";
+    std::string filename = "dummy12345/tez.txt";
     std::string fileContents = "this is some aazzaduany text!!!!z!!z!zz,ikoaejnzzziazazoazojine\naijajijizazajizz\nauiahuiaukhi\n";
     utils::WriteFile(filename, fileContents);
 
@@ -225,16 +255,20 @@ void TestStatusOneFileInSubdirModifiedWhileAtRoot ()
     /// Verify that filename is in mygit status output
     std::string output = mygit::status_str();
     process_test_findstr(output.find("\tModified:\t" + filename), "TestStatusOneFileInSubdirModifiedWhileAtRoot");
+
+    /// Remove files
+    remove("dummy12345/tez.txt");
+    rmdir("dummy12345/");
 }
 
 void TestStatusOneFileAtRootDeletedWhileAtRoot ()
 {
     /// setup file
-    std::string filename = "test.txt";
+    std::string filename = "test12.txt";
     std::string fileContents = "this is some dummy text!!!!z!!z!zz,ikoaejnioazojine\naijajijiazajizz\nauiahuiauhi\n";
     utils::WriteFile(filename, fileContents);
 
-    const char *argv[] = { "mygit", "add", "test.txt" };
+    const char *argv[] = { "mygit", "add", "test12.txt" };
     int argc = sizeof(argv) / sizeof(char *);
     mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
 
@@ -243,6 +277,9 @@ void TestStatusOneFileAtRootDeletedWhileAtRoot ()
     /// Verify that filename is in mygit status output
     std::string output = mygit::status_str();
     process_test_findstr(output.find("\tDeleted:\t" + filename), "TestStatusOneFileAtRootDeletedWhileAtRoot");
+
+    /// Remove files
+    remove("test12.txt");
 }
 
 void TestStatusOneFileAtRootDeletedWhileInSubdir ()
@@ -254,7 +291,7 @@ void TestStatusOneFileAtRootDeletedWhileInSubdir ()
 
     std::string cwd = utils::GetCwd();
     utils::CreateDir("dummySubDir/");
-    chdir("dummySubDir/");
+    utils::ChangeDirWrapper("dummySubDir/");
 
     const char *newPath = "../teskkkt.txt";
     const char *argv[] = { "mygit", "add", newPath };
@@ -268,7 +305,11 @@ void TestStatusOneFileAtRootDeletedWhileInSubdir ()
     process_test_findstr(output.find("\tDeleted:\t" + std::string(newPath)), "TestStatusOneFileAtRootDeletedWhileInSubdir");
 
     /// chdir back to origin
-    chdir(cwd.c_str());
+    utils::ChangeDirWrapper(cwd);
+
+    /// Remove files
+    remove("teskkkt.txt");
+    rmdir("dummySubDir/");
 }
 
 void TestStatusOneFileInSubdirDeletedWhileAtRoot ()
@@ -289,65 +330,51 @@ void TestStatusOneFileInSubdirDeletedWhileAtRoot ()
     /// Verify that filename is in mygit status output
     std::string output = mygit::status_str();
     process_test_findstr(output.find("\tDeleted:\t" + filename), "TestStatusOneFileInSubdirDeletedWhileAtRoot");
+
+    /// Remove files
+    remove("dummySubDir99/tezzztzz.txt");
+    rmdir("dummySubDir99/");
 }
 
+void tmp ()
+{
+    for (int i = 0; i < 100000; i++)
+    {
+
+    }
+}
 
 int main()
 {
+
     /// Init test env (start)
     std::string pathToRootRepo = init_test();
 
     TestStatusOneFileAtRoot();
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileInSubdirWhileInSubDir(pathToRootRepo);
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileInSubdirWhileNotInSubDir();
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileAtRootWhileInSubDir(pathToRootRepo);
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileAtRootDisappearWhileInSubdir();
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileAtRootDisappearWhileAtRoot();
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileInSubdirDisappearWhileAtRoot();
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileAtRootModifiedWhileAtRoot();
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileInSubdirModifiedWhileAtRoot();
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileAtRootModifiedWhileInSubdir();
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileAtRootDeletedWhileAtRoot();
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileAtRootDeletedWhileInSubdir();
-    /// Clear dummy files
-    system("rm -rf *");
 
     TestStatusOneFileInSubdirDeletedWhileAtRoot();
-    /// Clear dummy files
-    system("rm -rf *");
 
     /// Clean files (end)
     clean_test(pathToRootRepo);

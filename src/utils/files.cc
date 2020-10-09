@@ -128,18 +128,19 @@ namespace utils
 
         if (pathToFile.empty())
             pathToFile = ".";
-        chdir(pathToFile.c_str());
+
+        utils::ChangeDirWrapper(pathToFile);
 
         std::string pathToRootRepo = utils::FindPathToRootRepo();
 
         std::string cwd = GetCwd();
 
         /// cd to root dir
-        chdir(pathToRootRepo.c_str());
+        utils::ChangeDirWrapper(pathToRootRepo);
         /// Fullpath of root directory (containing .mygit/)
         std::string rootWD = GetCwd();
         /// cd back to origin dir
-        chdir(origin.c_str());
+        utils::ChangeDirWrapper(origin);
         if (cwd == rootWD)
             return RemoveUselessCharInPath(filename);
 
@@ -151,6 +152,7 @@ namespace utils
 
     std::string CutFileInPath(std::string& pathRelativeToYouLong)
     {
+        //std::cout << "start: " << pathRelativeToYouLong << "\n";
         int i = pathRelativeToYouLong.size() - 1;
         if (IsDirExists(pathRelativeToYouLong))
             return "";
@@ -160,12 +162,19 @@ namespace utils
             res = pathRelativeToYouLong[i] + res;
             i--;
         }
+        if (i < 0)
+        {
+            pathRelativeToYouLong = ".";
+            return res;
+        }
         pathRelativeToYouLong = pathRelativeToYouLong.substr(0, i);
+        //std::cout << i << '\n' << "end: " << pathRelativeToYouLong << '\n' << "filename: " << res << "\n";
         return res;
     }
 
     int CalcHeightDir (const std::string& dir1, const std::string& dir2)
     {
+        //std::cout << dir1 << ' ' << dir2 << "\n";
         int countSlash = 0;
         if (dir1.size() > dir2.size())
         {
@@ -187,18 +196,27 @@ namespace utils
         /// Get current dir
         std::string cwd = GetCwd();
         /// cd to target dir
+
+        //std::cout << GetCwd() << "\n";
+        //std::cout << "EXISTS ?" << pathRelativeToYouLongCpy << "\n";
+        //if (not IsFileExists(pathRelativeToYouLongCpy))
+        //    std::cout << "NANANANAN\n";
+
+
         std::string pathRelativeToYouLong = pathRelativeToYouLongCpy;
         std::string fileName = CutFileInPath(pathRelativeToYouLong);
+        if (pathRelativeToYouLong.empty())
+            pathRelativeToYouLong = ".";
         //std::cout << "path: " << pathRelativeToYouLong << "\n";
         //std::cout << "filename: " << fileName << "\n";
-        chdir(pathRelativeToYouLong.c_str());
+        utils::ChangeDirWrapper(pathRelativeToYouLong);
         /// Fullpath of root directory (containing .mygit/)
         std::string cwd2 = GetCwd();
 
         //std::cout << cwd << "\n";
         //std::cout << cwd2 << "\n";
         /// cd back to origin dir
-        chdir(cwd.c_str());
+        utils::ChangeDirWrapper(cwd);
         if (cwd == cwd2)
             return fileName;
         else if (cwd2.size() > cwd.size())

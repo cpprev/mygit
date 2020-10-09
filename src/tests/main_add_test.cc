@@ -8,7 +8,7 @@ std::string init_test ()
 {
     /// Setup test area
     utils::CreateDir("testarea/");
-    chdir("testarea/");
+    utils::ChangeDirWrapper("testarea/");
 
     /// Git init
     mygit::init();
@@ -87,7 +87,7 @@ void TestAddOneFileInSubdirWhileInSubDir (std::string pathToRootRepo)
 
     std::string cwd = utils::GetCwd();
     utils::CreateDir("dummySubDir/");
-    chdir("dummySubDir/");
+    utils::ChangeDirWrapper("dummySubDir/");
 
     pathToRootRepo = utils::FindPathToRootRepo();
 
@@ -127,7 +127,7 @@ void TestAddOneFileInSubdirWhileInSubDir (std::string pathToRootRepo)
     process_test_bool(objects::GetContentBlobDecompressed(blobDecompressed) == fileContents, "decompressed contents is correct");
 
     /// chdir back to origin
-    chdir(cwd.c_str());
+    utils::ChangeDirWrapper(cwd);
 }
 
 void TestAddOneFileInSubdirWhileNotInSubDir (std::string pathToRootRepo)
@@ -233,7 +233,7 @@ void TestAddMultipleFilesInSubdirWhileInSubdir(std::string pathToRootRepo)
 
     std::string cwd = utils::GetCwd();
     utils::CreateDir("dummySubDir/");
-    chdir("dummySubDir/");
+    utils::ChangeDirWrapper("dummySubDir/");
 
     pathToRootRepo = utils::FindPathToRootRepo();
 
@@ -288,7 +288,7 @@ void TestAddMultipleFilesInSubdirWhileInSubdir(std::string pathToRootRepo)
     }
 
     /// chdir back to origin
-    chdir(cwd.c_str());
+    utils::ChangeDirWrapper(cwd);
 }
 
 int main()

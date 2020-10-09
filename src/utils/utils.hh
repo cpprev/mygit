@@ -9,10 +9,15 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <openssl/sha.h>
 #include <cstdio>
 #include <cstring>
+#include <cstdlib>
 #include <fnmatch.h>
+#include <err.h>
+#include <fcntl.h>
+
 
 #include "objects/blob.hh"
 #include "zlib.hh"
@@ -75,4 +80,6 @@ namespace utils
     bool DoesRequireRepo (const std::string& command);
 
     bool DoesRequireOneOrMoreArguments (const std::string& command);
+
+    bool ChangeDirWrapper(const std::string& path);
 }
