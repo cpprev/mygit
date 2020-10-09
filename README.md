@@ -1,9 +1,13 @@
 # mygit Project [started 3/10/2020]
 
-## :memo: Purpose
+---
 
-*This project's purpose is to learn how git works internally.*
+:::info
+:pushpin: The Project was made in C++ for the implementation and Bash for the testsuite
+This project's aim is to learn how git works internally.
+:::
 
+---
 
 | Libraries Required        | 
 | -----------------         |
