@@ -1,7 +1,8 @@
-mygit Project [started 3/10/2020]
+# mygit Project [started 3/10/2020]
 
-This project's purpose is only to learn how git works internally.
+## :memo: Purpose
 
+*This project's purpose is to learn how git works internally.*
 
 
 | Libraries Required        | 
