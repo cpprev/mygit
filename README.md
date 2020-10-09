@@ -2,7 +2,12 @@ mygit Project [started 3/10/2020]
 
 This project's purpose is only to learn how git works internally.
 
-Requirements : <zlib.h>, <openssl/sha.h> 
+
+
+| Libraries Required      | 
+| ----------------- |
+| <zlib.h>       | 
+| <openssl/sha.h>  |
 
 Current commands implemented : 
 
