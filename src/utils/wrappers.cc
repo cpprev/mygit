@@ -30,10 +30,8 @@ namespace utils
     {
         // Change dir
         chdir(path.c_str());
-
         // Update g_pathToRootRepo
         g_pathToRootRepo = utils::FindPathToRootRepo();
-
         return true;
     }
 }

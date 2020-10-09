@@ -117,9 +117,8 @@ namespace utils
         return buf;
     }
 
-    std::string GetPathRelativeToDotMyGit(const std::string& pathToFileCpy, const std::string& pathToRootRepoCpy)
+    std::string GetPathRelativeToDotMyGit(const std::string& pathToFileCpy)
     {
-        (void) pathToRootRepoCpy;
         /// Get current dir
         std::string origin = GetCwd();
 
@@ -131,12 +130,10 @@ namespace utils
 
         utils::ChangeDirWrapper(pathToFile);
 
-        std::string pathToRootRepo = utils::FindPathToRootRepo();
-
         std::string cwd = GetCwd();
 
         /// cd to root dir
-        utils::ChangeDirWrapper(pathToRootRepo);
+        utils::ChangeDirWrapper(g_pathToRootRepo);
         /// Fullpath of root directory (containing .mygit/)
         std::string rootWD = GetCwd();
         /// cd back to origin dir
@@ -282,9 +279,9 @@ namespace utils
         return res;
     }
 
-    std::vector<std::string> ReadIndexAndGetEntriesIndexAsList (const std::string& pathToRootRepo)
+    std::vector<std::string> ReadIndexAndGetEntriesIndexAsList ()
     {
-        std::string indexContents = utils::ReadFile(pathToRootRepo + "/.mygit/index");
+        std::string indexContents = utils::ReadFile(g_pathToRootRepo + "/.mygit/index");
         std::string decompressed;
         if (not indexContents.empty())
             decompressed = utils::DecompressString(indexContents);
@@ -368,10 +365,10 @@ namespace utils
         return res;
     }
 
-    std::vector<std::string> GetWorkingDirectoryFiles (const std::string& pathToRootRepo)
+    std::vector<std::string> GetWorkingDirectoryFiles ()
     {
         std::vector<std::string> files;
-        IterateDir(pathToRootRepo, files);
+        IterateDir(g_pathToRootRepo, files);
         return files;
     }
 

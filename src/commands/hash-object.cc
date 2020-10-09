@@ -4,8 +4,6 @@ namespace mygit
 {
     void hash_object (const HashObjectOptions& opt)
     {
-        std::string pathToRootRepo = utils::FindPathToRootRepo();
-
         if (not utils::IsFileExists(opt.first_param))
         {
             utils::ExitProgramWithMessage(1, "First parameter to hash-object has to be a file.");
@@ -13,17 +11,17 @@ namespace mygit
 
         std::string filename = opt.first_param;
         std::string contentsFile = utils::ReadFile(filename);
-        std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename, pathToRootRepo);
+        std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename);
 
         if (opt.type == objects::BLOB)
         {
-            objects::Blob blob = objects::Blob(pathFileFromDotMyGit, pathToRootRepo + '/' + pathFileFromDotMyGit);
+            objects::Blob blob = objects::Blob(pathFileFromDotMyGit, g_pathToRootRepo + '/' + pathFileFromDotMyGit);
             std::string hash = blob.ToHash();
             std::cout << hash << "\n";
 
             if (opt.write)
             {
-                objects::SetupBlob(blob, hash, pathToRootRepo);
+                objects::SetupBlob(blob, hash);
             }
         }
         else if (opt.type == objects::COMMIT or opt.type == objects::TREE)

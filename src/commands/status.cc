@@ -4,19 +4,17 @@ namespace mygit
 {
     std::string status_str ()
     {
-        std::string pathToRootRepo = utils::FindPathToRootRepo();
-
         /// Read index files
-        std::vector<std::string> indexEntries = utils::ReadIndexAndGetEntriesIndexAsList(pathToRootRepo);
+        std::vector<std::string> indexEntries = utils::ReadIndexAndGetEntriesIndexAsList();
 
         /// Read working directory files
-        std::vector<std::string> workDirEntries = utils::GetWorkingDirectoryFiles(pathToRootRepo);
+        std::vector<std::string> workDirEntries = utils::GetWorkingDirectoryFiles();
         std::vector<std::string> workDirEntriesFromActualPos = workDirEntries;
         for (size_t i = 0; i < workDirEntries.size(); i++)
         {
             workDirEntriesFromActualPos[i] = utils::GetPathRelativeToYourself(workDirEntries[i]);
 
-            workDirEntries[i] = utils::GetPathRelativeToDotMyGit(workDirEntries[i], pathToRootRepo);
+            workDirEntries[i] = utils::GetPathRelativeToDotMyGit(workDirEntries[i]);
         }
 
         std::string output;
@@ -29,7 +27,7 @@ namespace mygit
             {
                 objects::Blob blob = objects::Blob(wdFile, wdFileFromActualPos);
                 std::string hash = blob.ToHash();
-                std::string blobPath = pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+                std::string blobPath = g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
                 if (not utils::IsFileExists(blobPath))
                 {
                     output += "\033[0;31m\tModified:\t" + wdFileFromActualPos + "\033[0m\n";
@@ -47,7 +45,7 @@ namespace mygit
             if (std::find(workDirEntries.begin(), workDirEntries.end(), indEntry) == workDirEntries.end())
             {
                 if (not utils::IsFileExcluded(indEntry))
-                    output += "\033[0;31m\tDeleted:\t" + utils::GetPathRelativeToYourself(utils::RemoveUselessCharInPath(pathToRootRepo + "/" + indEntry)) + "\033[0m\n";
+                    output += "\033[0;31m\tDeleted:\t" + utils::GetPathRelativeToYourself(utils::RemoveUselessCharInPath(g_pathToRootRepo + "/" + indEntry)) + "\033[0m\n";
             }
         }
         output += "\n";
