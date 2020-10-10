@@ -4,10 +4,8 @@ namespace mygit
 {
     void hash_object (const HashObjectOptions& opt)
     {
-        if (not utils::IsFileExists(opt.first_param))
-        {
-            utils::ExitProgramWithMessage(1, "First parameter to hash-object has to be a file.");
-        }
+        /// Error checking
+        utils::ExitIfTrue(not utils::IsFileExists(opt.first_param), "First parameter to hash-object has to be a file.");
 
         std::string filename = opt.first_param;
         std::string contentsFile = utils::ReadFile(filename);

@@ -33,7 +33,11 @@ constexpr const char *RequireOneOrMoreArguments[] = { "add", "commit", "push", "
 
 namespace utils
 {
+    void ExitIfTrue (bool assertion, const std::string& message);
+
     void ExitProgramWithMessage(const int& status, const std::string& message);
+
+    void SetGlobalVariables ();
 
     bool IsDirExists(const std::string &path);
 

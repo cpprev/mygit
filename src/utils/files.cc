@@ -336,7 +336,6 @@ namespace utils
 
         for (const auto& pattern : g_myGitIgnorePatterns)
         {
-            //std::cout << "pattern: " << pattern << "\n";
             if (not fnmatch(pattern.c_str(), path.c_str(), 0))
                 return true;
         }

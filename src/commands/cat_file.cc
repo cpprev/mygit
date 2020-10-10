@@ -6,10 +6,9 @@ namespace mygit
     {
         std::string hash = opt.first_param;
         std::string hashPath = g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + '/' + hash.substr(2);
-        if (not utils::IsFileExists(hashPath))
-        {
-            utils::ExitProgramWithMessage(1, "Object is not present in .mygit/objects directory.");
-        }
+
+        /// Error checking
+        utils::ExitIfTrue(not utils::IsFileExists(hashPath), "Object is not present in .mygit/objects directory.");
 
         std::string contentsFile = utils::ReadFile(hashPath);
         std::string decompressed = utils::DecompressString(contentsFile);

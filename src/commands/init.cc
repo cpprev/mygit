@@ -4,20 +4,13 @@ namespace mygit
 {
     void init ()
     {
-        if (utils::IsDirExists(".mygit/"))
-        {
-            utils::ExitProgramWithMessage(1, "Repository has already been initialized.");
-        }
+        /// Error checking
+        utils::ExitIfTrue(utils::IsDirExists(".mygit/"), "Repository has already been initialized.");
+        utils::ExitIfTrue(not utils::CreateDir(".mygit/"), "'.mygit' can not be created.");
 
-        if (not utils::CreateDir(".mygit/"))
-        {
-            utils::ExitProgramWithMessage(1, "'.mygit' can not be created.");
-        }
-
+        /// File setup
         utils::CreateFile(".mygit/HEAD");
-
         utils::CreateDir(".mygit/objects/");
-
         utils::CreateDir(".mygit/refs/");
         utils::CreateDir(".mygit/refs/heads/");
         utils::CreateDir(".mygit/refs/remotes/");

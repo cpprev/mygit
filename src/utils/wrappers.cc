@@ -2,10 +2,23 @@
 
 namespace utils
 {
+    void ExitIfTrue (bool assertion, const std::string& message)
+    {
+        if (assertion)
+            ExitProgramWithMessage(1, message);
+    }
+
     void ExitProgramWithMessage(const int& status, const std::string& message)
     {
         std::cerr << message << std::endl;
         exit(status);
+    }
+
+    void SetGlobalVariables ()
+    {
+        g_pathToRootRepo = utils::FindPathToRootRepo();
+        std::string myGitIgnoreContents = utils::ReadFile(g_pathToRootRepo + "/.mygitignore");
+        g_myGitIgnorePatterns = utils::ReadMyGitIgnorePatterns(myGitIgnoreContents);
     }
 
     bool DoesRequireRepo (const std::string& command)
