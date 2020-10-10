@@ -86,4 +86,6 @@ namespace utils
     bool DoesRequireOneOrMoreArguments (const std::string& command);
 
     bool ChangeDirWrapper(const std::string& path);
+
+    void GoToCharAfterNextSlash (const std::string& path, size_t& i);
 }

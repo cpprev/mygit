@@ -99,7 +99,6 @@ namespace mygit
         {
             entries[pair.first] = pair.second;
         }
-        //entries[pathFileFromDotMyGit] = hash;
 
         /// Update the contents
         decompressed.clear();

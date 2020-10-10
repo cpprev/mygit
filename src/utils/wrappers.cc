@@ -47,4 +47,12 @@ namespace utils
         g_pathToRootRepo = utils::FindPathToRootRepo();
         return true;
     }
+
+    void GoToCharAfterNextSlash (const std::string& path, size_t& i)
+    {
+        while (i < path.size() and path[i] == '/')
+        {
+            i += 1;
+        }
+    }
 }

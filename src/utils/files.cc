@@ -41,13 +41,9 @@ namespace utils
             if (opendir(currentPath.c_str()) == nullptr)
                 break;
             if (IsDirExists(currentPath + ".mygit/"))
-            {
                 return currentPath;
-            }
             else
-            {
                 currentPath += "../";
-            }
         }
         return "";
     }
@@ -78,34 +74,21 @@ namespace utils
             {
                 newPath += "../";
                 i += 3;
-                while (i < path.size() and path[i] == '/')
-                {
-                    i += 1;
-                }
+                utils::GoToCharAfterNextSlash(path, i);
             }
             else if (i + 1 < path.size() and path[i] == '.' and path[i + 1] == '/')
             {
                 i += 2;
-                while (i < path.size() and path[i] == '/')
-                {
-                    i += 1;
-                }
+                utils::GoToCharAfterNextSlash(path, i);
             }
             else if (i + 1 < path.size() and path[i] == '/' and path[i + 1] == '/')
             {
                 if (not newPath.empty())
                     newPath += "/";
-                while (i < path.size() and path[i] == '/')
-                {
-                    i += 1;
-                }
+                utils::GoToCharAfterNextSlash(path, i);
             }
             else
-            {
-                newPath += path[i];
-                i += 1;
-            }
-
+                newPath += path[i++];
         }
         return newPath;
     }
@@ -113,13 +96,12 @@ namespace utils
     std::string GetCwd ()
     {
         char buf[256];
-        std::string cwd = getcwd(buf, sizeof(buf));
+        std::string cwd = getcwd(buf, sizeof(buf) / sizeof(char));
         return buf;
     }
 
     std::string GetPathRelativeToDotMyGit(const std::string& pathToFileCpy)
     {
-        /// Get current dir
         std::string origin = GetCwd();
 
         std::string pathToFile = pathToFileCpy;
@@ -132,11 +114,10 @@ namespace utils
 
         std::string cwd = GetCwd();
 
-        /// cd to root dir
         utils::ChangeDirWrapper(g_pathToRootRepo);
-        /// Fullpath of root directory (containing .mygit/)
+
         std::string rootWD = GetCwd();
-        /// cd back to origin dir
+
         utils::ChangeDirWrapper(origin);
         if (cwd == rootWD)
             return RemoveUselessCharInPath(filename);
@@ -149,7 +130,6 @@ namespace utils
 
     std::string CutFileInPath(std::string& pathRelativeToYouLong)
     {
-        //std::cout << "start: " << pathRelativeToYouLong << "\n";
         int i = pathRelativeToYouLong.size() - 1;
         if (IsDirExists(pathRelativeToYouLong))
             return "";
@@ -160,18 +140,14 @@ namespace utils
             i--;
         }
         if (i < 0)
-        {
             pathRelativeToYouLong = ".";
-            return res;
-        }
-        pathRelativeToYouLong = pathRelativeToYouLong.substr(0, i);
-        //std::cout << i << '\n' << "end: " << pathRelativeToYouLong << '\n' << "filename: " << res << "\n";
+        else
+            pathRelativeToYouLong = pathRelativeToYouLong.substr(0, i);
         return res;
     }
 
     int CalcHeightDir (const std::string& dir1, const std::string& dir2)
     {
-        //std::cout << dir1 << ' ' << dir2 << "\n";
         int countSlash = 0;
         if (dir1.size() > dir2.size())
         {
@@ -190,29 +166,17 @@ namespace utils
 
     std::string GetPathRelativeToYourself(const std::string& pathRelativeToYouLongCpy)
     {
-        /// Get current dir
         std::string cwd = GetCwd();
-        /// cd to target dir
-
-        //std::cout << GetCwd() << "\n";
-        //std::cout << "EXISTS ?" << pathRelativeToYouLongCpy << "\n";
-        //if (not IsFileExists(pathRelativeToYouLongCpy))
-        //    std::cout << "NANANANAN\n";
-
 
         std::string pathRelativeToYouLong = pathRelativeToYouLongCpy;
         std::string fileName = CutFileInPath(pathRelativeToYouLong);
         if (pathRelativeToYouLong.empty())
             pathRelativeToYouLong = ".";
-        //std::cout << "path: " << pathRelativeToYouLong << "\n";
-        //std::cout << "filename: " << fileName << "\n";
+
         utils::ChangeDirWrapper(pathRelativeToYouLong);
-        /// Fullpath of root directory (containing .mygit/)
+
         std::string cwd2 = GetCwd();
 
-        //std::cout << cwd << "\n";
-        //std::cout << cwd2 << "\n";
-        /// cd back to origin dir
         utils::ChangeDirWrapper(cwd);
         if (cwd == cwd2)
             return fileName;
@@ -220,7 +184,6 @@ namespace utils
         {
             size_t ind_diff = cwd2.find(cwd) + cwd.size() + 1;
             std::string res = cwd2.substr(ind_diff);
-            //std::cout << "RES: " << utils::RemoveUselessCharInPath(res + "/" + fileName) << "\n";
             return utils::RemoveUselessCharInPath(res + "/" + fileName);
         }
         else
@@ -298,11 +261,10 @@ namespace utils
             struct dirent *ent;
             while ((ent = readdir(dir)))
             {
-                // Do not go through ".." or "." directories
                 std::string tmp = ent->d_name;
                 if (tmp == "." or tmp == "..")
                     continue;
-                // Update path
+
                 std::string new_path;
                 if (path[path.size() - 1] == '/')
                     new_path = path + ent->d_name;
@@ -312,11 +274,9 @@ namespace utils
                 if (IsFileExcluded(new_path))
                     continue;
 
-                // Update files (only put regular files)
                 if (IsFileExists(new_path))
                     files.push_back(RemoveUselessCharInPath(new_path));
 
-                // Recurse (since its a directory)
                 DIR *tstdir = opendir(new_path.c_str());
                 if (tstdir != nullptr)
                 {
@@ -330,7 +290,6 @@ namespace utils
 
     bool IsFileExcluded (const std::string& path)
     {
-        /// Exclude .mygit/ and .mygitignore files
         if (not fnmatch("*.mygit*", path.c_str(), 0))
             return true;
 
