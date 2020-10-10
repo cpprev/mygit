@@ -55,17 +55,4 @@ namespace utils
             i += 1;
         }
     }
-
-    int FindNthOccSlashChar (std::string input, int n)
-    {
-        int count = 0;
-        for (size_t i = 0; i < input.size(); i++)
-        {
-            if (input[i] == '/')
-                count++;
-            if (count == n)
-                return i;
-        }
-        return -1;
-    }
 }

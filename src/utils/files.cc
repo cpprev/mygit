@@ -346,11 +346,6 @@ namespace utils
         return files;
     }
 
-    bool IsDirAInDirB (std::string dirA, std::string dirB)
-    {
-        return IsDirExists(dirA + "/" + dirB);
-    }
-
     std::string ReadHEAD()
     {
         std::string contents = ReadFile(g_pathToRootRepo + "/.mygit/HEAD");

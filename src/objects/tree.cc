@@ -9,18 +9,6 @@ namespace objects
         _filename = filename;
     }
 
-    void Tree::PrintTree (int pad)
-    {
-        std::cout << std::string(pad, ' ' ) << "CUR TREE\n";
-        for (auto sub : _children)
-        {
-            if (sub._type == "tree")
-                sub.PrintTree(pad + 10);
-            else
-                std::cout << std::string(pad, ' ' ) << sub._type << " \\ " << sub._hash << "\n";
-        }
-    }
-
     std::string Tree::ToString() const
     {
         return "tree;" + _treeContents + ';';
@@ -116,6 +104,18 @@ namespace objects
                     _children.emplace_back(Tree("blob", hash, filename));
                 }
             }
+        }
+    }
+
+    void Tree::PrintTree (int pad)
+    {
+        std::cout << std::string(pad, ' ' ) << "CUR TREE\n";
+        for (auto sub : _children)
+        {
+            if (sub._type == "tree")
+                sub.PrintTree(pad + 10);
+            else
+                std::cout << std::string(pad, ' ' ) << sub._type << " \\ " << sub._hash << "\n";
         }
     }
 }

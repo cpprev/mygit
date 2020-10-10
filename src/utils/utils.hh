@@ -27,9 +27,8 @@ extern std::vector<std::string> g_myGitIgnorePatterns;
 extern std::string g_pathToRootRepo;
 
 /// Constexprs
-constexpr const char *RequireRepoCommands[] = { "add", "status", "diff", "commit", "push", "pull", "hash-object", "cat-file", "ls-files" };
-constexpr const char *RequireOneOrMoreArguments[] = { "add", "commit", "push", "pull", "hash-object", "cat-file" };
-
+constexpr const char *RequireRepoCommands[] = { "add", "status", "diff", "branch", "checkout", "commit", "push", "pull", "hash-object", "cat-file", "ls-files", "merge" };
+constexpr const char *RequireOneOrMoreArguments[] = { "add", "commit", "push", "pull", "hash-object", "cat-file", "branch", "checkout", "merge" };
 
 namespace utils
 {
@@ -90,10 +89,6 @@ namespace utils
     bool ChangeDirWrapper(const std::string& path);
 
     void GoToCharAfterNextSlash (const std::string& path, size_t& i);
-
-    bool IsDirAInDirB (std::string dirA, std::string dirB);
-
-    int FindNthOccSlashChar (std::string input, int n);
 
     std::string ReadHEAD();
 }

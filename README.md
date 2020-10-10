@@ -7,6 +7,11 @@
 :pushpin: This project's aim is to learn how git works internally.
 
 ---
+### How to build & Usage
+
+    mkdir build && cmake .. && make -j && ./mygit ...
+
+---
 
 | Libraries Required        | 
 | -----------------         |
