@@ -10,6 +10,7 @@
 
 #include "objects/object_type.hh"
 #include "utils/utils.hh"
+#include "objects/tree.hh"
 #include "utils/options.hh"
 #include "utils/zlib.hh"
 
@@ -22,6 +23,7 @@ namespace mygit
     void hash_object (const options::HashObjectOptions& opt);
     void cat_file (const options::CatFileOptions& opt);
     void status();
+    void write_tree ();
 
     /// Sub functions
     std::string status_str ();

@@ -13,9 +13,10 @@ namespace options
     class HashObjectOptions
     {
     public:
+        HashObjectOptions() = default;
         HashObjectOptions(int argc, char *argv[]);
 
-        std::string first_param;
+        std::vector<std::string> params;
         objects::ObjectType type = objects::BLOB;
         bool write = false;
     };

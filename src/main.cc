@@ -28,6 +28,8 @@ int main(int argc, char *argv[])
         mygit::cat_file(options::CatFileOptions(argc, argv));
     else if (command == "ls-files")
         mygit::ls_files();
+    else if (command == "write-tree")
+        mygit::write_tree();
     else
         utils::ExitProgramWithMessage(1, "Unknown command.");
 

@@ -7,7 +7,7 @@ namespace options
         for (int i = 2; i < argc; i++)
         {
             if (argv[i][0] != '-')
-                first_param = argv[i];
+                params.push_back(argv[i]);
             else if (strcmp(argv[i], "--write") == 0)
                 write = true;
             else if (i + 1 < argc and strcmp(argv[i], "--type") == 0)
@@ -19,7 +19,7 @@ namespace options
                 utils::ExitProgramWithMessage(1, "Unknown option to command 'hash-object': " + std::string(argv[i]));
         }
 
-        utils::ExitIfTrue(first_param.empty(), "You have to specify a hash to hash-object.");
+        utils::ExitIfTrue(params.empty(), "You have to specify a hash to hash-object.");
     }
 
     CatFileOptions::CatFileOptions(int argc, char *argv[])

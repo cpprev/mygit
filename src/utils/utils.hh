@@ -73,6 +73,8 @@ namespace utils
 
     std::vector<std::string> ReadIndexAndGetEntriesIndexAsList ();
 
+    std::map<std::string, std::string> ReadIndexAndGetEntries ();
+
     void IterateDir (const std::string& path, std::vector<std::string>& files);
 
     std::vector<std::string> GetWorkingDirectoryFiles ();
@@ -88,4 +90,8 @@ namespace utils
     bool ChangeDirWrapper(const std::string& path);
 
     void GoToCharAfterNextSlash (const std::string& path, size_t& i);
+
+    bool IsDirAInDirB (std::string dirA, std::string dirB);
+
+    int FindNthOccSlashChar (std::string input, int n);
 }

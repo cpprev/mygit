@@ -242,6 +242,15 @@ namespace utils
         return res;
     }
 
+    std::map<std::string, std::string> ReadIndexAndGetEntries ()
+    {
+        std::string indexContents = utils::ReadFile(g_pathToRootRepo + "/.mygit/index");
+        std::string decompressed;
+        if (not indexContents.empty())
+            decompressed = utils::DecompressString(indexContents);
+        return GetEntriesFromIndex(decompressed);
+    }
+
     std::vector<std::string> ReadIndexAndGetEntriesIndexAsList ()
     {
         std::string indexContents = utils::ReadFile(g_pathToRootRepo + "/.mygit/index");
@@ -335,5 +344,10 @@ namespace utils
         std::vector<std::string> files;
         IterateDir(pathToDir, files);
         return files;
+    }
+
+    bool IsDirAInDirB (std::string dirA, std::string dirB)
+    {
+        return IsDirExists(dirA + "/" + dirB);
     }
 }
