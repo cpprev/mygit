@@ -2,7 +2,7 @@
 
 ---
 
-:pushpin: The Project was made in C++ for the implementation and Bash for the testsuite.
+:pushpin: The Project was implemented in C++ and uses Bash for the testsuite scripts.
 
 :pushpin: This project's aim is to learn how git works internally.
 
