@@ -16,12 +16,10 @@ namespace objects
         Commit(const std::string& hashTree, const std::string& hashParentCommit, const std::string& author,
                                 const std::string& committer, const std::string& commitMessage);
         void SetupCommit(const std::string& hash);
-        std::string CreateCommit();
         std::string ToString() const;
         std::string ToHash();
 
         std::string _contentsCommitToHash;
         std::string _contentsCommit;
-        std::string _hashCommit;
     };
 }

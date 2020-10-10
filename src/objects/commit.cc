@@ -7,7 +7,6 @@ namespace objects
     {
         _contentsCommitToHash = hashTree;
         _contentsCommit = hashTree + hashParentCommit + author + committer + commitMessage;
-        _hashCommit = ToHash();
     }
 
     void Commit::SetupCommit(const std::string& hash)
@@ -24,17 +23,6 @@ namespace objects
         std::string commit_data = "type=commit\nsize=" + std::to_string(_contentsCommit.size()) + "\n\n" + _contentsCommit;
 
         utils::WriteFile(commitFilePath, utils::CompressString(commit_data));
-    }
-
-    std::string Commit::CreateCommit ()
-    {
-        /// Create the commit and generate the hash from it
-        std::string hash = ToHash();
-
-        /// Setup commit (directory and file filling)
-        SetupCommit(hash);
-
-        return hash;
     }
 
     std::string Commit::ToString() const

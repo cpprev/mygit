@@ -9,6 +9,7 @@ namespace mygit
 
         std::string hashTreeString = "tree  " + hashTree + "\n";
         std::string hashParentCommitString = (not hashParentCommit.empty()) ? ("parent  " + hashParentCommit + "\n") : "";
+        /// FIXME Author / Committer
         std::string authorString = "author  FIXME Author  <parse.gitconfig@later.com>  Insert time HERE\n";
         std::string committerString = "commiter  FIXME Commiter  <parse.gitconfig@later.com>  Insert time HERE\n";;
         std::string commitMessageString = "\n" + opt.commitMessage + "\n";
