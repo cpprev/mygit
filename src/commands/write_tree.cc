@@ -2,14 +2,19 @@
 
 namespace mygit
 {
-    void write_tree ()
+    std::string write_tree_wrap ()
     {
         std::map<std::string, std::string> map = utils::ReadIndexAndGetEntries();
 
         objects::Tree tree = objects::Tree(map, "", 1);
         tree.SetupTrees();
 
-        std::cout << tree._hash << "\n";
         //tree.PrintTree(0);
+        return tree._hash;
+    }
+
+    void write_tree()
+    {
+        std::cout << write_tree_wrap() << "\n";
     }
 }

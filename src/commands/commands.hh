@@ -11,6 +11,7 @@
 #include "objects/object_type.hh"
 #include "utils/utils.hh"
 #include "objects/tree.hh"
+#include "objects/commit.hh"
 #include "utils/options.hh"
 #include "utils/zlib.hh"
 
@@ -24,9 +25,11 @@ namespace mygit
     void cat_file (const options::CatFileOptions& opt);
     void status();
     void write_tree ();
+    void commit (const options::CommitOptions& opt);
 
     /// Sub functions
     std::string status_str ();
     void UpdateIndex(const std::string& pathToFile, const options::AddOptions& opt);
     void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsFiles, const options::AddOptions& opt);
+    std::string write_tree_wrap ();
 }

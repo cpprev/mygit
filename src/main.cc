@@ -30,6 +30,8 @@ int main(int argc, char *argv[])
         mygit::ls_files();
     else if (command == "write-tree")
         mygit::write_tree();
+    else if (command == "commit")
+        mygit::commit(options::CommitOptions(argc, argv));
     else
         utils::ExitProgramWithMessage(1, "Unknown command.");
 

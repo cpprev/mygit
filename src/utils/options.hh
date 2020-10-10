@@ -41,4 +41,12 @@ namespace options
         std::vector<std::string> pathArguments;
         bool force = false;
     };
+
+    class CommitOptions
+    {
+    public:
+        CommitOptions(int argc, char *argv[]);
+
+        std::string commitMessage;
+    };
 }

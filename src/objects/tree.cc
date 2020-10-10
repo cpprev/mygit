@@ -43,8 +43,8 @@ namespace objects
         /// Fill in the contents of the blob (compressed file)
         std::string treeFilePath = treeDirName + "/" + _hash.substr(2);
 
-        /// Sets the blob metadata
-        std::string tree_data = "type=tree\nfilepath=" + _filename + "\nsize=" + std::to_string(_treeContents.size()) + "\n\n" + _treeContents;
+        /// Sets the tree metadata
+        std::string tree_data = "type=tree\nsize=" + std::to_string(_treeContents.size()) + "\n\n" + _treeContents;
 
         utils::WriteFile(treeFilePath, utils::CompressString(tree_data));
     }

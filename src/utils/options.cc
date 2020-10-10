@@ -57,4 +57,18 @@ namespace options
 
         utils::ExitIfTrue(pathArguments.empty(), "You have to specify path arguments to add.");
     }
+
+    CommitOptions::CommitOptions(int argc, char *argv[])
+    {
+        for (int i = 2; i < argc; i++)
+        {
+            if (i + 1 < argc and strcmp(argv[i], "-m") == 0)
+            {
+                commitMessage = argv[i + 1];
+                i++;
+            }
+            else
+                utils::ExitProgramWithMessage(1, "Unknown option to command 'commit': " + std::string(argv[i]));
+        }
+    }
 }

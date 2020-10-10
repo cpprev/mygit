@@ -94,4 +94,6 @@ namespace utils
     bool IsDirAInDirB (std::string dirA, std::string dirB);
 
     int FindNthOccSlashChar (std::string input, int n);
+
+    std::string ReadHEAD();
 }

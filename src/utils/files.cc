@@ -350,4 +350,11 @@ namespace utils
     {
         return IsDirExists(dirA + "/" + dirB);
     }
+
+    std::string ReadHEAD()
+    {
+        std::string contents = ReadFile(g_pathToRootRepo + "/.mygit/HEAD");
+        /// Exclude the \n at the end
+        return contents.substr(0, contents.size() - 1);
+    }
 }

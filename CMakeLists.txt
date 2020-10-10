@@ -20,6 +20,7 @@ set(SRC_FILES
         src/commands/hash-object.cc
         src/commands/cat_file.cc
         src/commands/write_tree.cc
+        src/commands/commit.cc
 
         # Utils
         src/utils/files.cc
@@ -31,7 +32,8 @@ set(SRC_FILES
         # Objects
         src/objects/blob.cc
         src/objects/object_type.cc
-        src/objects/tree.cc)
+        src/objects/tree.cc
+        src/objects/commit.cc)
 
 # Compilation flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -pedantic -std=c++17")
