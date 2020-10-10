@@ -19,13 +19,13 @@ int main(int argc, char *argv[])
     if (command == "init")
         mygit::init();
     else if (command == "add")
-        mygit::add(mygit::AddOptions(argc, argv));
+        mygit::add(options::AddOptions(argc, argv));
     else if (command == "status")
         mygit::status();
     else if (command == "hash-object")
-        mygit::hash_object(mygit::HashObjectOptions(argc, argv));
+        mygit::hash_object(options::HashObjectOptions(argc, argv));
     else if (command == "cat-file")
-        mygit::cat_file(mygit::CatFileOptions(argc, argv));
+        mygit::cat_file(options::CatFileOptions(argc, argv));
     else if (command == "ls-files")
         mygit::ls_files();
     else

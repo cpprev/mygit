@@ -2,22 +2,7 @@
 
 namespace mygit
 {
-    AddOptions::AddOptions(int argc, char *argv[])
-    {
-        for (int i = 2; i < argc; i++)
-        {
-            if (strcmp(argv[i], "-f") == 0)
-            {
-                force = true;
-            }
-            else
-            {
-                pathArguments.push_back(argv[i]);
-            }
-        }
-    }
-
-    void add(const AddOptions& opt)
+    void add(const options::AddOptions& opt)
     {
         /// FIXME For now we handle only one path argument
         std::string path = opt.pathArguments[0];
@@ -41,7 +26,7 @@ namespace mygit
         }
     }
 
-    void UpdateIndex(const std::string& pathToFile, const AddOptions& opt)
+    void UpdateIndex(const std::string& pathToFile, const options::AddOptions& opt)
     {
         /// Get path to file relative to .mygit file
         std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(pathToFile);
@@ -80,7 +65,7 @@ namespace mygit
         utils::WriteFile(indexPath, compressed);
     }
 
-    void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsToFiles, const AddOptions& opt)
+    void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsToFiles, const options::AddOptions& opt)
     {
         std::map<std::string, std::string> hashesAndPaths;
         for (const auto& pathToFile : pathsToFiles)

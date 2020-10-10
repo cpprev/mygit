@@ -25,6 +25,7 @@ set(SRC_FILES
         src/utils/wrappers.cc
         src/utils/zlib.cc
         src/utils/sha1.cc
+        src/utils/options.cc
 
         # Objects
         src/objects/blob.cc

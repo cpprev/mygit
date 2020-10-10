@@ -194,7 +194,7 @@ void TestStatusOneFileAtRootModifiedWhileAtRoot ()
 
     const char *argv[] = { "mygit", "add", "test123.txt" };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
 
     utils::WriteFile(filename, fileContents + ".");
 
@@ -220,7 +220,7 @@ void TestStatusOneFileAtRootModifiedWhileInSubdir ()
 
     const char *argv[] = { "mygit", "add", "../teskkkt.txt" };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
 
     utils::WriteFile("../" + filename, fileContents + ".");
 
@@ -247,7 +247,7 @@ void TestStatusOneFileInSubdirModifiedWhileAtRoot ()
 
     const char *argv[] = { "mygit", "add", filename.c_str() };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
 
     utils::WriteFile(filename, fileContents + ".z");
 
@@ -270,7 +270,7 @@ void TestStatusOneFileAtRootDeletedWhileAtRoot ()
 
     const char *argv[] = { "mygit", "add", "test12.txt" };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
 
     remove(filename.c_str());
 
@@ -296,7 +296,7 @@ void TestStatusOneFileAtRootDeletedWhileInSubdir ()
     const char *newPath = "../teskkkt.txt";
     const char *argv[] = { "mygit", "add", newPath };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
 
     remove(newPath);
 
@@ -323,7 +323,7 @@ void TestStatusOneFileInSubdirDeletedWhileAtRoot ()
 
     const char *argv[] = { "mygit", "add", filename.c_str() };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
 
     remove(filename.c_str());
 

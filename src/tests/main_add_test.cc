@@ -1,4 +1,3 @@
-#include <cassert>
 #include <cstdlib>
 
 #include "utils/utils.hh"
@@ -51,7 +50,7 @@ void TestAddOneFileAtRoot (std::string pathToRootRepo)
     utils::WriteFile(filename, fileContents);
     const char *argv[] = { "mygit", "add", filename };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
 
     /// Check that .mygit/index exists
     process_test_bool(utils::IsFileExists(pathToRootRepo + "/.mygit/index"), "index file exists");
@@ -97,7 +96,7 @@ void TestAddOneFileInSubdirWhileInSubDir (std::string pathToRootRepo)
     utils::WriteFile(filename, fileContents);
     const char *argv[] = { "mygit", "add", filename };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
 
     /// Check that .mygit/index exists
     process_test_bool(utils::IsFileExists(pathToRootRepo + "/.mygit/index"), "index file exists");
@@ -142,7 +141,7 @@ void TestAddOneFileInSubdirWhileNotInSubDir (std::string pathToRootRepo)
     utils::WriteFile(filename, fileContents);
     const char *argv[] = { "mygit", "add", filename };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
 
     /// Check that .mygit/index exists
     process_test_bool(utils::IsFileExists(pathToRootRepo + "/.mygit/index"), "index file exists");
@@ -193,7 +192,7 @@ void TestAddMultipleFilesAtRoot (std::string pathToRootRepo)
 
     const char *argv[] = { "mygit", "add", "." };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
 
     /// Check that .mygit/index exists
     process_test_bool(utils::IsFileExists(pathToRootRepo + "/.mygit/index"), "index file exists");
@@ -254,7 +253,7 @@ void TestAddMultipleFilesInSubdirWhileInSubdir(std::string pathToRootRepo)
 
     const char *argv[] = { "mygit", "add", "." };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(mygit::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
 
     /// Check that .mygit/index exists
     process_test_bool(utils::IsFileExists(pathToRootRepo + "/.mygit/index"), "index file exists");

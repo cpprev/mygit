@@ -2,7 +2,7 @@
 
 namespace mygit
 {
-    void cat_file (const CatFileOptions& opt)
+    void cat_file (const options::CatFileOptions& opt)
     {
         std::string hash = opt.first_param;
         std::string hashPath = g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + '/' + hash.substr(2);
@@ -32,23 +32,6 @@ namespace mygit
             {
                 std::cout << objects::GetContentBlobDecompressed(decompressed);
             }
-        }
-    }
-
-    CatFileOptions::CatFileOptions(int argc, char *argv[])
-    {
-        for (int i = 2; i < argc; i++)
-        {
-            if (i == 2)
-                first_param = argv[i];
-            else if (strcmp(argv[i], "-s") == 0)
-                size = true;
-            else if (strcmp(argv[i], "-t") == 0)
-                type = true;
-            else if (strcmp(argv[i], "-p") == 0)
-                content = true;
-            else if (strcmp(argv[i], "-r") == 0)
-                raw = true;
         }
     }
 }
