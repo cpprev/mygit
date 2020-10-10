@@ -9,7 +9,7 @@
 ---
 ### How to build & Usage
 
-    mkdir build && cmake .. && make -j && ./mygit ...
+    mkdir build && cd build/ && cmake .. && make -j && ./mygit *
 
 ---
 

@@ -55,4 +55,21 @@ namespace utils
             i += 1;
         }
     }
+
+    void AddDiffCharacterBeforeLine (std::string& input, bool plus)
+    {
+        std::string newStr;
+        bool mark = false;
+        for (size_t i = 0; i < input.size(); i++)
+        {
+            if (i == 0 or mark)
+                newStr += plus ? "\033[1;32m+ " : "\033[1;31m- ";
+            mark = false;
+            newStr += input[i];
+            if (input[i] == '\n')
+                mark = true;
+        }
+        newStr += "\033[0m";
+        input = newStr;
+    }
 }

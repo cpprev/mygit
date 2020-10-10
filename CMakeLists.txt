@@ -21,6 +21,7 @@ set(SRC_FILES
         src/commands/cat_file.cc
         src/commands/write_tree.cc
         src/commands/commit.cc
+        src/commands/diff.cc
 
         # Utils
         src/utils/files.cc

@@ -18,7 +18,6 @@ namespace objects
         Blob(const std::string& pathFileFromDotMyGit, const std::string& fullPath);
     private:
         std::string _pathFileFromDotMyGit;
-        std::string _fullPath;
         std::string _contentsFile;
     };
 

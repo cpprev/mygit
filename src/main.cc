@@ -22,6 +22,8 @@ int main(int argc, char *argv[])
         mygit::add(options::AddOptions(argc, argv));
     else if (command == "status")
         mygit::status();
+    else if (command == "diff")
+        mygit::diff();
     else if (command == "hash-object")
         mygit::hash_object(options::HashObjectOptions(argc, argv));
     else if (command == "cat-file")

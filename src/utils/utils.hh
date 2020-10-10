@@ -91,4 +91,6 @@ namespace utils
     void GoToCharAfterNextSlash (const std::string& path, size_t& i);
 
     std::string ReadHEAD();
+
+    void AddDiffCharacterBeforeLine (std::string& input, bool plus);
 }

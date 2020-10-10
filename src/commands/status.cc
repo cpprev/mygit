@@ -6,14 +6,12 @@ namespace mygit
     {
         /// Read index files
         std::vector<std::string> indexEntries = utils::ReadIndexAndGetEntriesIndexAsList();
-
         /// Read working directory files
         std::vector<std::string> workDirEntries = utils::GetWorkingDirectoryFiles();
         std::vector<std::string> workDirEntriesFromActualPos = workDirEntries;
         for (size_t i = 0; i < workDirEntries.size(); i++)
         {
             workDirEntriesFromActualPos[i] = utils::GetPathRelativeToYourself(workDirEntries[i]);
-
             workDirEntries[i] = utils::GetPathRelativeToDotMyGit(workDirEntries[i]);
         }
 

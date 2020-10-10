@@ -5,7 +5,6 @@ namespace objects
     Blob::Blob(const std::string& pathFileFromDotMyGit, const std::string& fullPath)
     {
         _pathFileFromDotMyGit = pathFileFromDotMyGit;
-        _fullPath = fullPath;
         _contentsFile = utils::ReadFile(fullPath);
     }
 

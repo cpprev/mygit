@@ -26,6 +26,7 @@ namespace mygit
     void status();
     void write_tree ();
     void commit (const options::CommitOptions& opt);
+    void diff ();
 
     /// Sub functions
     std::string status_str ();
