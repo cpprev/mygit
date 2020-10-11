@@ -63,7 +63,7 @@ namespace utils
         for (size_t i = 0; i < input.size(); i++)
         {
             if (i == 0 or mark)
-                newStr += plus ? "\033[1;32m+ " : "\033[1;31m- ";
+                newStr += plus ? "\033[1;32m+\t" : "\033[1;31m-\t";
             mark = false;
             newStr += input[i];
             if (input[i] == '\n')

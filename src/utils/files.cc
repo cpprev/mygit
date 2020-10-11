@@ -149,7 +149,7 @@ namespace utils
     int CalcHeightDir (const std::string& dir1, const std::string& dir2)
     {
         int countSlash = 0;
-        if (dir1.size() > dir2.size())
+        if (dir1.size() >= dir2.size())
         {
             size_t i = dir1.size() - 1;
             while (i >= dir2.size())
@@ -351,5 +351,26 @@ namespace utils
         std::string contents = ReadFile(g_pathToRootRepo + "/.mygit/HEAD");
         /// Exclude the \n at the end
         return contents.substr(0, contents.size() - 1);
+    }
+
+    std::vector<std::string> GetLinesAsVect (const std::string& input)
+    {
+        std::vector<std::string> res;
+        std::string dummy;
+        size_t len = input.size();
+        for (size_t i = 0; i < len; i++)
+        {
+            if (i == len - 1 or input[i] == '\n')
+            {
+                dummy += input[i];
+                res.push_back(dummy);
+                dummy.clear();
+            }
+            else
+            {
+                dummy += input[i];
+            }
+        }
+        return res;
     }
 }

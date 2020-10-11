@@ -93,4 +93,6 @@ namespace utils
     std::string ReadHEAD();
 
     void AddDiffCharacterBeforeLine (std::string& input, bool plus);
+
+    std::vector<std::string> GetLinesAsVect (const std::string& input);
 }

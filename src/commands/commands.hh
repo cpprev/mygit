@@ -33,4 +33,8 @@ namespace mygit
     void UpdateIndex(const std::string& pathToFile, const options::AddOptions& opt);
     void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsFiles, const options::AddOptions& opt);
     std::string write_tree_wrap ();
+    std::string diff_str ();
+    std::vector<std::vector<int>> BuildLcsMatrix (const std::vector<std::string>& oldFileLines, const std::vector<std::string>& newFileLines);
+    void GetDiffModifiedFiles (const std::vector<std::vector<int>>& c, const std::vector<std::string>& x,
+                               const std::vector<std::string>& y, int i, int j, std::string& result);
 }
