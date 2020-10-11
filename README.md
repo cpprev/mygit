@@ -25,6 +25,7 @@
 | commit                    | mygit commit -m MSG   |
 | write-tree                | mygit write-tree      |
 | status                    | mygit status          |
+| diff                      | mygit diff            |
 | ls-files                  | mygit ls-files        |
 | cat-file                  | mygit cat-file HASH [-t] [-p] [-r] |
 | hash-object               | mygit hash-object FILE [--write] [--type blob/tree/commit]|
