@@ -54,5 +54,17 @@ namespace options
     {
     public:
         LogOptions(int argc, char *argv[]);
+
+        // FIXME
+    };
+
+    class BranchOptions
+    {
+    public:
+        BranchOptions(int argc, char *argv[]);
+
+        bool displayBranches = false;
+        std::string branchToCreate;
+        std::string branchToDelete;
     };
 }

@@ -80,4 +80,22 @@ namespace options
             /// FIXME
         }
     }
+
+    BranchOptions::BranchOptions(int argc, char *argv[])
+    {
+        if (argc == 1)
+            displayBranches = true;
+        for (int i = 2; i < argc; i++)
+        {
+            if (argv[i][0] != '-')
+                branchToCreate = argv[i];
+            else if (i + 1 < argc and strcmp(argv[i], "-d") == 0)
+            {
+                branchToDelete = argv[i + 1];
+                i++;
+            }
+            else
+                utils::ExitProgramWithMessage(1, "Unknown option to command 'commit': " + std::string(argv[i]));
+        }
+    }
 }

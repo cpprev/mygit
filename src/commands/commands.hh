@@ -28,6 +28,8 @@ namespace mygit
     void commit (const options::CommitOptions& opt);
     void diff ();
     void log(const options::LogOptions& opt);
+    void branch (const options::BranchOptions& opt);
+
 
     /// Sub functions
     std::string status_str ();

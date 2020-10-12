@@ -23,6 +23,7 @@ set(SRC_FILES
         src/commands/commit.cc
         src/commands/diff.cc
         src/commands/log.cc
+        src/commands/branch.cc
 
         # Utils
         src/utils/files.cc
