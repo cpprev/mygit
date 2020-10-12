@@ -22,4 +22,6 @@ namespace objects
         std::string _contentsCommitToHash;
         std::string _contentsCommit;
     };
+
+    std::string ExtractParentCommit (const std::string& input);
 }

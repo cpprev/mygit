@@ -36,4 +36,18 @@ namespace objects
         std::string commitString = this->ToString();
         return utils::SHA1_Wrapper(commitString);
     }
+
+    std::string ExtractParentCommit (const std::string& input)
+    {
+        std::string parentStr = "parent ";
+        std::string::size_type ind = input.find(parentStr);
+        if (ind == std::string::npos)
+            return "";
+        std::string res;
+        for (size_t i = ind + parentStr.size(); i < input.size() and input[i] != '\n'; i++)
+        {
+            res += input[i];
+        }
+        return res;
+    }
 }

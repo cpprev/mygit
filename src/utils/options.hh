@@ -49,4 +49,10 @@ namespace options
 
         std::string commitMessage;
     };
+
+    class LogOptions
+    {
+    public:
+        LogOptions(int argc, char *argv[]);
+    };
 }

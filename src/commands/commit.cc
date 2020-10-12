@@ -5,7 +5,7 @@ namespace mygit
     void commit (const options::CommitOptions& opt)
     {
         std::string hashTree = write_tree_wrap();
-        std::string hashParentCommit = utils::ReadHEAD();
+        std::string hashParentCommit = utils::GetMostRecentCommit();
 
         std::string hashTreeString = "tree " + hashTree + "\n";
         std::string hashParentCommitString = (not hashParentCommit.empty()) ? ("parent " + hashParentCommit + "\n") : "";

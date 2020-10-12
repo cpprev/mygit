@@ -353,6 +353,20 @@ namespace utils
         return contents.substr(0, contents.size() - 1);
     }
 
+    std::string GetMostRecentCommit ()
+    {
+        std::string headContents = ReadHEAD();
+        if (headContents.find("ref") != std::string::npos)
+        {
+            // FIXME : case where latest commit is in ref dir
+        }
+        else
+        {
+            return headContents;
+        }
+        return "";
+    }
+
     std::vector<std::string> GetLinesAsVect (const std::string& input)
     {
         std::vector<std::string> res;

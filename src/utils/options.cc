@@ -71,4 +71,13 @@ namespace options
                 utils::ExitProgramWithMessage(1, "Unknown option to command 'commit': " + std::string(argv[i]));
         }
     }
+
+    LogOptions::LogOptions(int argc, char *argv[])
+    {
+        (void) argv;
+        for (int i = 2; i < argc; i++)
+        {
+            /// FIXME
+        }
+    }
 }

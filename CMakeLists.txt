@@ -22,6 +22,7 @@ set(SRC_FILES
         src/commands/write_tree.cc
         src/commands/commit.cc
         src/commands/diff.cc
+        src/commands/log.cc
 
         # Utils
         src/utils/files.cc

@@ -27,7 +27,7 @@ extern std::vector<std::string> g_myGitIgnorePatterns;
 extern std::string g_pathToRootRepo;
 
 /// Constexprs
-constexpr const char *RequireRepoCommands[] = { "add", "status", "diff", "branch", "checkout", "commit", "push", "pull", "hash-object", "cat-file", "ls-files", "merge" };
+constexpr const char *RequireRepoCommands[] = { "add", "status", "diff", "branch", "checkout", "commit", "push", "pull", "hash-object", "cat-file", "ls-files", "merge", "log" };
 constexpr const char *RequireOneOrMoreArguments[] = { "add", "commit", "push", "pull", "hash-object", "cat-file", "branch", "checkout", "merge" };
 
 namespace utils
@@ -91,6 +91,8 @@ namespace utils
     void GoToCharAfterNextSlash (const std::string& path, size_t& i);
 
     std::string ReadHEAD();
+
+    std::string GetMostRecentCommit ();
 
     void AddDiffCharacterBeforeLine (std::string& input, bool plus);
 
