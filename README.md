@@ -23,6 +23,7 @@
 | init                      | mygit init            |
 | add                       | mygit add PATH [-f]   |
 | commit                    | mygit commit -m MSG   |
+| log                       | mygit log             |
 | write-tree                | mygit write-tree      |
 | status                    | mygit status          |
 | diff                      | mygit diff            |
