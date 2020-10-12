@@ -349,22 +349,46 @@ namespace utils
     std::string ReadHEAD()
     {
         std::string contents = ReadFile(g_pathToRootRepo + "/.mygit/HEAD");
-        /// Exclude the \n at the end
-        return contents.substr(0, contents.size() - 1);
+        return contents;
     }
 
-    std::string GetMostRecentCommit ()
+    std::string ReadBranchPathInHead (const std::string& headContents)
+    {
+        std::string match = "ref: ";
+        std::string::size_type ind = headContents.find(match);
+        if (ind != std::string::npos)
+        {
+            return headContents.substr(ind + match.size());
+        }
+        return "";
+    }
+
+    std::string ReadBranchPathInHead ()
     {
         std::string headContents = ReadHEAD();
-        if (headContents.find("ref") != std::string::npos)
+        return ReadBranchPathInHead(headContents);
+    }
+
+    std::string GetMostRecentCommit (const std::string& headContents)
+    {
+        std::string redirect = ReadBranchPathInHead();
+        if (not redirect.empty())
         {
-            // FIXME : case where latest commit is in ref dir
+            /// Case where latest commit is in ref dir
+            std::string readRedirect = ReadFile(g_pathToRootRepo + "/.mygit/" + redirect);
+            //std::cout << redirect<< ' '<< readRedirect << "\n";
+            return readRedirect;
         }
         else
         {
             return headContents;
         }
-        return "";
+    }
+
+    std::string GetMostRecentCommit ()
+    {
+        std::string headContents = ReadHEAD();
+        return GetMostRecentCommit(headContents);
     }
 
     std::vector<std::string> GetLinesAsVect (const std::string& input)

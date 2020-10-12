@@ -5,7 +5,8 @@ namespace mygit
     void commit (const options::CommitOptions& opt)
     {
         std::string hashTree = write_tree_wrap();
-        std::string hashParentCommit = utils::GetMostRecentCommit();
+        std::string headContents = utils::ReadHEAD();
+        std::string hashParentCommit = utils::GetMostRecentCommit(headContents);
 
         std::string hashTreeString = "tree " + hashTree + "\n";
         std::string hashParentCommitString = (not hashParentCommit.empty()) ? ("parent " + hashParentCommit + "\n") : "";
@@ -23,8 +24,22 @@ namespace mygit
 
         commit.SetupCommit(hashCommit);
 
-        /// Update HEAD
-        utils::WriteFile(g_pathToRootRepo + "/.mygit/HEAD", hashCommit + "\n");
+        /// First commit case
+        if (headContents.empty())
+        {
+            utils::WriteFile(g_pathToRootRepo + "/.mygit/HEAD", "ref: refs/heads/master");
+            utils::WriteFile(g_pathToRootRepo + "/.mygit/refs/heads/master", hashCommit);
+        }
+        /// Detached case
+        else if (headContents.find("ref: ") == std::string::npos)
+            utils::WriteFile(g_pathToRootRepo + "/.mygit/HEAD", hashCommit);
+        /// Not first commit case
+        else
+        {
+            std::string branchPath = g_pathToRootRepo + "/.mygit/" + utils::ReadBranchPathInHead(headContents);
+            utils::WriteFile(branchPath, hashCommit);
+        }
+
 
         std::cout << "[" << hashCommit << "] " << opt.commitMessage << "\n";
     }

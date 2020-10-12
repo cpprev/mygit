@@ -94,6 +94,12 @@ namespace utils
 
     std::string GetMostRecentCommit ();
 
+    std::string GetMostRecentCommit (const std::string& headContents);
+
+    std::string ReadBranchPathInHead ();
+
+    std::string ReadBranchPathInHead (const std::string& headContents);
+
     void AddDiffCharacterBeforeLine (std::string& input, bool plus);
 
     std::vector<std::string> GetLinesAsVect (const std::string& input);
