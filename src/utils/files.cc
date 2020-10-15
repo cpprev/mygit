@@ -411,4 +411,62 @@ namespace utils
         }
         return res;
     }
+
+    std::vector<std::string> ListBranches ()
+    {
+        std::string cwd = GetCwd();
+        std::string pathToRefs = "./" + g_pathToRootRepo + "/.mygit/refs/heads/.";
+
+        std::vector<std::string> res;
+        DIR *dir = opendir(pathToRefs.c_str());
+        struct dirent *ent;
+        while ((ent = readdir(dir)))
+        {
+            std::string entName = ent->d_name;
+            if (entName == "." or entName == "..")
+                continue;
+            res.push_back(entName);
+        }
+        closedir(dir);
+
+        return res;
+    }
+
+    std::string GetCurrentBranch ()
+    {
+        std::string redirect = ReadBranchPathInHead();
+        std::string match = "refs/heads/";
+        std::string::size_type ind = redirect.find(match);
+        if (ind == std::string::npos)
+            return "";
+        return redirect.substr(ind + match.size());
+    }
+
+    void DisplayBranches ()
+    {
+        std::string mainBranch = GetCurrentBranch();
+        std::vector<std::string> branches = utils::ListBranches();
+        for (const auto& branch : branches)
+        {
+            if (branch == mainBranch)
+                std::cout << "* \033[1;32m" << branch << "\033[0m\n";
+        }
+        for (const auto& branch : branches)
+        {
+            if (branch != mainBranch)
+                std::cout << branch << '\n';
+        }
+    }
+
+    bool CheckRepoHasOneCommit ()
+    {
+        std::string headContents = utils::GetMostRecentCommit();
+        return not headContents.empty();
+    }
+
+    bool CheckBranchExists (const std::string& branchName)
+    {
+        std::vector<std::string> branches = utils::ListBranches();
+        return std::find(branches.begin(), branches.end(), branchName) != branches.end();
+    }
 }

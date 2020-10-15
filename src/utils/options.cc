@@ -83,7 +83,7 @@ namespace options
 
     BranchOptions::BranchOptions(int argc, char *argv[])
     {
-        if (argc == 1)
+        if (argc == 2)
             displayBranches = true;
         for (int i = 2; i < argc; i++)
         {

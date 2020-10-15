@@ -4,6 +4,7 @@
 #include <map>
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include <vector>
 #include <unistd.h>
 #include <dirent.h>
@@ -28,7 +29,7 @@ extern std::string g_pathToRootRepo;
 
 /// Constexprs
 constexpr const char *RequireRepoCommands[] = { "add", "status", "diff", "branch", "checkout", "commit", "push", "pull", "hash-object", "cat-file", "ls-files", "merge", "log" };
-constexpr const char *RequireOneOrMoreArguments[] = { "add", "commit", "push", "pull", "hash-object", "cat-file", "branch", "checkout", "merge" };
+constexpr const char *RequireOneOrMoreArguments[] = { "add", "commit", "push", "pull", "hash-object", "cat-file", "checkout", "merge" };
 
 namespace utils
 {
@@ -103,4 +104,14 @@ namespace utils
     void AddDiffCharacterBeforeLine (std::string& input, bool plus);
 
     std::vector<std::string> GetLinesAsVect (const std::string& input);
+
+    std::vector<std::string> ListBranches ();
+
+    void DisplayBranches ();
+
+    std::string GetCurrentBranch ();
+
+    bool CheckRepoHasOneCommit ();
+
+    bool CheckBranchExists (const std::string& branchName);
 }
