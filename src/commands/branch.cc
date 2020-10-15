@@ -20,7 +20,6 @@ namespace mygit
 
             /// Get current commit hash (HEAD)
             std::string latestCommit = utils::GetMostRecentCommit();
-            std::cout << latestCommit << '\n';
 
             /// Write it to .mygit/refs/heads/BRANCH_NAME
             std::string branchPath = g_pathToRootRepo + "/.mygit/refs/heads/" + opt.branchToCreate;
