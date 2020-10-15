@@ -24,9 +24,10 @@
 | add                       | mygit add PATH [-f]   |
 | commit                    | mygit commit -m MSG   |
 | log                       | mygit log             |
+| branch                    | mygit branch [NAME] [-d NAME] |
 | write-tree                | mygit write-tree      |
 | status                    | mygit status          |
 | diff                      | mygit diff            |
 | ls-files                  | mygit ls-files        |
 | cat-file                  | mygit cat-file HASH [-t] [-p] [-r] |
-| hash-object               | mygit hash-object FILE [--write] [--type type]|
+| hash-object               | mygit hash-object FILE [--write] [--type type] |
