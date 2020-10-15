@@ -149,7 +149,7 @@ namespace objects
 
                 if (type == "blob")
                     entries[path] = hash;
-                else
+                else if (type == "tree")
                     TreeHashToEntryMapRec(hash, entries);
 
                 count = 0;
