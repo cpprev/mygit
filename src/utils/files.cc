@@ -469,4 +469,53 @@ namespace utils
         std::vector<std::string> branches = utils::ListBranches();
         return std::find(branches.begin(), branches.end(), branchName) != branches.end();
     }
+
+    bool IsCommitObject (const std::string& commitName)
+    {
+        /// commitName could be a commit or a branch
+        std::vector<std::string> branches = utils::ListBranches();
+        /// Branch case
+        if (std::find(branches.begin(), branches.end(), commitName) != branches.end())
+            return true;
+        /// Commit case (detached head)
+        std::string commitPath = g_pathToRootRepo + "/.mygit/objects/" + commitName.substr(0, 2) + "/" + commitName.substr(2);
+        if (IsFileExists(commitPath))
+            return true;
+        return false;
+    }
+
+    std::string GetCommitHash (const std::string& commitOrBranch)
+    {
+        /// Branch case
+        if (CheckBranchExists(commitOrBranch))
+        {
+            std::string commitPath = g_pathToRootRepo + "/.mygit/refs/heads/" + commitOrBranch;
+            return ReadFile(commitPath);
+        }
+        /// Commit case
+        return commitOrBranch;
+    }
+
+    std::string GetTreeHashFromCommit (const std::string& commitHash)
+    {
+        std::string commitPath = g_pathToRootRepo + "/.mygit/objects/" + commitHash.substr(0, 2) + "/" + commitHash.substr(2);
+        std::string rawContents = utils::ReadFile(commitPath);
+
+        utils::ExitIfTrue(rawContents.empty(), "Commit contents = empty (GetTreeHashFromCommit method).");
+
+        std::string commitContents = utils::DecompressString(rawContents);
+
+        std::string match = "tree ";
+        std::string::size_type ind = commitContents.find(match);
+
+        utils::ExitIfTrue(ind == std::string::npos, "Commit wrongly formatted (GetTreeHashFromCommit method).");
+
+        std::string treeHash;
+        for (size_t i = ind + match.size(); i < commitContents.size() and commitContents[i] != '\n'; i++)
+        {
+            treeHash += commitContents[i];
+        }
+
+        return treeHash;
+    }
 }

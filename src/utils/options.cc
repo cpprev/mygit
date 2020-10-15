@@ -106,7 +106,7 @@ namespace options
         for (int i = 2; i < argc; i++)
         {
             if (argv[i][0] != '-')
-                branchToCheckoutOn = argv[i];
+                commitToCheckoutOn = argv[i];
             else
                 utils::ExitProgramWithMessage(1, "Unknown option to command 'commit': " + std::string(argv[i]));
         }

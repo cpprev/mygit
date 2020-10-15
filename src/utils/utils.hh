@@ -114,4 +114,10 @@ namespace utils
     bool CheckRepoHasOneCommit ();
 
     bool CheckBranchExists (const std::string& branchName);
+
+    bool IsCommitObject (const std::string& commitName);
+
+    std::string GetCommitHash (const std::string& commitOrBranch);
+
+    std::string GetTreeHashFromCommit (const std::string& commitHash);
 }

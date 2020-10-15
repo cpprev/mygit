@@ -74,6 +74,6 @@ namespace options
         CheckoutOptions(int argc, char *argv[]);
 
         bool displayBranches = false;
-        std::string branchToCheckoutOn;
+        std::string commitToCheckoutOn;
     };
 }

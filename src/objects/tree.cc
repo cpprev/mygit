@@ -47,7 +47,7 @@ namespace objects
                 /// Recurse
                 sub.SetupTrees();
 
-                contents += sub._type + "  " + sub._hash + "  " + sub._filename + "\n";
+                contents += sub._type + " " + sub._hash + " " + sub._filename + "\n";
             }
             _treeContents = contents;
             _hash = this->ToHash();
@@ -116,6 +116,61 @@ namespace objects
                 sub.PrintTree(pad + 10);
             else
                 std::cout << std::string(pad, ' ' ) << sub._type << " \\ " << sub._hash << "\n";
+        }
+    }
+
+    std::string Tree::ReadTreeFromHash (const std::string& treeHash)
+    {
+        std::string treePath = g_pathToRootRepo + "/.mygit/objects/" + treeHash.substr(0, 2) + "/" + treeHash.substr(2);
+        std::string rawContents = utils::ReadFile(treePath);
+        utils::ExitIfTrue(rawContents.empty(), "Tree contents should not be empty (TreeHashToEntryMap).");
+        return objects::GetContentBlobDecompressed(utils::DecompressString(rawContents));
+    }
+
+    std::map<std::string, std::string> Tree::TreeHashToEntryMap(const std::string& treeHash)
+    {
+        std::map<std::string, std::string> entries;
+        TreeHashToEntryMapRec(treeHash, entries);
+        return entries;
+    }
+
+    void Tree::TreeHashToEntryMapRec(const std::string& treeHash, std::map<std::string, std::string>& entries)
+    {
+        std::string treeContents = ReadTreeFromHash(treeHash);
+        //std::cout << treeContents << '\n';
+        std::string type, hash, path;
+        int count = 0;
+        for (size_t i = 0; i < treeContents.size(); i++)
+        {
+            if (treeContents[i] == '\n' or i == treeContents.size() - 1)
+            {
+                if (i == treeContents.size() - 1 and treeContents[i] != '\n')
+                    path += treeContents[i];
+
+                if (type == "blob")
+                    entries[path] = hash;
+                else
+                    TreeHashToEntryMapRec(hash, entries);
+
+                count = 0;
+                type.clear();
+                hash.clear();
+                path.clear();
+            }
+            else if (treeContents[i] == ' ')
+            {
+                count += 1;
+            }
+            else
+            {
+                char cur = treeContents[i];
+                if (count == 0)
+                    type += cur;
+                else if (count == 1)
+                    hash += cur;
+                else if (count == 2)
+                    path += cur;
+            }
         }
     }
 }
