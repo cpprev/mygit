@@ -26,6 +26,8 @@ int main(int argc, char *argv[])
         mygit::diff();
     else if (command == "branch")
         mygit::branch(options::BranchOptions(argc, argv));
+    else if (command == "checkout")
+        mygit::checkout(options::CheckoutOptions(argc, argv));
     else if (command == "log")
         mygit::log(options::LogOptions(argc, argv));
     else if (command == "hash-object")

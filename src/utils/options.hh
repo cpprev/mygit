@@ -67,4 +67,13 @@ namespace options
         std::string branchToCreate;
         std::string branchToDelete;
     };
+
+    class CheckoutOptions
+    {
+    public:
+        CheckoutOptions(int argc, char *argv[]);
+
+        bool displayBranches = false;
+        std::string branchToCheckoutOn;
+    };
 }

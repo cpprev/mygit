@@ -98,4 +98,17 @@ namespace options
                 utils::ExitProgramWithMessage(1, "Unknown option to command 'commit': " + std::string(argv[i]));
         }
     }
+
+    CheckoutOptions::CheckoutOptions(int argc, char *argv[])
+    {
+        if (argc == 2)
+            displayBranches = true;
+        for (int i = 2; i < argc; i++)
+        {
+            if (argv[i][0] != '-')
+                branchToCheckoutOn = argv[i];
+            else
+                utils::ExitProgramWithMessage(1, "Unknown option to command 'commit': " + std::string(argv[i]));
+        }
+    }
 }

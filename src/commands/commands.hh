@@ -29,6 +29,7 @@ namespace mygit
     void diff ();
     void log(const options::LogOptions& opt);
     void branch (const options::BranchOptions& opt);
+    void checkout (const options::CheckoutOptions& opt);
 
 
     /// Sub functions

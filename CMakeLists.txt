@@ -24,6 +24,7 @@ set(SRC_FILES
         src/commands/diff.cc
         src/commands/log.cc
         src/commands/branch.cc
+        src/commands/checkout.cc
 
         # Utils
         src/utils/files.cc
