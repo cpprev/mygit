@@ -454,7 +454,7 @@ namespace utils
         for (const auto& branch : branches)
         {
             if (branch != mainBranch)
-                std::cout << branch << '\n';
+                std::cout << "  " << branch << '\n';
         }
     }
 

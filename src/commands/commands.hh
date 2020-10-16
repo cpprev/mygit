@@ -39,6 +39,6 @@ namespace mygit
     std::string write_tree_wrap ();
     std::string diff_str ();
     std::vector<std::vector<int>> BuildLcsMatrix (const std::vector<std::string>& oldFileLines, const std::vector<std::string>& newFileLines);
-    void GetDiffModifiedFiles (const std::vector<std::vector<int>>& c, const std::vector<std::string>& x,
-                               const std::vector<std::string>& y, int i, int j, std::string& result);
+    void GetDiffModifiedFiles (const std::vector<std::vector<int>>& lookup, const std::vector<std::string>& x,
+                               const std::vector<std::string>& y, int m, int n, std::string& result);
 }

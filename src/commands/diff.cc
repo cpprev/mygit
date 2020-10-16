@@ -44,7 +44,7 @@ namespace mygit
                     std::vector<std::string> newLines = utils::GetLinesAsVect(contentsWd);
                     std::vector<std::vector<int>> LCSMatrix = BuildLcsMatrix(oldLines, newLines);
                     std::string result;
-                    GetDiffModifiedFiles(LCSMatrix, oldLines, newLines, oldLines.size() - 1, newLines.size() - 1, result);
+                    GetDiffModifiedFiles(LCSMatrix, oldLines, newLines, oldLines.size(), newLines.size(), result);
                     output += "\033[1;32m[" + wdFileFromActualPos + "]\033[0m\n\n" + result + "\n";
                 }
             }
@@ -77,8 +77,8 @@ namespace mygit
 
     std::vector<std::vector<int>> BuildLcsMatrix (const std::vector<std::string>& oldFileLines, const std::vector<std::string>& newFileLines)
     {
-        std::vector<int> sub(newFileLines.size(), 0);
-        std::vector<std::vector<int>> res(oldFileLines.size() + 1, sub);
+        std::vector<int> sub(newFileLines.size() + 1, 0);
+        std::vector<std::vector<int>> lookup(oldFileLines.size() + 1, sub);
 
         size_t lenA = oldFileLines.size();
         size_t lenB = newFileLines.size();
@@ -87,45 +87,34 @@ namespace mygit
             for (size_t j = 0; j <= lenB; j++)
             {
                 if (i == 0 || j == 0)
-                    res[i][j] = 0;
+                    lookup[i][j] = 0;
                 else if (oldFileLines[i - 1] == newFileLines[j - 1])
-                    res[i][j] = res[i - 1][j - 1] + 1;
+                    lookup[i][j] = lookup[i - 1][j - 1] + 1;
                 else
-                    res[i][j] = std::max(res[i - 1][j], res[i][j - 1]);
+                    lookup[i][j] = std::max(lookup[i - 1][j], lookup[i][j - 1]);
             }
         }
-        return res;
+
+        return lookup;
     }
 
-    void GetDiffModifiedFiles (const std::vector<std::vector<int>>& c, const std::vector<std::string>& x,
-                               const std::vector<std::string>& y, int i, int j, std::string& result)
+    void GetDiffModifiedFiles (const std::vector<std::vector<int>>& lookup, const std::vector<std::string>& x,
+                               const std::vector<std::string>& y, int m, int n, std::string& result)
     {
-        if (i < 0 and j < 0)
-            return;
-        else if (i < 0)
+        if (m > 0 and n > 0 and x[m - 1] == y[n - 1])
         {
-            GetDiffModifiedFiles(c, x, y, i, j - 1, result);
-            result += "\033[1;32m+\t" + y[j] + "\033[0m";
+            GetDiffModifiedFiles(lookup, x, y, m - 1, n - 1, result);
+            result += " \t" + x[m - 1] + "\033[0m";
         }
-        else if (j < 0)
+        else if (n > 0 and (m == 0 || lookup[m][n - 1] >= lookup[m - 1][n]))
         {
-            GetDiffModifiedFiles(c, x, y, i - 1, j, result);
-            result += "\033[1;31m-\t" + x[i] + "\033[0m";
+            GetDiffModifiedFiles(lookup, x, y, m, n - 1, result);
+            result += "\033[1;32m+\t" + y[n - 1] + "\033[0m";
         }
-        else if (x[i] == y[j])
+        else if (m > 0 and (n == 0 || lookup[m][n - 1] < lookup[m - 1][n]))
         {
-            GetDiffModifiedFiles(c, x, y, i - 1, j - 1, result);
-            result += " \t" + x[i] + "\033[0m";
-        }
-        else if (c[i][j - 1] >= c[i - 1][j])
-        {
-            GetDiffModifiedFiles(c, x, y, i, j - 1, result);
-            result += "\033[1;32m+\t" + y[j] + "\033[0m";
-        }
-        else if (c[i][j - 1] < c[i - 1][j])
-        {
-            GetDiffModifiedFiles(c, x, y, i - 1, j, result);
-            result += "\033[1;31m-\t" + x[i] + "\033[0m";
+            GetDiffModifiedFiles(lookup, x, y, m - 1, n, result);
+            result += "\033[1;31m-\t" + x[m - 1] + "\033[0m";
         }
     }
 }

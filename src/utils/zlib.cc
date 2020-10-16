@@ -6,6 +6,9 @@ namespace utils
     * the binary data. */
     std::string CompressString(const std::string &str, int compressionlevel)
     {
+        if (str.empty())
+            return "";
+
         z_stream zs;                        // z_stream is zlib's control structure
         memset(&zs, 0, sizeof(zs));
 
@@ -47,6 +50,9 @@ namespace utils
 
     /** Decompress an STL string using zlib and return the original data. */
     std::string DecompressString(const std::string &str) {
+        if (str.empty())
+            return "";
+
         z_stream zs;                        // z_stream is zlib's control structure
         memset(&zs, 0, sizeof(zs));
 

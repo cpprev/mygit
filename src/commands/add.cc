@@ -104,7 +104,7 @@ namespace mygit
         decompressed.clear();
         for (const auto& p : entries)
         {
-            decompressed += p.second + ' ' + p.first + "\n";
+            decompressed += p.second + ' ' + p.first + '\n';
         }
 
         /// Compress and update .mygit/index file
