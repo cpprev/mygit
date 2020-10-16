@@ -38,8 +38,11 @@ namespace utils
         std::string currentPath = "./";
         while (true)
         {
-            if (opendir(currentPath.c_str()) == nullptr)
+            DIR *dir = opendir(currentPath.c_str());
+            if (dir == nullptr)
                 break;
+            else
+                closedir(dir);
             if (IsDirExists(currentPath + ".mygit/"))
                 return currentPath;
             else
