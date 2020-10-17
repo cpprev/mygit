@@ -128,4 +128,8 @@ namespace utils
     bool IsDirEmpty (const std::string& path);
 
     bool IsAlreadyOnCommit (const std::string& commit);
+
+    void DeleteDirectoryIfEmpty (const std::string& pathFileFromDotMyGit);
+
+    void CreateDirectoriesAboveFile (const std::string& pathFileFromDotMyGit);
 }

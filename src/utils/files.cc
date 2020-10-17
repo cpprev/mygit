@@ -612,4 +612,42 @@ namespace utils
             return true;
         return false;
     }
+
+    void DeleteDirectoryIfEmpty (const std::string& pathFileFromDotMyGit)
+    {
+        std::string dummy;
+        for (size_t i = 0; i < pathFileFromDotMyGit.size(); i++)
+        {
+            dummy += pathFileFromDotMyGit[i];
+            if (utils::IsDirExists(dummy))
+            {
+                if (utils::IsDirEmpty(dummy))
+                {
+                    //std::cout << "RM " << dummy << '\n';
+                    std::string command = "rm -rf " + dummy;
+                    int pid = system(command.c_str());
+                    int status;
+                    waitpid(pid, &status, 0);
+                    break;
+                }
+            }
+        }
+    }
+
+    void CreateDirectoriesAboveFile (const std::string& pathFileFromDotMyGit)
+    {
+        std::string dummy;
+        for (size_t i = 0; i < pathFileFromDotMyGit.size(); i++)
+        {
+            dummy += pathFileFromDotMyGit[i];
+            if (dummy[i] == '/')
+            {
+                if (not utils::IsDirExists(dummy))
+                {
+                    //std::cout << "CREATED: " << dummy << '\n';
+                    utils::CreateDir(dummy);
+                }
+            }
+        }
+    }
 }

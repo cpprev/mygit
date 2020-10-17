@@ -55,19 +55,7 @@ namespace mygit
                 if (it == entryHead.end())
                 {
                     /// Add directories if needed
-                    std::string dummy;
-                    for (size_t i = 0; i < pathFileFromDotMyGit.size(); i++)
-                    {
-                        dummy += pathFileFromDotMyGit[i];
-                        if (dummy[i] == '/')
-                        {
-                            if (not utils::IsDirExists(dummy))
-                            {
-                                //std::cout << "CREATED: " << dummy << '\n';
-                                utils::CreateDir(dummy);
-                            }
-                        }
-                    }
+                    utils::CreateDirectoriesAboveFile(pathFileFromDotMyGit);
                 }
                 /// Write to file in case of Add/Modify
                 utils::WriteFile(pathFileFromDotMyGit, fileContents);
@@ -84,23 +72,7 @@ namespace mygit
                     remove(pathFileFromDotMyGit.c_str());
 
                     /// If dir containing file is empty, delete it
-                    std::string dummy;
-                    for (size_t i = 0; i < pathFileFromDotMyGit.size(); i++)
-                    {
-                        dummy += pathFileFromDotMyGit[i];
-                        if (utils::IsDirExists(dummy))
-                        {
-                            if (utils::IsDirEmpty(dummy))
-                            {
-                                //std::cout << "RM " << dummy << '\n';
-                                std::string command = "rm -rf " + dummy;
-                                int pid = system(command.c_str());
-                                int status;
-                                waitpid(pid, &status, 0);
-                                break;
-                            }
-                        }
-                    }
+                    utils::DeleteDirectoryIfEmpty(pathFileFromDotMyGit);
                 }
             }
 
