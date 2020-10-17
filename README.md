@@ -32,7 +32,6 @@
 | ls-files                  | mygit ls-files        |
 | cat-file                  | mygit cat-file HASH [-t] [-p] [-r] |
 | hash-object               | mygit hash-object FILE [--write] [--type type] |
-|                           |                       |
-| config||
+| config                    | mygit config [--add user.id "hello w"] [--get user.id ] [--unset user.id] [--local/--global]|
 | merge||
 | stash||
