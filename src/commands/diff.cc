@@ -28,7 +28,7 @@ namespace mygit
         {
             std::string wdFile = workDirEntries[i];
             std::string wdFileFromActualPos = workDirEntriesFromActualPos[i];
-            if (std::find(indexEntries.begin(), indexEntries.end(), wdFile) != indexEntries.end())
+            if (std::find(indexEntries.begin(), indexEntries.end(), wdFile) != indexEntries.end() and not utils::IsFileExcluded(wdFile))
             {
                 objects::Blob blob = objects::Blob(wdFile, wdFileFromActualPos);
                 std::string hash = blob.ToHash();
@@ -51,7 +51,7 @@ namespace mygit
             /// File not in index, there was added
             else
             {
-                if (not utils::IsFileExcluded(wdFileFromActualPos))
+                if (not utils::IsFileExcluded(wdFile))
                 {
                     std::string contents = utils::ReadFile(wdFileFromActualPos);
                     utils::AddDiffCharacterBeforeLine(contents, true);

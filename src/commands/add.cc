@@ -4,17 +4,18 @@ namespace mygit
 {
     void add(const options::AddOptions& opt)
     {
-        for (auto path : opt.pathArguments)
+        for (const auto& path : opt.pathArguments)
         {
             /// Handle git add of deleted files
             std::string pathRelativeToDotMyGit = utils::RemoveUselessCharInPath(utils::GetPathRelativeToDotMyGit(path));
+            //std::cout << "path: " << pathRelativeToDotMyGit << '\n';
             std::vector<std::string> indexEntries = utils::ReadIndexAndGetEntriesIndexAsList();
             /// Case where path is a filename
             std::vector<std::string> removeFromIndex;
             for (const auto& indEntry : indexEntries)
             {
                 //std::cout << indEntry << " " << pathRelativeToDotMyGit << '\n';
-                if (indEntry == pathRelativeToDotMyGit)
+                if (not utils::IsFileExists(path) and indEntry == pathRelativeToDotMyGit)
                 {
                     //std::cout << "DELETE FROM INDEX\n";
                     removeFromIndex.push_back(indEntry);

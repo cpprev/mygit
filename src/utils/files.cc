@@ -113,6 +113,9 @@ namespace utils
         if (pathToFile.empty())
             pathToFile = ".";
 
+        /// Create dirs if not already here
+        std::string dirToRemove = CreateDirectoriesAboveFileReturnFirstToDelete(RemoveUselessCharInPath(pathToFileCpy));
+
         utils::ChangeDirWrapper(pathToFile);
 
         std::string cwd = GetCwd();
@@ -122,6 +125,16 @@ namespace utils
         std::string rootWD = GetCwd();
 
         utils::ChangeDirWrapper(origin);
+
+        /// Remove potential dirs that were created previously
+        if (not dirToRemove.empty())
+        {
+            std::string command = "rm -rf " + dirToRemove;
+            int pid = system(command.c_str());
+            int status;
+            waitpid(pid, &status, 0);
+        }
+
         if (cwd == rootWD)
             return RemoveUselessCharInPath(filename);
 
@@ -178,12 +191,24 @@ namespace utils
 
         //std::cout << "FROM: " << pathRelativeToYouLongCpy << ", newpath: " << pathRelativeToYouLong << ", filename: " << fileName << "\n";
 
+        /// Create dirs if not already here
+        std::string dirToRemove = CreateDirectoriesAboveFileReturnFirstToDelete(RemoveUselessCharInPath(pathRelativeToYouLongCpy));
+
         utils::ChangeDirWrapper(pathRelativeToYouLong);
 
         std::string cwd2 = GetCwd();
 
         utils::ChangeDirWrapper(cwd);
         //std::cout << cwd << ' ' << cwd2 << "\n\n";
+
+        /// Remove potential dirs that were created previously
+        if (not dirToRemove.empty())
+        {
+            std::string command = "rm -rf " + dirToRemove;
+            int pid = system(command.c_str());
+            int status;
+            waitpid(pid, &status, 0);
+        }
 
         if (cwd.find(cwd2) == std::string::npos and cwd2.find(cwd) == std::string::npos)
             return pathRelativeToYouLongCpy;
@@ -555,7 +580,7 @@ namespace utils
         {
             std::string wdFile = workDirEntries[i];
             std::string wdFileFromActualPos = workDirEntriesFromActualPos[i];
-            if (std::find(indexEntries.begin(), indexEntries.end(), wdFile) != indexEntries.end())
+            if (std::find(indexEntries.begin(), indexEntries.end(), wdFile) != indexEntries.end() and not utils::IsFileExcluded(wdFile))
             {
                 objects::Blob blob = objects::Blob(wdFile, wdFileFromActualPos);
                 std::string hash = blob.ToHash();
@@ -566,7 +591,7 @@ namespace utils
                 /// File not in index, there was added
             else
             {
-                if (not utils::IsFileExcluded(wdFileFromActualPos))
+                if (not utils::IsFileExcluded(wdFile))
                     return false;
             }
         }
@@ -649,5 +674,26 @@ namespace utils
                 }
             }
         }
+    }
+
+    std::string CreateDirectoriesAboveFileReturnFirstToDelete (const std::string& pathFileFromDotMyGit)
+    {
+        std::string dummy;
+        std::string todel;
+        for (size_t i = 0; i < pathFileFromDotMyGit.size(); i++)
+        {
+            dummy += pathFileFromDotMyGit[i];
+            if (dummy[i] == '/')
+            {
+                if (not utils::IsDirExists(dummy))
+                {
+                    if (todel.empty())
+                        todel = dummy;
+                    //std::cout << "CREATED: " << dummy << '\n';
+                    utils::CreateDir(dummy);
+                }
+            }
+        }
+        return todel;
     }
 }

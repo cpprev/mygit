@@ -297,11 +297,13 @@ void TestStatusOneFileAtRootDeletedWhileInSubdir ()
     const char *argv[] = { "mygit", "add", newPath };
     int argc = sizeof(argv) / sizeof(char *);
     mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
+    //std::cout << mygit::status_str() << '\n';
 
     remove(newPath);
 
     /// Verify that filename is in mygit status output
     std::string output = mygit::status_str();
+    //std::cout << output << '\n';
     process_test_findstr(output.find("\tDeleted:\t" + std::string(newPath)), "TestStatusOneFileAtRootDeletedWhileInSubdir");
 
     /// chdir back to origin
