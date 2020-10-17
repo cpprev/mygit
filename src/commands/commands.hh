@@ -7,6 +7,9 @@
 #include <cstring>
 #include <algorithm>
 #include <map>
+#include <cstdlib>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include "objects/object_type.hh"
 #include "utils/utils.hh"

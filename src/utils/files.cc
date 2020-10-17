@@ -176,12 +176,18 @@ namespace utils
         if (pathRelativeToYouLong.empty())
             pathRelativeToYouLong = ".";
 
+        //std::cout << "FROM: " << pathRelativeToYouLongCpy << ", newpath: " << pathRelativeToYouLong << ", filename: " << fileName << "\n";
+
         utils::ChangeDirWrapper(pathRelativeToYouLong);
 
         std::string cwd2 = GetCwd();
 
         utils::ChangeDirWrapper(cwd);
-        if (cwd == cwd2)
+        //std::cout << cwd << ' ' << cwd2 << "\n\n";
+
+        if (cwd.find(cwd2) == std::string::npos and cwd2.find(cwd) == std::string::npos)
+            return pathRelativeToYouLongCpy;
+        else if (cwd == cwd2)
             return fileName;
         else if (cwd2.size() > cwd.size())
         {
@@ -307,7 +313,8 @@ namespace utils
 
         for (const auto& pattern : g_myGitIgnorePatterns)
         {
-            if (not fnmatch(pattern.c_str(), path.c_str(), 0))
+            std::string patternForNow = "*" + pattern + "*";
+            if (not fnmatch(patternForNow.c_str(), path.c_str(), 0))
                 return true;
         }
 
@@ -564,5 +571,26 @@ namespace utils
             }
         }
         return true;
+    }
+
+    std::vector<std::string> ListEntriesInDirOneLayer (const std::string& path)
+    {
+        std::vector<std::string> res;
+        DIR *dir = opendir(path.c_str());
+        struct dirent *ent;
+        while ((ent = readdir(dir)))
+        {
+            std::string entName = ent->d_name;
+            if (entName == "." or entName == "..")
+                continue;
+            res.push_back(entName);
+        }
+        closedir(dir);
+        return res;
+    }
+
+    bool IsDirEmpty (const std::string& path)
+    {
+        return ListEntriesInDirOneLayer(path).empty();
     }
 }

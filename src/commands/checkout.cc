@@ -47,6 +47,7 @@ namespace mygit
                 //std::cout << "dst: " << file << ' ' << hash << '\n';
 
                 auto it = entryHead.find(file);
+                std::string pathFileFromDotMyGit = utils::RemoveUselessCharInPath(g_pathToRootRepo + "/" + file);
                 /// Case where we need to add a file
                 if (it == entryHead.end())
                 {
@@ -54,7 +55,6 @@ namespace mygit
                     /// FIXME
                 }
                 /// Write to file in case of Add/Modify
-                std::string pathFileFromDotMyGit = g_pathToRootRepo + "/" + file;
                 utils::WriteFile(pathFileFromDotMyGit, fileContents);
             }
 
@@ -65,11 +65,27 @@ namespace mygit
                 auto it = entryDst.find(file);
                 if (it == entryDst.end())
                 {
-                    std::string pathFileFromDotMyGit = g_pathToRootRepo + "/" + file;
+                    std::string pathFileFromDotMyGit = utils::RemoveUselessCharInPath(g_pathToRootRepo + "/" + file);
                     remove(pathFileFromDotMyGit.c_str());
 
                     /// If dir containing file is empty, delete it
-                    /// FIXME
+                    std::string dummy;
+                    for (size_t i = 0; i < pathFileFromDotMyGit.size(); i++)
+                    {
+                        dummy += pathFileFromDotMyGit[i];
+                        if (utils::IsDirExists(dummy))
+                        {
+                            if (utils::IsDirEmpty(dummy))
+                            {
+                                std::cout << "RM " << dummy << '\n';
+                                /*std::string command = "rm -rf " + dummy;
+                                int pid = system(command.c_str());
+                                int status;
+                                waitpid(pid, &status, 0);*/
+                                break;
+                            }
+                        }
+                    }
                 }
             }
 

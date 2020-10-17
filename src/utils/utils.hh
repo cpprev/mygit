@@ -122,4 +122,8 @@ namespace utils
     std::string GetTreeHashFromCommit (const std::string& commitHash);
 
     bool IsWorkingDirectoryClean ();
+
+    std::vector<std::string> ListEntriesInDirOneLayer (const std::string& path);
+
+    bool IsDirEmpty (const std::string& path);
 }
