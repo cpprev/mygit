@@ -25,6 +25,7 @@
 | commit                    | mygit commit -m MSG   |
 | log                       | mygit log             |
 | branch                    | mygit branch [NAME] [-d NAME] |
+| checkout                  | mygit checkout [NAME/HASH] |
 | write-tree                | mygit write-tree      |
 | status                    | mygit status          |
 | diff                      | mygit diff            |
