@@ -456,10 +456,19 @@ namespace utils
     {
         std::string mainBranch = GetCurrentBranch();
         std::vector<std::string> branches = utils::ListBranches();
+        bool hit = false;
         for (const auto& branch : branches)
         {
             if (branch == mainBranch)
-                std::cout << "* \033[1;32m" << branch << "\033[0m\n";
+            {
+                hit = true;
+                std::cout << "\033[1;32m* " << branch << "\033[0m\n";
+            }
+        }
+        /// Detached HEAD case
+        if (not hit)
+        {
+            std::cout << "\033[1;32m* " << ReadHEAD() << " (Detached HEAD)\033[0m\n";
         }
         for (const auto& branch : branches)
         {
@@ -592,5 +601,15 @@ namespace utils
     bool IsDirEmpty (const std::string& path)
     {
         return ListEntriesInDirOneLayer(path).empty();
+    }
+
+    bool IsAlreadyOnCommit (const std::string& commit)
+    {
+        std::string headContents = ReadHEAD();
+        if (headContents == commit)
+            return true;
+        if (GetCurrentBranch() == commit)
+            return true;
+        return false;
     }
 }

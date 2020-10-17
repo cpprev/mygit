@@ -15,6 +15,9 @@ namespace mygit
             /// Check ref/destination is a commit object
             utils::ExitIfTrue(not utils::IsCommitObject(opt.commitToCheckoutOn), "Not valid commit object.");
 
+            /// Check that you already are not on this commit/branch
+            utils::ExitIfTrue(utils::IsAlreadyOnCommit(opt.commitToCheckoutOn), "You already are on this commit / branch.");
+
             /// Checkout that working directory is clean
             utils::ExitIfTrue(not utils::IsWorkingDirectoryClean(), "Working directory is not clean, commit or stash your changes.");
 
@@ -52,7 +55,19 @@ namespace mygit
                 if (it == entryHead.end())
                 {
                     /// Add directories if needed
-                    /// FIXME
+                    std::string dummy;
+                    for (size_t i = 0; i < pathFileFromDotMyGit.size(); i++)
+                    {
+                        dummy += pathFileFromDotMyGit[i];
+                        if (dummy[i] == '/')
+                        {
+                            if (not utils::IsDirExists(dummy))
+                            {
+                                //std::cout << "CREATED: " << dummy << '\n';
+                                utils::CreateDir(dummy);
+                            }
+                        }
+                    }
                 }
                 /// Write to file in case of Add/Modify
                 utils::WriteFile(pathFileFromDotMyGit, fileContents);
@@ -77,11 +92,11 @@ namespace mygit
                         {
                             if (utils::IsDirEmpty(dummy))
                             {
-                                std::cout << "RM " << dummy << '\n';
-                                /*std::string command = "rm -rf " + dummy;
+                                //std::cout << "RM " << dummy << '\n';
+                                std::string command = "rm -rf " + dummy;
                                 int pid = system(command.c_str());
                                 int status;
-                                waitpid(pid, &status, 0);*/
+                                waitpid(pid, &status, 0);
                                 break;
                             }
                         }

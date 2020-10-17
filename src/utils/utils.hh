@@ -126,4 +126,6 @@ namespace utils
     std::vector<std::string> ListEntriesInDirOneLayer (const std::string& path);
 
     bool IsDirEmpty (const std::string& path);
+
+    bool IsAlreadyOnCommit (const std::string& commit);
 }
