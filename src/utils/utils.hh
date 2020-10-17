@@ -120,4 +120,6 @@ namespace utils
     std::string GetCommitHash (const std::string& commitOrBranch);
 
     std::string GetTreeHashFromCommit (const std::string& commitHash);
+
+    bool IsWorkingDirectoryClean ();
 }

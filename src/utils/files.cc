@@ -521,4 +521,48 @@ namespace utils
 
         return treeHash;
     }
+
+    bool IsWorkingDirectoryClean ()
+    {
+        /// Read index files
+        std::vector<std::string> indexEntries = utils::ReadIndexAndGetEntriesIndexAsList();
+        /// Read working directory files
+        std::vector<std::string> workDirEntries = utils::GetWorkingDirectoryFiles();
+        std::vector<std::string> workDirEntriesFromActualPos = workDirEntries;
+        for (size_t i = 0; i < workDirEntries.size(); i++)
+        {
+            workDirEntriesFromActualPos[i] = utils::GetPathRelativeToYourself(workDirEntries[i]);
+            workDirEntries[i] = utils::GetPathRelativeToDotMyGit(workDirEntries[i]);
+        }
+
+        for (size_t i = 0; i < workDirEntries.size(); i++)
+        {
+            std::string wdFile = workDirEntries[i];
+            std::string wdFileFromActualPos = workDirEntriesFromActualPos[i];
+            if (std::find(indexEntries.begin(), indexEntries.end(), wdFile) != indexEntries.end())
+            {
+                objects::Blob blob = objects::Blob(wdFile, wdFileFromActualPos);
+                std::string hash = blob.ToHash();
+                std::string blobPath = g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+                if (not utils::IsFileExists(blobPath))
+                    return false;
+            }
+                /// File not in index, there was added
+            else
+            {
+                if (not utils::IsFileExcluded(wdFileFromActualPos))
+                    return false;
+            }
+        }
+
+        for (const auto& indEntry : indexEntries)
+        {
+            if (std::find(workDirEntries.begin(), workDirEntries.end(), indEntry) == workDirEntries.end())
+            {
+                if (not utils::IsFileExcluded(indEntry))
+                    return false;
+            }
+        }
+        return true;
+    }
 }

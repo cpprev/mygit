@@ -34,7 +34,8 @@ namespace mygit
             /// File not in index, there was added
             else
             {
-                output += "\033[0;31m\tAdded:  \t" + wdFileFromActualPos + "\033[0m\n";
+                if (not utils::IsFileExcluded(wdFileFromActualPos))
+                    output += "\033[0;31m\tAdded:  \t" + wdFileFromActualPos + "\033[0m\n";
             }
         }
 

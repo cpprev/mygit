@@ -51,9 +51,12 @@ namespace mygit
             /// File not in index, there was added
             else
             {
-                std::string contents = utils::ReadFile(wdFileFromActualPos);
-                utils::AddDiffCharacterBeforeLine(contents, true);
-                output += "\033[1;32m[" + wdFileFromActualPos + "]\033[0m\n\n" + contents + "\n";
+                if (not utils::IsFileExcluded(wdFileFromActualPos))
+                {
+                    std::string contents = utils::ReadFile(wdFileFromActualPos);
+                    utils::AddDiffCharacterBeforeLine(contents, true);
+                    output += "\033[1;32m[" + wdFileFromActualPos + "]\033[0m\n\n" + contents + "\n";
+                }
             }
         }
 

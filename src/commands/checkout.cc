@@ -16,7 +16,7 @@ namespace mygit
             utils::ExitIfTrue(not utils::IsCommitObject(opt.commitToCheckoutOn), "Not valid commit object.");
 
             /// Checkout that working directory is clean
-            /// FIXME
+            utils::ExitIfTrue(not utils::IsWorkingDirectoryClean(), "Working directory is not clean, commit or stash your changes.");
 
             /// Compare ref/destination tree and HEAD tree
             std::string hashCommitDst = utils::GetCommitHash(opt.commitToCheckoutOn);
