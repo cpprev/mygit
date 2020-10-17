@@ -25,6 +25,7 @@ set(SRC_FILES
         src/commands/log.cc
         src/commands/branch.cc
         src/commands/checkout.cc
+        src/commands/config.cc
 
         # Utils
         src/utils/files.cc
@@ -32,6 +33,7 @@ set(SRC_FILES
         src/utils/zlib.cc
         src/utils/sha1.cc
         src/utils/options.cc
+        src/utils/config.cc
 
         # Objects
         src/objects/blob.cc

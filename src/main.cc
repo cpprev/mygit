@@ -40,6 +40,8 @@ int main(int argc, char *argv[])
         mygit::write_tree();
     else if (command == "commit")
         mygit::commit(options::CommitOptions(argc, argv));
+    else if (command == "config")
+        mygit::config(options::ConfigOptions(argc, argv));
     else
         utils::ExitProgramWithMessage(1, "Unknown command.");
 

@@ -95,7 +95,7 @@ namespace options
                 i++;
             }
             else
-                utils::ExitProgramWithMessage(1, "Unknown option to command 'commit': " + std::string(argv[i]));
+                utils::ExitProgramWithMessage(1, "Unknown option to command 'branch': " + std::string(argv[i]));
         }
     }
 
@@ -108,7 +108,41 @@ namespace options
             if (argv[i][0] != '-')
                 commitToCheckoutOn = argv[i];
             else
-                utils::ExitProgramWithMessage(1, "Unknown option to command 'commit': " + std::string(argv[i]));
+                utils::ExitProgramWithMessage(1, "Unknown option to command 'checkout': " + std::string(argv[i]));
+        }
+    }
+
+    ConfigOptions::ConfigOptions(int argc, char *argv[])
+    {
+        for (int i = 2; i < argc; i++)
+        {
+            if (strcmp(argv[i], "--local") == 0)
+            {
+                local = true;
+                global = false;
+            }
+            else if (strcmp(argv[i], "--global") == 0)
+            {
+                local = false;
+                global = true;
+            }
+            else if (i + 2 < argc and strcmp(argv[i], "--add") == 0)
+            {
+                add = { argv[i + 1], argv[i + 2] };
+                i += 2;
+            }
+            else if (i + 1 < argc and strcmp(argv[i], "--unset") == 0)
+            {
+                unset = argv[i + 1];
+                i += 1;
+            }
+            else if (i + 1 < argc and strcmp(argv[i], "--get") == 0)
+            {
+                get = argv[i + 1];
+                i += 1;
+            }
+            else
+                utils::ExitProgramWithMessage(1, "Unknown option to command 'config': " + std::string(argv[i]));
         }
     }
 }

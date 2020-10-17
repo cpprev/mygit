@@ -33,6 +33,7 @@ namespace mygit
     void log(const options::LogOptions& opt);
     void branch (const options::BranchOptions& opt);
     void checkout (const options::CheckoutOptions& opt);
+    void config (const options::ConfigOptions& opt);
 
 
     /// Sub functions

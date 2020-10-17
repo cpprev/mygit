@@ -1,4 +1,5 @@
 #include "utils.hh"
+#include "config.hh"
 
 namespace utils
 {
@@ -19,6 +20,7 @@ namespace utils
         g_pathToRootRepo = utils::FindPathToRootRepo();
         std::string myGitIgnoreContents = utils::ReadFile(g_pathToRootRepo + "/.mygitignore");
         g_myGitIgnorePatterns = utils::ReadMyGitIgnorePatterns(myGitIgnoreContents);
+        g_Config = utils::Config();
     }
 
     bool DoesRequireRepo (const std::string& command)
@@ -71,5 +73,19 @@ namespace utils
         }
         newStr += "\033[0m";
         input = newStr;
+    }
+
+    std::string StripPaddingSpaces (const std::string& str)
+    {
+        int len = str.size();
+        int left;
+        for (left = 0; left < len and (str[left] == ' ' or str[left] == '\t'); left++)
+        {}
+
+        int right;
+        for (right = len - 1; right >= 0 and (str[right] == ' ' or str[right] == '\t'); right--)
+        {}
+
+        return str.substr(left, right - left + 1);
     }
 }

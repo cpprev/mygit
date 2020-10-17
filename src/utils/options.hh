@@ -76,4 +76,16 @@ namespace options
         bool displayBranches = false;
         std::string commitToCheckoutOn;
     };
+
+    class ConfigOptions
+    {
+    public:
+        ConfigOptions(int argc, char *argv[]);
+
+        bool local = true;
+        bool global = false;
+        std::optional<std::pair<std::string, std::string>> add;
+        std::string unset;
+        std::string get;
+    };
 }
