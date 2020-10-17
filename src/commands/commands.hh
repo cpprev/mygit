@@ -37,8 +37,8 @@ namespace mygit
 
     /// Sub functions
     std::string status_str ();
-    void UpdateIndex(const std::string& pathToFile, const options::AddOptions& opt);
-    void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsFiles, const options::AddOptions& opt);
+    void UpdateIndex(const std::string& pathToFile, const options::AddOptions& opt, const std::vector<std::string>& removeFromIndex);
+    void UpdateIndexMultipleFiles(const std::vector<std::string>& pathsFiles, const options::AddOptions& opt, const std::vector<std::string>& removeFromIndex);
     std::string write_tree_wrap ();
     std::string diff_str ();
     std::vector<std::vector<int>> BuildLcsMatrix (const std::vector<std::string>& oldFileLines, const std::vector<std::string>& newFileLines);
