@@ -10,19 +10,17 @@ namespace mygit
             std::string pathRelativeToDotMyGit = utils::RemoveUselessCharInPath(utils::GetPathRelativeToDotMyGit(path));
             //std::cout << "path: " << pathRelativeToDotMyGit << '\n';
             std::vector<std::string> indexEntries = utils::ReadIndexAndGetEntriesIndexAsList();
-            /// Case where path is a filename
             std::vector<std::string> removeFromIndex;
             for (const auto& indEntry : indexEntries)
             {
                 //std::cout << indEntry << " " << pathRelativeToDotMyGit << '\n';
-                if (not utils::IsFileExists(path) and indEntry == pathRelativeToDotMyGit)
+                if (not utils::IsFileExists(g_pathToRootRepo + "/" + indEntry)
+                and (indEntry == pathRelativeToDotMyGit or indEntry.find(pathRelativeToDotMyGit) != std::string::npos))
                 {
                     //std::cout << "DELETE FROM INDEX\n";
                     removeFromIndex.push_back(indEntry);
                 }
             }
-            /// Case where path is a directory
-            /// FIXME
 
             /// Case where 'path' leads to a directory
             if (utils::IsDirExists(path) or not removeFromIndex.empty())
