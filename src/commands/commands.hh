@@ -15,6 +15,7 @@
 #include "utils/utils.hh"
 #include "objects/tree.hh"
 #include "objects/commit.hh"
+#include "utils/config.hh"
 #include "utils/options.hh"
 #include "utils/zlib.hh"
 

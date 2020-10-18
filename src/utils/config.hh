@@ -21,6 +21,7 @@ namespace utils
         void AddVariable (bool local, const std::pair<std::string, std::string>& kvp);
         void UnsetVariable (bool local, const std::string& value);
         std::string GetVariable (bool local, const std::string& value);
+        std::string GetVariable (const std::string& value);
 
     private:
         std::map<std::string, std::map<std::string, std::string>> _values;

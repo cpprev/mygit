@@ -10,9 +10,10 @@ namespace mygit
 
         std::string hashTreeString = "tree " + hashTree + "\n";
         std::string hashParentCommitString = (not hashParentCommit.empty()) ? ("parent " + hashParentCommit + "\n") : "";
-        /// FIXME Author / Committer
-        std::string authorString = "author FIXME Author <parse.gitconfig@later.com> Insert time HERE\n";
-        std::string committerString = "commiter FIXME Commiter <parse.gitconfig@later.com> Insert time HERE\n";;
+        std::string authorName = g_Config.GetVariable("user.name");
+        std::string authorEmail = g_Config.GetVariable("user.email");
+        std::string authorString = "author " + authorName + " <" + authorEmail + "> Insert time HERE\n";
+        std::string committerString = "comitter " + authorName + " <" + authorEmail + "> Insert time HERE\n";
         std::string commitMessageString = "\n" + opt.commitMessage + "\n";
 
         objects::Commit commit = objects::Commit(hashTreeString, hashParentCommitString, authorString, committerString, commitMessageString);

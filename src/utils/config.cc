@@ -153,4 +153,15 @@ namespace utils
 
         return _values[key1][key2];
     }
+
+    std::string Config::GetVariable (const std::string& value)
+    {
+        /// Check in local config file (.mygit/config)
+        std::string res1 = GetVariable(true, value);
+        if (not res1.empty())
+            return res1;
+        /// Check in global file (~/.mygitconfig)
+        std::string res2 = GetVariable(false, value);
+        return res2;
+    }
 }
