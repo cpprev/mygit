@@ -33,7 +33,9 @@ namespace mygit
         }
         /// Detached case
         else if (headContents.find("ref: ") == std::string::npos)
+        {
             utils::WriteFile(g_pathToRootRepo + "/.mygit/HEAD", hashCommit);
+        }
         /// Not first commit case
         else
         {

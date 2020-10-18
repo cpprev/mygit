@@ -15,6 +15,10 @@ namespace mygit
         utils::CreateDir(".mygit/refs/heads/");
         utils::CreateDir(".mygit/refs/remotes/");
 
+        /// Setup first branch
+        utils::WriteFile(".mygit/HEAD", "ref: refs/heads/master");
+        utils::CreateFile(".mygit/refs/heads/master");
+
         std::cout << "Initialized empty MyGit repository\n";
     }
 }
