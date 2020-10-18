@@ -14,7 +14,7 @@ namespace objects
     {
     public:
         Commit(const std::string& hashTree, const std::string& hashParentCommit, const std::string& author,
-                                const std::string& committer, const std::string& commitMessage);
+                                const std::string& committer, const std::string& commitMessage, const std::string& dateString);
         void SetupCommit(const std::string& hash);
         std::string ToString() const;
         std::string ToHash();

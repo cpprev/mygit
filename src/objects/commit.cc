@@ -3,10 +3,10 @@
 namespace objects
 {
     Commit::Commit(const std::string& hashTree, const std::string& hashParentCommit, const std::string& author,
-                   const std::string& committer, const std::string& commitMessage)
+                   const std::string& committer, const std::string& commitMessage, const std::string& date)
     {
         _contentsCommitToHash = hashTree;
-        _contentsCommit = hashTree + hashParentCommit + author + committer + commitMessage;
+        _contentsCommit = hashTree + hashParentCommit + author + committer + date + commitMessage;
     }
 
     void Commit::SetupCommit(const std::string& hash)

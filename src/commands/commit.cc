@@ -12,11 +12,13 @@ namespace mygit
         std::string hashParentCommitString = (not hashParentCommit.empty()) ? ("parent " + hashParentCommit + "\n") : "";
         std::string authorName = g_Config.GetVariable("user.name");
         std::string authorEmail = g_Config.GetVariable("user.email");
-        std::string authorString = "author " + authorName + " <" + authorEmail + "> Insert time HERE\n";
-        std::string committerString = "comitter " + authorName + " <" + authorEmail + "> Insert time HERE\n";
+        utils::ExitIfTrue(authorName.empty() or authorEmail.empty(), "No username or useremail found, consider using mygit config --add user.name \"...\"");
+        std::string authorString = "author " + authorName + " <" + authorEmail + ">\n";
+        std::string committerString = "comitter " + authorName + " <" + authorEmail + ">\n";
+        std::string dateString = "date " + utils::GetDate() + "\n";
         std::string commitMessageString = "\n" + opt.commitMessage + "\n";
 
-        objects::Commit commit = objects::Commit(hashTreeString, hashParentCommitString, authorString, committerString, commitMessageString);
+        objects::Commit commit = objects::Commit(hashTreeString, hashParentCommitString, authorString, committerString, commitMessageString, dateString);
         std::string hashCommit = commit.ToHash();
 
         /// Error check that there is something to commit

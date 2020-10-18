@@ -1,5 +1,6 @@
 #include "utils.hh"
 #include "config.hh"
+#include <ctime>
 
 namespace utils
 {
@@ -87,5 +88,15 @@ namespace utils
         {}
 
         return str.substr(left, right - left + 1);
+    }
+
+    std::string GetDate ()
+    {
+        char buf[96];
+        time_t now = time(0);
+        struct tm tm = *gmtime(&now);
+        strftime(buf, sizeof(buf) - 1, "%a, %d %b %Y %H:%M:%S %Z", &tm);
+        std::string str = buf;
+        return str;
     }
 }

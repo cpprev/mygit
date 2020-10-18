@@ -136,4 +136,6 @@ namespace utils
     std::string CreateDirectoriesAboveFileReturnFirstToDelete (const std::string& pathFileFromDotMyGit);
 
     std::string StripPaddingSpaces (const std::string& str);
+
+    std::string GetDate ();
 }
