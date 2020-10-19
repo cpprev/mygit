@@ -120,13 +120,11 @@ namespace mygit
         {
             GetDiffModifiedFiles(lookup, x, y, m - 1, n - 1, result, count, previousLines);
             /// FIXME For now we dont output non modified lines
-            //previousLines.emplace_back();
             if (count == 0)
                 utils::AddToNElementsList(x[m - 1], previousLines, LINES_BEFORE_DIFF);
             if (count > 0)
             {
                 result += "\033[0m\t" + x[m - 1] + "\033[0m";
-                //result += " \t" + x[m - 1] + "\033[0m";
                 count--;
             }
         }
@@ -140,7 +138,7 @@ namespace mygit
                 previousLines.pop_front();
             }
             count = LINES_BEFORE_DIFF;
-            result += "\033[1;32m+\t" + y[n - 1] + "\033[0m";
+            result += "\033[1;33m[" + std::to_string(n) + "] \033[1;32m+\t" + y[n - 1] + "\033[0m";
         }
         else if (m > 0 and (n == 0 || lookup[m][n - 1] < lookup[m - 1][n]))
         {
@@ -152,7 +150,7 @@ namespace mygit
                 previousLines.pop_front();
             }
             count = LINES_BEFORE_DIFF;
-            result += "\033[1;31m-\t" + x[m - 1] + "\033[0m";
+            result += "\033[1;33m[" + std::to_string(n) + "] \033[1;31m-\t" + x[m - 1] + "\033[0m";
         }
     }
 }
