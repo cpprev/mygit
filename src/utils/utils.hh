@@ -141,4 +141,8 @@ namespace utils
     std::string GetDate ();
 
     void AddToNElementsList(const std::string& elm, std::list<std::string>& vect, size_t maxSize);
+
+    std::string GetDateIntValue ();
+
+    std::string GetDateCommitFormat ();
 }

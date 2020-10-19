@@ -13,8 +13,9 @@ namespace mygit
         std::string authorName = g_Config.GetVariable("user.name");
         std::string authorEmail = g_Config.GetVariable("user.email");
         utils::ExitIfTrue(authorName.empty() or authorEmail.empty(), "No username or useremail found, consider using mygit config --add user.name \"...\"");
-        std::string authorString = "author " + authorName + " <" + authorEmail + ">\n";
-        std::string committerString = "comitter " + authorName + " <" + authorEmail + ">\n";
+        std::string dateCommitFormat = utils::GetDateCommitFormat();
+        std::string authorString = "author " + authorName + " <" + authorEmail + "> " + dateCommitFormat + "\n";
+        std::string committerString = "comitter " + authorName + " <" + authorEmail + "> " + dateCommitFormat + "\n";
         std::string dateString = "date " + utils::GetDate() + "\n";
         std::string commitMessageString = "\n" + opt.commitMessage + "\n";
 

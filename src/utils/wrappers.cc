@@ -90,12 +90,29 @@ namespace utils
         return str.substr(left, right - left + 1);
     }
 
+    std::string GetDateIntValue ()
+    {
+        time_t  timev;
+        time(&timev);
+        return std::to_string(timev);
+    }
+
+    std::string GetDateCommitFormat ()
+    {
+        time_t  timev;
+        time(&timev);
+        char buf[96];
+        struct tm tm = *gmtime(&timev);
+        strftime(buf, sizeof(buf) - 1, "%z", &tm);
+        return std::to_string(timev) + " " + buf;
+    }
+
     std::string GetDate ()
     {
         char buf[96];
         time_t now = time(0);
         struct tm tm = *gmtime(&now);
-        strftime(buf, sizeof(buf) - 1, "%a, %d %b %Y %H:%M:%S %Z", &tm);
+        strftime(buf, sizeof(buf) - 1, "%a, %d %b %Y %H:%M:%S %z (%Z)", &tm);
         std::string str = buf;
         return str;
     }

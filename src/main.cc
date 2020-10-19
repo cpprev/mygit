@@ -16,6 +16,9 @@ int main(int argc, char *argv[])
     utils::ExitIfTrue(utils::DoesRequireRepo(command) and g_pathToRootRepo.empty(), "You are not in a MyGit repository.");
     utils::ExitIfTrue(utils::DoesRequireOneOrMoreArguments(command) and argc <= 2, "You need to specify more parameters to this command.");
 
+    /// TODEL FIXME
+    utils::GetDate();
+
     if (command == "init")
         mygit::init();
     else if (command == "add")
