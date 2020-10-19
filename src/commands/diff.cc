@@ -10,7 +10,7 @@ namespace mygit
         std::string diffStr = diff_str();
         std::string filepath = "diffContentsTxtz19298Z2.Txt";
         utils::WriteFile(filepath, diffStr);
-        std::string command = "less -XRF " + filepath;
+        std::string command = "less -XRFf " + filepath;
         int pid = system(command.c_str());
         int status;
         waitpid(pid, &status, 0);

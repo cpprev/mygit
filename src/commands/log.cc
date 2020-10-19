@@ -8,7 +8,7 @@ namespace mygit
 
         std::string headContents = utils::GetMostRecentCommit();
         std::string currentCommit = headContents;
-        std::string output = "\033[1;32m___\033[0m\n\n";;
+        std::string output;
         while (not currentCommit.empty())
         {
             /// Read commit
@@ -30,7 +30,7 @@ namespace mygit
         std::string logStr = log_str(opt);
         std::string filepath = "logContentsTxte26727272.Txt";
         utils::WriteFile(filepath, logStr);
-        std::string command = "less -XRF " + filepath;
+        std::string command = "less -XRFf " + filepath;
         int pid = system(command.c_str());
         int status;
         waitpid(pid, &status, 0);
