@@ -5,7 +5,17 @@ namespace objects
     Blob::Blob(const std::string& pathFileFromDotMyGit, const std::string& fullPath)
     {
         _pathFileFromDotMyGit = pathFileFromDotMyGit;
-        _contentsFile = utils::ReadFile(fullPath);
+        /// FIXME IT COULD BE A CAUSE OF BUGS, HASHING THE DATE OF LAST MODIFICATION OF FILE RATHER THAN FULL CONTENTS
+        //_contentsFile = utils::ReadFile(fullPath);
+        const std::string& filename = fullPath;
+        struct stat result;
+        if(stat(filename.c_str(), &result) == 0)
+        {
+            auto mod_time = result.st_mtime;
+            //std::cout << mod_time << '\n';
+            /// We will hash the date of last modification to make it faster
+            _contentsFile = std::to_string(mod_time);
+        }
     }
 
     std::string Blob::GetContentsFile() const
