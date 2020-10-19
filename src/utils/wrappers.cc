@@ -63,14 +63,18 @@ namespace utils
     {
         std::string newStr;
         bool mark = false;
+        int countNewLine = 1;
         for (size_t i = 0; i < input.size(); i++)
         {
             if (i == 0 or mark)
-                newStr += plus ? "\033[1;32m+\t" : "\033[1;31m-\t";
+                newStr += "\033[1;33m[" + std::to_string(countNewLine) + "]" + (plus ? "\033[1;32m\t+\t" : "\033[1;31m\t-\t");
             mark = false;
             newStr += input[i];
             if (input[i] == '\n')
+            {
                 mark = true;
+                countNewLine++;
+            }
         }
         newStr += "\033[0m";
         input = newStr;
