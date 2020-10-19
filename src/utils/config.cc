@@ -102,18 +102,6 @@ namespace utils
         /// Add requested values
         _values[key1][key2] = val;
 
-        /// FIXME TODEL
-        /*std::cout << "__________________\n";
-        for (auto var : _values)
-        {
-            std::cout << "Variable: " << var.first << "\n";
-            for (auto pair : var.second)
-            {
-                std::cout << "\tkey: " << pair.first
-                          << ", value : " << pair.second << "\n";
-            }
-        }*/
-
         /// Update config
         UpdateConfig(local);
     }

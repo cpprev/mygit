@@ -7,6 +7,7 @@
 #include <cstring>
 #include <algorithm>
 #include <map>
+#include <list>
 #include <cstdlib>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -45,5 +46,5 @@ namespace mygit
     std::string diff_str ();
     std::vector<std::vector<int>> BuildLcsMatrix (const std::vector<std::string>& oldFileLines, const std::vector<std::string>& newFileLines);
     void GetDiffModifiedFiles (const std::vector<std::vector<int>>& lookup, const std::vector<std::string>& x,
-                               const std::vector<std::string>& y, int m, int n, std::string& result);
+                               const std::vector<std::string>& y, int m, int n, std::string& result, int& count, std::list<std::string>& previousLines);
 }

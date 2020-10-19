@@ -8,7 +8,7 @@ namespace mygit
 
         std::string headContents = utils::GetMostRecentCommit();
         std::string currentCommit = headContents;
-        std::string output = "\033[1;37m________________________________________________________________________\033[0m\n\n";;
+        std::string output = "\033[1;32m___\033[0m\n\n";;
         while (not currentCommit.empty())
         {
             /// Read commit
@@ -17,7 +17,7 @@ namespace mygit
             std::string contentContent = objects::GetContentBlobDecompressed(commitRawContent);
 
             output += "\033[1;33mcommit " + currentCommit + "\033[0m\n\033[1;34m" + contentContent +
-                    "\033[1;37m________________________________________________________________________\033[0m\n\n";
+                    "\033[1;32m___\033[0m\n\n";
 
             /// Update commit
             currentCommit = objects::ExtractParentCommit(contentContent);
@@ -27,6 +27,15 @@ namespace mygit
 
     void log(const options::LogOptions& opt)
     {
-        std::cout << log_str(opt) << "\n";
+        std::string logStr = log_str(opt);
+        std::string filepath = "logContentsTxte26727272.Txt";
+        utils::WriteFile(filepath, logStr);
+        std::string command = "less -XRF " + filepath;
+        int pid = system(command.c_str());
+        int status;
+        waitpid(pid, &status, 0);
+        remove(filepath.c_str());
+
+        //std::cout << log_str(opt) << "\n";
     }
 }

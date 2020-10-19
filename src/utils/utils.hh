@@ -14,6 +14,7 @@
 #include <openssl/sha.h>
 #include <cstdio>
 #include <cstring>
+#include <list>
 #include <cstdlib>
 #include <fnmatch.h>
 #include <err.h>
@@ -138,4 +139,6 @@ namespace utils
     std::string StripPaddingSpaces (const std::string& str);
 
     std::string GetDate ();
+
+    void AddToNElementsList(const std::string& elm, std::list<std::string>& vect, size_t maxSize);
 }

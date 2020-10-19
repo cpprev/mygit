@@ -99,4 +99,15 @@ namespace utils
         std::string str = buf;
         return str;
     }
+
+    void AddToNElementsList (const std::string& elm, std::list<std::string>& li, size_t maxSize)
+    {
+        if (li.size() < maxSize)
+            li.emplace_back(elm);
+        else
+        {
+            li.push_back(elm);
+            li.pop_front();
+        }
+    }
 }

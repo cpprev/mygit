@@ -1,12 +1,22 @@
 #include "commands.hh"
 
+#define LINES_BEFORE_DIFF 4
+
 namespace mygit
 {
 
     void diff ()
     {
         std::string diffStr = diff_str();
-        std::cout << diffStr << "\n";
+        std::string filepath = "diffContentsTxtz19298Z2.Txt";
+        utils::WriteFile(filepath, diffStr);
+        std::string command = "less -XRF " + filepath;
+        int pid = system(command.c_str());
+        int status;
+        waitpid(pid, &status, 0);
+        remove(filepath.c_str());
+
+        //std::cout << diffStr << "\n";
     }
 
     std::string diff_str ()
@@ -44,7 +54,9 @@ namespace mygit
                     std::vector<std::string> newLines = utils::GetLinesAsVect(contentsWd);
                     std::vector<std::vector<int>> LCSMatrix = BuildLcsMatrix(oldLines, newLines);
                     std::string result;
-                    GetDiffModifiedFiles(LCSMatrix, oldLines, newLines, oldLines.size(), newLines.size(), result);
+                    int count = 0;
+                    std::list<std::string> previousLines;
+                    GetDiffModifiedFiles(LCSMatrix, oldLines, newLines, oldLines.size(), newLines.size(), result, count, previousLines);
                     output += "\033[1;32m[" + wdFileFromActualPos + "]\033[0m\n\n" + result + "\n";
                 }
             }
@@ -102,21 +114,44 @@ namespace mygit
     }
 
     void GetDiffModifiedFiles (const std::vector<std::vector<int>>& lookup, const std::vector<std::string>& x,
-                               const std::vector<std::string>& y, int m, int n, std::string& result)
+                               const std::vector<std::string>& y, int m, int n, std::string& result, int& count, std::list<std::string>& previousLines)
     {
         if (m > 0 and n > 0 and x[m - 1] == y[n - 1])
         {
-            GetDiffModifiedFiles(lookup, x, y, m - 1, n - 1, result);
-            result += " \t" + x[m - 1] + "\033[0m";
+            GetDiffModifiedFiles(lookup, x, y, m - 1, n - 1, result, count, previousLines);
+            /// FIXME For now we dont output non modified lines
+            //previousLines.emplace_back();
+            if (count == 0)
+                utils::AddToNElementsList(x[m - 1], previousLines, LINES_BEFORE_DIFF);
+            if (count > 0)
+            {
+                result += "\033[0m\t" + x[m - 1] + "\033[0m";
+                //result += " \t" + x[m - 1] + "\033[0m";
+                count--;
+            }
         }
         else if (n > 0 and (m == 0 || lookup[m][n - 1] >= lookup[m - 1][n]))
         {
-            GetDiffModifiedFiles(lookup, x, y, m, n - 1, result);
+            GetDiffModifiedFiles(lookup, x, y, m, n - 1, result, count, previousLines);
+
+            while (not previousLines.empty())
+            {
+                result += "\033[0m\t" + previousLines.front() + "\033[0m";
+                previousLines.pop_front();
+            }
+            count = LINES_BEFORE_DIFF;
             result += "\033[1;32m+\t" + y[n - 1] + "\033[0m";
         }
         else if (m > 0 and (n == 0 || lookup[m][n - 1] < lookup[m - 1][n]))
         {
-            GetDiffModifiedFiles(lookup, x, y, m - 1, n, result);
+            GetDiffModifiedFiles(lookup, x, y, m - 1, n, result, count, previousLines);
+
+            while (not previousLines.empty())
+            {
+                result += "\033[0m\t" + previousLines.front() + "\033[0m";
+                previousLines.pop_front();
+            }
+            count = LINES_BEFORE_DIFF;
             result += "\033[1;31m-\t" + x[m - 1] + "\033[0m";
         }
     }
