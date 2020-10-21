@@ -38,7 +38,7 @@ namespace mygit
                 if (not utils::IsFileExists(blobPath))
                 {
                     std::string hashExBlob = indexEntriesAsMap[wdFile];
-                    std::string exBlobPath = utils::PathToObjectFile(hash);
+                    std::string exBlobPath = utils::PathToObjectFile(hashExBlob);
                     std::string contentsBlob = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(exBlobPath)));
                     std::string contentsWd = utils::ReadFile(wdFileFromActualPos);
 
