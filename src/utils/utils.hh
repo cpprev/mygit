@@ -54,7 +54,7 @@ namespace utils
 
     void WriteFile (const std::string& path, const std::string& str);
 
-    std::string RemoveUselessCharInPath (const std::string& path);
+    std::string CleanPath (const std::string& path);
 
     std::string GetCwd ();
 

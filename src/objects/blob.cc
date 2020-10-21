@@ -38,7 +38,7 @@ namespace objects
             utils::CreateDir(blobDirName);
 
         /// Fill in the contents of the blob (compressed file)
-        std::string blobFilePath = blobDirName + "/" + hash.substr(2);
+        std::string blobFilePath = utils::PathToObjectFile(hash);
 
         /// Sets the blob metadata
         std::string blob_data = "type=blob\nfilepath=" + blob.GetPathFromDotMyGit() + "\nsize=" + std::to_string(blob.GetContentsFile().size()) + "\n\n" + blob.GetContentsFile();

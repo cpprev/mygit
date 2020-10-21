@@ -67,7 +67,7 @@ namespace utils
         myfile.close();
     }
 
-    std::string RemoveUselessCharInPath (const std::string& path)
+    std::string CleanPath (const std::string& path)
     {
         std::string newPath;
         size_t i = 0;
@@ -93,6 +93,8 @@ namespace utils
             else
                 newPath += path[i++];
         }
+        if (newPath.empty() or newPath == ".")
+            return "./";
         return newPath;
     }
 
@@ -114,7 +116,7 @@ namespace utils
             pathToFile = ".";
 
         /// Create dirs if not already here
-        std::string dirToRemove = CreateDirectoriesAboveFileReturnFirstToDelete(RemoveUselessCharInPath(pathToFileCpy));
+        std::string dirToRemove = CreateDirectoriesAboveFileReturnFirstToDelete(CleanPath(pathToFileCpy));
 
         utils::ChangeDirWrapper(pathToFile);
 
@@ -136,12 +138,12 @@ namespace utils
         }
 
         if (cwd == rootWD)
-            return RemoveUselessCharInPath(filename);
+            return CleanPath(filename);
 
         size_t ind_diff = cwd.find(rootWD) + rootWD.size() + 1;
         std::string diff = cwd.substr(ind_diff);
 
-        return RemoveUselessCharInPath(diff + '/' + filename);
+        return CleanPath(diff + '/' + filename);
     }
 
     std::string CutFileInPath(std::string& pathRelativeToYouLong)
@@ -192,7 +194,7 @@ namespace utils
         //std::cout << "FROM: " << pathRelativeToYouLongCpy << ", newpath: " << pathRelativeToYouLong << ", filename: " << fileName << "\n";
 
         /// Create dirs if not already here
-        std::string dirToRemove = CreateDirectoriesAboveFileReturnFirstToDelete(RemoveUselessCharInPath(pathRelativeToYouLongCpy));
+        std::string dirToRemove = CreateDirectoriesAboveFileReturnFirstToDelete(CleanPath(pathRelativeToYouLongCpy));
 
         utils::ChangeDirWrapper(pathRelativeToYouLong);
 
@@ -218,7 +220,7 @@ namespace utils
         {
             size_t ind_diff = cwd2.find(cwd) + cwd.size() + 1;
             std::string res = cwd2.substr(ind_diff);
-            return utils::RemoveUselessCharInPath(res + "/" + fileName);
+            return utils::CleanPath(res + "/" + fileName);
         }
         else
         {
@@ -229,7 +231,7 @@ namespace utils
                 res += "../";
                 diffHeight--;
             }
-            return utils::RemoveUselessCharInPath(res + fileName);
+            return utils::CleanPath(res + fileName);
         }
         return "";
     }
@@ -318,7 +320,7 @@ namespace utils
                     continue;
 
                 if (IsFileExists(new_path))
-                    files.push_back(RemoveUselessCharInPath(new_path));
+                    files.push_back(CleanPath(new_path));
 
                 DIR *tstdir = opendir(new_path.c_str());
                 if (tstdir != nullptr)

@@ -7,7 +7,7 @@ namespace mygit
         for (const auto& path : opt.pathArguments)
         {
             /// Handle git add of deleted files
-            std::string pathRelativeToDotMyGit = utils::RemoveUselessCharInPath(utils::GetPathRelativeToDotMyGit(path));
+            std::string pathRelativeToDotMyGit = utils::CleanPath(utils::GetPathRelativeToDotMyGit(path));
             //std::cout << "path: " << pathRelativeToDotMyGit << '\n';
             std::vector<std::string> indexEntries = utils::ReadIndexAndGetEntriesIndexAsList();
             std::vector<std::string> removeFromIndex;

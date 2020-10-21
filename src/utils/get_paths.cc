@@ -4,61 +4,61 @@ namespace utils
 {
     std::string PathToRootRepo ()
     {
-        return g_pathToRootRepo + "/";
+        return CleanPath(g_pathToRootRepo + "/");
     }
 
     std::string PathToHEAD ()
     {
-        return PathToRootRepo() + "/.mygit/HEAD";
+        return CleanPath(PathToRootRepo() + "/.mygit/HEAD");
     }
 
     std::string PathToIndex ()
     {
-        return PathToRootRepo() + "/.mygit/index";
+        return CleanPath(PathToRootRepo() + "/.mygit/index");
     }
 
     std::string PathToLocalConfig ()
     {
-        return PathToRootRepo() + "/.mygit/config";
+        return CleanPath(PathToRootRepo() + "/.mygit/config");
     }
 
     std::string PathToGlobalConfig ()
     {
-        return std::string(getenv("HOME")) + "/.mygitconfig";
+        return CleanPath(std::string(getenv("HOME")) + "/.mygitconfig");
     }
 
     std::string PathToGitIgnore ()
     {
-        return PathToRootRepo() + "/.mygitignore";
+        return CleanPath(PathToRootRepo() + "/.mygitignore");
     }
 
     std::string PathToRefsHeads ()
     {
-        return PathToRootRepo() + "/.mygit/refs/heads";
+        return CleanPath(PathToRootRepo() + "/.mygit/refs/heads");
     }
 
     std::string PathToBranch (const std::string& branchName)
     {
-        return PathToRootRepo() + "/.mygit/refs/heads/" + branchName;
+        return CleanPath(PathToRootRepo() + "/.mygit/refs/heads/" + branchName);
     }
 
     std::string PathToObjectDir (const std::string& hash)
     {
-        return PathToRootRepo() + "/.mygit/objects/" + hash.substr(0, 2);
+        return CleanPath(PathToRootRepo() + "/.mygit/objects/" + hash.substr(0, 2));
     }
 
     std::string PathToObjectFile (const std::string& hash)
     {
-        return PathToRootRepo() + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+        return CleanPath(PathToRootRepo() + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2));
     }
 
     std::string AppendPathToRootRepo (const std::string& path)
     {
-        return PathToRootRepo() + "/" + path;
+        return CleanPath(PathToRootRepo() + "/" + path);
     }
 
     std::string AppendPathToDotMyGit (const std::string& path)
     {
-        return PathToRootRepo() + "/.mygit/" + path;
+        return CleanPath(PathToRootRepo() + "/.mygit/" + path);
     }
 }

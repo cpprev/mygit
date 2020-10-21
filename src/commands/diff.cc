@@ -74,7 +74,8 @@ namespace mygit
                     std::string pathToBlob = utils::PathToObjectFile(hashBlob);
                     std::string contents = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathToBlob)));
                     utils::AddDiffCharacterBeforeLine(contents, false);
-                    output += "\033[1;31m[" + utils::GetPathRelativeToYourself(utils::RemoveUselessCharInPath(utils::AppendPathToRootRepo(indexEntry))) + "]\033[0m\n\n" + contents + "\n";
+                    output += "\033[1;31m[" + utils::GetPathRelativeToYourself(
+                            utils::CleanPath(utils::AppendPathToRootRepo(indexEntry))) + "]\033[0m\n\n" + contents + "\n";
                 }
             }
         }

@@ -45,7 +45,7 @@ namespace mygit
             if (std::find(workDirEntries.begin(), workDirEntries.end(), indEntry) == workDirEntries.end())
             {
                 if (not utils::IsFileExcluded(indEntry))
-                    output += "\033[0;31m\tDeleted:\t" + utils::GetPathRelativeToYourself(utils::RemoveUselessCharInPath(utils::AppendPathToRootRepo(indEntry))) + "\033[0m\n";
+                    output += "\033[0;31m\tDeleted:\t" + utils::GetPathRelativeToYourself(utils::CleanPath(utils::AppendPathToRootRepo(indEntry))) + "\033[0m\n";
             }
         }
         output += "\n";

@@ -29,7 +29,7 @@ namespace objects
             utils::CreateDir(treeDirName);
 
         /// Fill in the contents of the blob (compressed file)
-        std::string treeFilePath = treeDirName + "/" + _hash.substr(2);
+        std::string treeFilePath = utils::PathToObjectFile(_hash);
 
         /// Sets the tree metadata
         std::string tree_data = "type=tree\nsize=" + std::to_string(_treeContents.size()) + "\n\n" + _treeContents;
@@ -72,7 +72,7 @@ namespace objects
             if (curDir.empty())
                 curDirPos = filename.find(curDir);
             else
-                curDirPos = filename.find(utils::RemoveUselessCharInPath(curDir + "/"));
+                curDirPos = filename.find(utils::CleanPath(curDir + "/"));
             if (curDirPos != std::string::npos)
             {
                 std::string toLevelSlash;
