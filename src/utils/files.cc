@@ -122,7 +122,7 @@ namespace utils
 
         std::string cwd = GetCwd();
 
-        utils::ChangeDirWrapper(g_pathToRootRepo);
+        utils::ChangeDirWrapper(utils::PathToRootRepo());
 
         std::string rootWD = GetCwd();
 
@@ -372,7 +372,7 @@ namespace utils
     std::vector<std::string> GetWorkingDirectoryFiles ()
     {
         std::vector<std::string> files;
-        IterateDir(g_pathToRootRepo, files);
+        IterateDir(utils::PathToRootRepo(), files);
         return files;
     }
 
