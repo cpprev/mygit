@@ -8,8 +8,8 @@ namespace utils
 
     std::string Config::GetPathToConfigFile(bool local)
     {
-        return local ? (g_pathToRootRepo + "/.mygit/config")
-                                 : (std::string(getenv("HOME")) + "/.mygitconfig");
+        return local ? utils::PathToLocalConfig()
+                     : utils::PathToGlobalConfig();
     }
 
     std::string Config::ReadConfigFile (bool local)

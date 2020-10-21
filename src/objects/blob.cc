@@ -33,7 +33,7 @@ namespace objects
     void SetupBlob(const objects::Blob& blob, const std::string& hash)
     {
         /// Store the blob
-        std::string blobDirName = g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2);
+        std::string blobDirName = utils::PathToObjectDir(hash);
         if (not utils::IsDirExists(blobDirName))
             utils::CreateDir(blobDirName);
 

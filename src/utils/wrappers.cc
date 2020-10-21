@@ -19,7 +19,7 @@ namespace utils
     void SetGlobalVariables ()
     {
         g_pathToRootRepo = utils::FindPathToRootRepo();
-        std::string myGitIgnoreContents = utils::ReadFile(g_pathToRootRepo + "/.mygitignore");
+        std::string myGitIgnoreContents = utils::ReadFile(utils::PathToGitIgnore());
         g_myGitIgnorePatterns = utils::ReadMyGitIgnorePatterns(myGitIgnoreContents);
         g_Config = utils::Config();
     }

@@ -278,7 +278,7 @@ namespace utils
 
     std::map<std::string, std::string> ReadIndexAndGetEntries ()
     {
-        std::string indexContents = utils::ReadFile(g_pathToRootRepo + "/.mygit/index");
+        std::string indexContents = utils::ReadFile(PathToIndex());
         std::string decompressed;
         if (not indexContents.empty())
             decompressed = utils::DecompressString(indexContents);
@@ -287,7 +287,7 @@ namespace utils
 
     std::vector<std::string> ReadIndexAndGetEntriesIndexAsList ()
     {
-        std::string indexContents = utils::ReadFile(g_pathToRootRepo + "/.mygit/index");
+        std::string indexContents = utils::ReadFile(PathToIndex());
         std::string decompressed;
         if (not indexContents.empty())
             decompressed = utils::DecompressString(indexContents);
@@ -383,7 +383,7 @@ namespace utils
 
     std::string ReadHEAD()
     {
-        std::string contents = ReadFile(g_pathToRootRepo + "/.mygit/HEAD");
+        std::string contents = ReadFile(PathToHEAD());
         return contents;
     }
 
@@ -514,15 +514,15 @@ namespace utils
         return std::find(branches.begin(), branches.end(), branchName) != branches.end();
     }
 
-    bool IsCommitObject (const std::string& commitName)
+    bool IsCommitObject (const std::string& commitHash)
     {
         /// commitName could be a commit or a branch
         std::vector<std::string> branches = utils::ListBranches();
         /// Branch case
-        if (std::find(branches.begin(), branches.end(), commitName) != branches.end())
+        if (std::find(branches.begin(), branches.end(), commitHash) != branches.end())
             return true;
         /// Commit case (detached head)
-        std::string commitPath = g_pathToRootRepo + "/.mygit/objects/" + commitName.substr(0, 2) + "/" + commitName.substr(2);
+        std::string commitPath = utils::PathToObjectFile(commitHash);
         if (IsFileExists(commitPath))
             return true;
         return false;
@@ -533,7 +533,7 @@ namespace utils
         /// Branch case
         if (CheckBranchExists(commitOrBranch))
         {
-            std::string commitPath = g_pathToRootRepo + "/.mygit/refs/heads/" + commitOrBranch;
+            std::string commitPath = utils::PathToBranch(commitOrBranch);
             return ReadFile(commitPath);
         }
         /// Commit case
@@ -542,7 +542,7 @@ namespace utils
 
     std::string GetTreeHashFromCommit (const std::string& commitHash)
     {
-        std::string commitPath = g_pathToRootRepo + "/.mygit/objects/" + commitHash.substr(0, 2) + "/" + commitHash.substr(2);
+        std::string commitPath = utils::PathToObjectFile(commitHash);
         std::string rawContents = utils::ReadFile(commitPath);
 
         utils::ExitIfTrue(rawContents.empty(), "Commit contents = empty (GetTreeHashFromCommit method).");
@@ -584,7 +584,7 @@ namespace utils
             {
                 objects::Blob blob = objects::Blob(wdFile, wdFileFromActualPos);
                 std::string hash = blob.ToHash();
-                std::string blobPath = g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+                std::string blobPath = utils::PathToObjectFile(hash);
                 if (not utils::IsFileExists(blobPath))
                     return false;
             }

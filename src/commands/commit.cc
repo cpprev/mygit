@@ -23,7 +23,7 @@ namespace mygit
         std::string hashCommit = commit.ToHash();
 
         /// Error check that there is something to commit
-        std::string pathToCommit = g_pathToRootRepo + "/.mygit/objects/" + hashCommit.substr(0, 2) + "/" + hashCommit.substr(2);
+        std::string pathToCommit = utils::PathToObjectFile(hashCommit);
         utils::ExitIfTrue(utils::IsFileExists(pathToCommit), "Nothing to commit.");
 
         commit.SetupCommit(hashCommit);
@@ -31,13 +31,13 @@ namespace mygit
         /// First commit case
         if (headContents.empty())
         {
-            utils::WriteFile(g_pathToRootRepo + "/.mygit/HEAD", "ref: refs/heads/master");
-            utils::WriteFile(g_pathToRootRepo + "/.mygit/refs/heads/master", hashCommit);
+            utils::WriteFile(utils::PathToHEAD(), "ref: refs/heads/master");
+            utils::WriteFile(utils::PathToBranch("master"), hashCommit);
         }
         /// Detached case
         else if (headContents.find("ref: ") == std::string::npos)
         {
-            utils::WriteFile(g_pathToRootRepo + "/.mygit/HEAD", hashCommit);
+            utils::WriteFile(utils::PathToHEAD(), hashCommit);
         }
         /// Not first commit case
         else

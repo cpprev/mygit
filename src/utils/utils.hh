@@ -116,7 +116,7 @@ namespace utils
 
     bool CheckBranchExists (const std::string& branchName);
 
-    bool IsCommitObject (const std::string& commitName);
+    bool IsCommitObject (const std::string& commitHash);
 
     std::string GetCommitHash (const std::string& commitOrBranch);
 
@@ -147,4 +147,20 @@ namespace utils
     std::string GetDateCommitFormat ();
 
     void LessCommandWrapper (const std::string& contents);
+
+    std::string PathToHEAD ();
+
+    std::string PathToIndex ();
+
+    std::string PathToLocalConfig ();
+
+    std::string PathToGlobalConfig ();
+
+    std::string PathToGitIgnore ();
+
+    std::string PathToBranch (const std::string& branchName);
+
+    std::string PathToObjectDir (const std::string& hash);
+
+    std::string PathToObjectFile (const std::string& hash);
 }

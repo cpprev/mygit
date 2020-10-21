@@ -45,7 +45,7 @@ namespace mygit
                 std::string file = wantedEntry.first;
                 std::string hash = wantedEntry.second;
 
-                std::string pathFile = g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+                std::string pathFile = utils::PathToObjectFile(hash);
                 std::string fileContents = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathFile)));
                 //std::cout << "dst: " << file << ' ' << hash << '\n';
 
@@ -84,15 +84,15 @@ namespace mygit
                 indexUpdate += wantedEntry.second + ' ' + wantedEntry.first + '\n';
             }
             std::string compressedIndex = utils::CompressString(indexUpdate);
-            utils::WriteFile(g_pathToRootRepo + "/.mygit/index", compressedIndex);
+            utils::WriteFile(utils::PathToIndex(), compressedIndex);
 
             /// Update HEAD
             /// Is branchname case
             if (utils::CheckBranchExists(opt.commitToCheckoutOn))
-                utils::WriteFile(g_pathToRootRepo + "/.mygit/HEAD", "ref: refs/heads/" + opt.commitToCheckoutOn);
+                utils::WriteFile(utils::PathToHEAD(), "ref: refs/heads/" + opt.commitToCheckoutOn);
             /// Commit hash case
             else
-                utils::WriteFile(g_pathToRootRepo + "/.mygit/HEAD", opt.commitToCheckoutOn);
+                utils::WriteFile(utils::PathToHEAD(), opt.commitToCheckoutOn);
         }
     }
 }

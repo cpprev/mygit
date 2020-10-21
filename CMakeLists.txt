@@ -34,6 +34,7 @@ set(SRC_FILES
         src/utils/sha1.cc
         src/utils/options.cc
         src/utils/config.cc
+        src/utils/get_paths.cc
 
         # Objects
         src/objects/blob.cc

@@ -26,7 +26,7 @@ namespace mygit
             {
                 objects::Blob blob = objects::Blob(wdFile, wdFileFromActualPos);
                 std::string hash = blob.ToHash();
-                std::string blobPath = g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+                std::string blobPath = utils::PathToObjectFile(hash);
                 if (not utils::IsFileExists(blobPath))
                 {
                     output += "\033[0;31m\tModified:\t" + wdFileFromActualPos + "\033[0m\n";

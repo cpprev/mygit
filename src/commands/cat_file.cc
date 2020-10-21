@@ -5,7 +5,7 @@ namespace mygit
     void cat_file (const options::CatFileOptions& opt)
     {
         std::string hash = opt.first_param;
-        std::string hashPath = g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + '/' + hash.substr(2);
+        std::string hashPath = utils::PathToObjectFile(hash);
 
         /// Error checking
         utils::ExitIfTrue(not utils::IsFileExists(hashPath), "Object is not present in .mygit/objects directory.");

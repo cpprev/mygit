@@ -7,20 +7,20 @@ namespace mygit
         (void) opt;
 
         std::string headContents = utils::GetMostRecentCommit();
-        std::string currentCommit = headContents;
+        std::string currentCommitHash = headContents;
         std::string output;
-        while (not currentCommit.empty())
+        while (not currentCommitHash.empty())
         {
             /// Read commit
-            std::string commitPath = g_pathToRootRepo + "/.mygit/objects/" + currentCommit.substr(0, 2) + "/" + currentCommit.substr(2);
+            std::string commitPath = utils::PathToObjectFile(currentCommitHash);
             std::string commitRawContent = utils::DecompressString(utils::ReadFile(commitPath));
             std::string contentContent = objects::GetContentBlobDecompressed(commitRawContent);
 
-            output += "\033[1;33mcommit " + currentCommit + "\033[0m\n\033[1;34m" + contentContent +
-                    "\033[1;32m___\033[0m\n\n";
+            output += "\033[1;33mcommit " + currentCommitHash + "\033[0m\n\033[1;34m" + contentContent +
+                      "\033[1;32m___\033[0m\n\n";
 
             /// Update commit
-            currentCommit = objects::ExtractParentCommit(contentContent);
+            currentCommitHash = objects::ExtractParentCommit(contentContent);
         }
         return output;
     }

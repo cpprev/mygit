@@ -34,11 +34,11 @@ namespace mygit
             {
                 objects::Blob blob = objects::Blob(wdFile, wdFileFromActualPos);
                 std::string hash = blob.ToHash();
-                std::string blobPath = g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+                std::string blobPath = utils::PathToObjectFile(hash);
                 if (not utils::IsFileExists(blobPath))
                 {
                     std::string hashExBlob = indexEntriesAsMap[wdFile];
-                    std::string exBlobPath = g_pathToRootRepo + "/.mygit/objects/" + hashExBlob.substr(0, 2) + "/" + hashExBlob.substr(2);
+                    std::string exBlobPath = utils::PathToObjectFile(hash);
                     std::string contentsBlob = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(exBlobPath)));
                     std::string contentsWd = utils::ReadFile(wdFileFromActualPos);
 
@@ -71,7 +71,7 @@ namespace mygit
                 if (not utils::IsFileExcluded(indexEntry))
                 {
                     std::string hashBlob = indexEntriesAsMap[indexEntry];
-                    std::string pathToBlob = g_pathToRootRepo + "/.mygit/objects/" + hashBlob.substr(0, 2) + "/" + hashBlob.substr(2);
+                    std::string pathToBlob = utils::PathToObjectFile(hashBlob);
                     std::string contents = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathToBlob)));
                     utils::AddDiffCharacterBeforeLine(contents, false);
                     output += "\033[1;31m[" + utils::GetPathRelativeToYourself(utils::RemoveUselessCharInPath(g_pathToRootRepo + "/" + indexEntry)) + "]\033[0m\n\n" + contents + "\n";

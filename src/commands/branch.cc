@@ -22,7 +22,7 @@ namespace mygit
             std::string latestCommit = utils::GetMostRecentCommit();
 
             /// Write it to .mygit/refs/heads/BRANCH_NAME
-            std::string branchPath = g_pathToRootRepo + "/.mygit/refs/heads/" + opt.branchToCreate;
+            std::string branchPath = utils::PathToBranch(opt.branchToCreate);
             utils::WriteFile(branchPath, latestCommit);
             
         }
@@ -35,7 +35,7 @@ namespace mygit
             utils::ExitIfTrue(not utils::CheckBranchExists(opt.branchToDelete), "Branch \'" + opt.branchToDelete + "\' does not exist.");
 
             /// Remove branch
-            std::string branchPath = g_pathToRootRepo + "/.mygit/refs/heads/" + opt.branchToDelete;
+            std::string branchPath = utils::PathToBranch(opt.branchToDelete);
             remove(branchPath.c_str());
         }
     }

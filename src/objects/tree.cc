@@ -24,7 +24,7 @@ namespace objects
     void Tree::SetupTree()
     {
         /// Store the tree
-        std::string treeDirName = g_pathToRootRepo + "/.mygit/objects/" + _hash.substr(0, 2);
+        std::string treeDirName = utils::PathToObjectDir(_hash);
         if (not utils::IsDirExists(treeDirName))
             utils::CreateDir(treeDirName);
 
@@ -109,7 +109,7 @@ namespace objects
 
     std::string Tree::ReadTreeFromHash (const std::string& treeHash)
     {
-        std::string treePath = g_pathToRootRepo + "/.mygit/objects/" + treeHash.substr(0, 2) + "/" + treeHash.substr(2);
+        std::string treePath = utils::PathToObjectFile(treeHash);
         std::string rawContents = utils::ReadFile(treePath);
         utils::ExitIfTrue(rawContents.empty(), "Tree contents should not be empty (TreeHashToEntryMap).");
         return objects::GetContentBlobDecompressed(utils::DecompressString(rawContents));

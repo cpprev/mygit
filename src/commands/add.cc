@@ -67,7 +67,7 @@ namespace mygit
         }
 
         /// Read contents of 'index' file
-        std::string indexPath = g_pathToRootRepo + ".mygit/index";
+        std::string indexPath = utils::PathToIndex();
         std::string contents = utils::ReadFile(indexPath);
 
         /// Decompress .mygit/index file

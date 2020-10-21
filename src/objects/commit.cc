@@ -12,12 +12,12 @@ namespace objects
     void Commit::SetupCommit(const std::string& hash)
     {
         /// Store the commit
-        std::string commitDirName = g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2);
+        std::string commitDirName = utils::PathToObjectDir(hash);
         if (not utils::IsDirExists(commitDirName))
             utils::CreateDir(commitDirName);
 
         /// Fill in the contents of the commit (compressed file)
-        std::string commitFilePath = commitDirName + "/" + hash.substr(2);
+        std::string commitFilePath = utils::PathToObjectFile(hash);
 
         /// Sets the commit metadata
         std::string commit_data = "type=commit\nsize=" + std::to_string(_contentsCommit.size()) + "\n\n" + _contentsCommit;
