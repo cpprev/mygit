@@ -42,7 +42,7 @@ namespace mygit
         /// Not first commit case
         else
         {
-            std::string branchPath = g_pathToRootRepo + "/.mygit/" + utils::ReadBranchPathInHead(headContents);
+            std::string branchPath = utils::AppendPathToDotMyGit(utils::ReadBranchPathInHead(headContents));
             utils::WriteFile(branchPath, hashCommit);
         }
 

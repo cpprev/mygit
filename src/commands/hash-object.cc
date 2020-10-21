@@ -14,7 +14,7 @@ namespace mygit
             std::string contentsFile = utils::ReadFile(filename);
             std::string pathFileFromDotMyGit = utils::GetPathRelativeToDotMyGit(filename);
 
-            objects::Blob blob = objects::Blob(pathFileFromDotMyGit, g_pathToRootRepo + '/' + pathFileFromDotMyGit);
+            objects::Blob blob = objects::Blob(pathFileFromDotMyGit, utils::AppendPathToRootRepo(pathFileFromDotMyGit));
             std::string hash = blob.ToHash();
             std::cout << hash << "\n";
 

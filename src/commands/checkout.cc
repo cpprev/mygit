@@ -50,7 +50,7 @@ namespace mygit
                 //std::cout << "dst: " << file << ' ' << hash << '\n';
 
                 auto it = entryHead.find(file);
-                std::string pathFileFromDotMyGit = utils::RemoveUselessCharInPath(g_pathToRootRepo + "/" + file);
+                std::string pathFileFromDotMyGit = utils::RemoveUselessCharInPath(utils::AppendPathToRootRepo(file));
                 /// Case where we need to add a file
                 if (it == entryHead.end())
                 {
@@ -68,7 +68,7 @@ namespace mygit
                 auto it = entryDst.find(file);
                 if (it == entryDst.end())
                 {
-                    std::string pathFileFromDotMyGit = utils::RemoveUselessCharInPath(g_pathToRootRepo + "/" + file);
+                    std::string pathFileFromDotMyGit = utils::RemoveUselessCharInPath(utils::AppendPathToRootRepo(file));
                     remove(pathFileFromDotMyGit.c_str());
 
                     /// If dir containing file is empty, delete it

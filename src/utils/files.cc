@@ -410,7 +410,7 @@ namespace utils
         if (not redirect.empty())
         {
             /// Case where latest commit is in ref dir
-            std::string readRedirect = ReadFile(g_pathToRootRepo + "/.mygit/" + redirect);
+            std::string readRedirect = ReadFile(utils::AppendPathToDotMyGit(redirect));
             //std::cout << redirect<< ' '<< readRedirect << "\n";
             return readRedirect;
         }
@@ -450,7 +450,7 @@ namespace utils
     std::vector<std::string> ListBranches ()
     {
         std::string cwd = GetCwd();
-        std::string pathToRefs = "./" + g_pathToRootRepo + "/.mygit/refs/heads/.";
+        std::string pathToRefs = utils::PathToRefsHeads();
 
         std::vector<std::string> res;
         DIR *dir = opendir(pathToRefs.c_str());

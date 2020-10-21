@@ -2,19 +2,24 @@
 
 namespace utils
 {
+    std::string PathToRootRepo ()
+    {
+        return g_pathToRootRepo + "/";
+    }
+
     std::string PathToHEAD ()
     {
-        return g_pathToRootRepo + "/.mygit/HEAD";
+        return PathToRootRepo() + "/.mygit/HEAD";
     }
 
     std::string PathToIndex ()
     {
-        return g_pathToRootRepo + "/.mygit/index";
+        return PathToRootRepo() + "/.mygit/index";
     }
 
     std::string PathToLocalConfig ()
     {
-        return g_pathToRootRepo + "/.mygit/config";
+        return PathToRootRepo() + "/.mygit/config";
     }
 
     std::string PathToGlobalConfig ()
@@ -24,21 +29,36 @@ namespace utils
 
     std::string PathToGitIgnore ()
     {
-        return g_pathToRootRepo + "/.mygitignore";
+        return PathToRootRepo() + "/.mygitignore";
+    }
+
+    std::string PathToRefsHeads ()
+    {
+        return PathToRootRepo() + "/.mygit/refs/heads";
     }
 
     std::string PathToBranch (const std::string& branchName)
     {
-        return g_pathToRootRepo + "/.mygit/refs/heads/" + branchName;
+        return PathToRootRepo() + "/.mygit/refs/heads/" + branchName;
     }
 
     std::string PathToObjectDir (const std::string& hash)
     {
-        return g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2);
+        return PathToRootRepo() + "/.mygit/objects/" + hash.substr(0, 2);
     }
 
     std::string PathToObjectFile (const std::string& hash)
     {
-        return g_pathToRootRepo + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+        return PathToRootRepo() + "/.mygit/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+    }
+
+    std::string AppendPathToRootRepo (const std::string& path)
+    {
+        return PathToRootRepo() + "/" + path;
+    }
+
+    std::string AppendPathToDotMyGit (const std::string& path)
+    {
+        return PathToRootRepo() + "/.mygit/" + path;
     }
 }

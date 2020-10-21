@@ -49,7 +49,7 @@ namespace objects
     std::string CreateBlob (const std::string& pathFileFromDotMyGit)
     {
         /// Create the blob and generate the hash from it
-        objects::Blob blob = objects::Blob(pathFileFromDotMyGit, g_pathToRootRepo + '/' + pathFileFromDotMyGit);
+        objects::Blob blob = objects::Blob(pathFileFromDotMyGit, utils::AppendPathToRootRepo(pathFileFromDotMyGit));
         std::string hash = blob.ToHash();
 
         /// Setup blob (directory and file filling)

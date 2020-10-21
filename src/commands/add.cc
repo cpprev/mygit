@@ -14,7 +14,7 @@ namespace mygit
             for (const auto& indEntry : indexEntries)
             {
                 //std::cout << indEntry << " " << pathRelativeToDotMyGit << '\n';
-                if (not utils::IsFileExists(g_pathToRootRepo + "/" + indEntry)
+                if (not utils::IsFileExists(utils::AppendPathToRootRepo(indEntry))
                 and (indEntry == pathRelativeToDotMyGit or indEntry.find(pathRelativeToDotMyGit) != std::string::npos))
                 {
                     //std::cout << "DELETE FROM INDEX\n";
