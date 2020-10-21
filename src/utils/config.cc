@@ -29,6 +29,8 @@ namespace utils
         {
             if (contents[i] == '[' or i == contents.size() - 1)
             {
+                if (i == contents.size() - 1 and contents[i] != '\n' and contents[i] != ' ' and contents[i] != '\t')
+                    value += contents[i];
                 if (not key.empty())
                 {
                     dummy[key] = StripPaddingSpaces(value);

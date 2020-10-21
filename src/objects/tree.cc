@@ -107,18 +107,6 @@ namespace objects
         }
     }
 
-    void Tree::PrintTree (int pad)
-    {
-        std::cout << std::string(pad, ' ' ) << "CUR TREE\n";
-        for (auto sub : _children)
-        {
-            if (sub._type == "tree")
-                sub.PrintTree(pad + 10);
-            else
-                std::cout << std::string(pad, ' ' ) << sub._type << " \\ " << sub._hash << "\n";
-        }
-    }
-
     std::string Tree::ReadTreeFromHash (const std::string& treeHash)
     {
         std::string treePath = g_pathToRootRepo + "/.mygit/objects/" + treeHash.substr(0, 2) + "/" + treeHash.substr(2);
@@ -171,6 +159,18 @@ namespace objects
                 else if (count == 2)
                     path += cur;
             }
+        }
+    }
+
+    void Tree::PrintTree (int pad)
+    {
+        std::cout << std::string(pad, ' ' ) << "CUR TREE\n";
+        for (auto sub : _children)
+        {
+            if (sub._type == "tree")
+                sub.PrintTree(pad + 10);
+            else
+                std::cout << std::string(pad, ' ' ) << sub._type << " \\ " << sub._hash << "\n";
         }
     }
 }
