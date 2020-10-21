@@ -8,15 +8,7 @@ namespace mygit
     void diff ()
     {
         std::string diffStr = diff_str();
-        std::string filepath = "A81A29ZZ2UKN_FILE.Txt";
-        utils::WriteFile(filepath, diffStr);
-        std::string command = "less -XRFf " + filepath;
-        int pid = system(command.c_str());
-        int status;
-        waitpid(pid, &status, 0);
-        remove(filepath.c_str());
-
-        //std::cout << diffStr << "\n";
+        utils::LessCommandWrapper(diffStr);
     }
 
     std::string diff_str ()

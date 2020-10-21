@@ -28,14 +28,6 @@ namespace mygit
     void log(const options::LogOptions& opt)
     {
         std::string logStr = log_str(opt);
-        std::string filepath = "E12348211UKN_FILE.Txt";
-        utils::WriteFile(filepath, logStr);
-        std::string command = "less -XRFf " + filepath;
-        int pid = system(command.c_str());
-        int status;
-        waitpid(pid, &status, 0);
-        remove(filepath.c_str());
-
-        //std::cout << log_str(opt) << "\n";
+        utils::LessCommandWrapper(logStr);
     }
 }

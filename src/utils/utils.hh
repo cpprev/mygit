@@ -145,4 +145,6 @@ namespace utils
     std::string GetDateIntValue ();
 
     std::string GetDateCommitFormat ();
+
+    void LessCommandWrapper (const std::string& contents);
 }

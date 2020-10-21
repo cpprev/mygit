@@ -131,4 +131,15 @@ namespace utils
             li.pop_front();
         }
     }
+
+    void LessCommandWrapper (const std::string& contents)
+    {
+        std::string filepath = "A1278ZE8JS27";
+        utils::WriteFile(filepath, contents);
+        std::string command = "less -XRFf " + filepath;
+        int pid = system(command.c_str());
+        int status;
+        waitpid(pid, &status, 0);
+        remove(filepath.c_str());
+    }
 }
