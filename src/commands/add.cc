@@ -1,6 +1,11 @@
-#include "commands.hh"
+#include "commands/commands.hh"
+
+#include "objects/blob.hh"
+
 #include "utils/wrappers.hh"
 #include "utils/get_paths.hh"
+#include "utils/zlib.hh"
+#include "utils/utils.hh"
 
 namespace mygit
 {
@@ -10,16 +15,13 @@ namespace mygit
         {
             /// Handle git add of deleted files
             std::string pathRelativeToDotMyGit = utils::CleanPath(utils::GetPathRelativeToDotMyGit(path));
-            //std::cout << "path: " << pathRelativeToDotMyGit << '\n';
             std::vector<std::string> indexEntries = utils::ReadIndexAndGetEntriesIndexAsList();
             std::vector<std::string> removeFromIndex;
             for (const auto& indEntry : indexEntries)
             {
-                //std::cout << indEntry << " " << pathRelativeToDotMyGit << '\n';
                 if (not utils::IsFileExists(utils::AppendPathToRootRepo(indEntry))
                 and (indEntry == pathRelativeToDotMyGit or indEntry.find(pathRelativeToDotMyGit) != std::string::npos))
                 {
-                    //std::cout << "DELETE FROM INDEX\n";
                     removeFromIndex.push_back(indEntry);
                 }
             }

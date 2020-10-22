@@ -1,11 +1,7 @@
 #pragma once
 
 #include <string>
-#include <stdexcept>
 #include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <cstring>
 
 #include <zlib.h>
 

@@ -1,6 +1,10 @@
-#include "commands.hh"
+#include "commands/commands.hh"
+
+#include "objects/commit.hh"
+
 #include "utils/wrappers.hh"
 #include "utils/get_paths.hh"
+#include "utils/config.hh"
 
 namespace mygit
 {

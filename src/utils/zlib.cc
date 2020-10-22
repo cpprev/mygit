@@ -1,3 +1,7 @@
+#include <fstream>
+#include <cstring>
+#include <iomanip>
+
 #include "zlib.hh"
 
 namespace utils

@@ -1,8 +1,11 @@
 #include <cstdlib>
 
+#include "objects/blob.hh"
 #include "utils/utils.hh"
 #include "utils/wrappers.hh"
 #include "commands/commands.hh"
+#include "utils/utils.hh"
+#include "utils/zlib.hh"
 
 std::string init_test ()
 {

@@ -1,4 +1,8 @@
-#include "commands.hh"
+#include "commands/commands.hh"
+
+#include "objects/tree.hh"
+
+#include "utils/utils.hh"
 
 namespace mygit
 {

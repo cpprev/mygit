@@ -6,8 +6,6 @@
 #include <set>
 #include <string>
 
-#include "utils/utils.hh"
-
 namespace objects
 {
     class Commit

@@ -1,6 +1,13 @@
-#include "tree.hh"
+#include <set>
+
 #include "utils/wrappers.hh"
 #include "utils/get_paths.hh"
+#include "utils/sha1.hh"
+#include "utils/zlib.hh"
+#include "utils/utils.hh"
+
+#include "objects/tree.hh"
+#include "objects/blob.hh"
 
 namespace objects
 {

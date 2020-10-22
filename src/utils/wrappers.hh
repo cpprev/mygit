@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <string>
+#include <list>
+#include <vector>
 
 namespace utils
 {
@@ -32,4 +34,34 @@ namespace utils
     std::string GetDate ();
 
     void AddToNElementsList(const std::string& elm, std::list<std::string>& vect, size_t maxSize);
+
+    std::vector<std::string> GetLinesAsVect (const std::string& input);
+
+    std::vector<std::string> ListBranches ();
+
+    void DisplayBranches ();
+
+    std::string GetCurrentBranch ();
+
+    bool CheckRepoHasOneCommit ();
+
+    bool CheckBranchExists (const std::string& branchName);
+
+    bool IsAlreadyOnCommit (const std::string& commit);
+
+    bool IsCommitObject (const std::string& commitHash);
+
+    std::string GetCommitHash (const std::string& commitOrBranch);
+
+    std::string GetTreeHashFromCommit (const std::string& commitHash);
+
+    std::string GetMostRecentCommit ();
+
+    std::string GetMostRecentCommit (const std::string& headContents);
+
+    std::string ReadBranchPathInHead ();
+
+    std::string ReadBranchPathInHead (const std::string& headContents);
+
+    std::string GetCwd ();
 }

@@ -4,21 +4,9 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <cstring>
-#include <algorithm>
-#include <map>
 #include <list>
-#include <cstdlib>
-#include <sys/types.h>
-#include <sys/wait.h>
 
-#include "objects/object_type.hh"
-#include "utils/utils.hh"
-#include "objects/tree.hh"
-#include "objects/commit.hh"
-#include "utils/config.hh"
 #include "utils/options.hh"
-#include "utils/zlib.hh"
 
 namespace mygit
 {

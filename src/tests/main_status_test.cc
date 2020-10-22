@@ -4,7 +4,7 @@
 #include "utils/utils.hh"
 #include "commands/commands.hh"
 #include "utils/wrappers.hh"
-
+#include "utils/zlib.hh"
 
 std::string init_test ()
 {

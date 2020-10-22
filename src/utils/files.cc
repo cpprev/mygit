@@ -1,6 +1,17 @@
-#include "utils.hh"
+#include <fnmatch.h>
+#include <list>
+#include <algorithm>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <fstream>
+
+#include "utils/zlib.hh"
+#include "utils/utils.hh"
 #include "utils/wrappers.hh"
 #include "utils/get_paths.hh"
+
+#include "objects/blob.hh"
 
 namespace utils
 {
@@ -98,13 +109,6 @@ namespace utils
         if (newPath.empty() or newPath == ".")
             return "./";
         return newPath;
-    }
-
-    std::string GetCwd ()
-    {
-        char buf[256];
-        std::string cwd = getcwd(buf, sizeof(buf) / sizeof(char));
-        return buf;
     }
 
     std::string GetPathRelativeToDotMyGit(const std::string& pathToFileCpy)
@@ -391,182 +395,6 @@ namespace utils
         return contents;
     }
 
-    std::string ReadBranchPathInHead (const std::string& headContents)
-    {
-        std::string match = "ref: ";
-        std::string::size_type ind = headContents.find(match);
-        if (ind != std::string::npos)
-        {
-            return headContents.substr(ind + match.size());
-        }
-        return "";
-    }
-
-    std::string ReadBranchPathInHead ()
-    {
-        std::string headContents = ReadHEAD();
-        return ReadBranchPathInHead(headContents);
-    }
-
-    std::string GetMostRecentCommit (const std::string& headContents)
-    {
-        std::string redirect = ReadBranchPathInHead();
-        if (not redirect.empty())
-        {
-            /// Case where latest commit is in ref dir
-            std::string readRedirect = ReadFile(utils::AppendPathToDotMyGit(redirect));
-            //std::cout << redirect<< ' '<< readRedirect << "\n";
-            return readRedirect;
-        }
-        else
-        {
-            return headContents;
-        }
-    }
-
-    std::string GetMostRecentCommit ()
-    {
-        std::string headContents = ReadHEAD();
-        return GetMostRecentCommit(headContents);
-    }
-
-    std::vector<std::string> GetLinesAsVect (const std::string& input)
-    {
-        std::vector<std::string> res;
-        std::string dummy;
-        size_t len = input.size();
-        for (size_t i = 0; i < len; i++)
-        {
-            if (i == len - 1 or input[i] == '\n')
-            {
-                dummy += input[i];
-                res.push_back(dummy);
-                dummy.clear();
-            }
-            else
-            {
-                dummy += input[i];
-            }
-        }
-        return res;
-    }
-
-    std::vector<std::string> ListBranches ()
-    {
-        std::string cwd = GetCwd();
-        std::string pathToRefs = utils::PathToRefsHeads();
-
-        std::vector<std::string> res;
-        DIR *dir = opendir(pathToRefs.c_str());
-        struct dirent *ent;
-        while ((ent = readdir(dir)))
-        {
-            std::string entName = ent->d_name;
-            if (entName == "." or entName == "..")
-                continue;
-            res.push_back(entName);
-        }
-        closedir(dir);
-
-        return res;
-    }
-
-    std::string GetCurrentBranch ()
-    {
-        std::string redirect = ReadBranchPathInHead();
-        std::string match = "refs/heads/";
-        std::string::size_type ind = redirect.find(match);
-        if (ind == std::string::npos)
-            return "";
-        return redirect.substr(ind + match.size());
-    }
-
-    void DisplayBranches ()
-    {
-        std::string mainBranch = GetCurrentBranch();
-        std::vector<std::string> branches = utils::ListBranches();
-        bool hit = false;
-        for (const auto& branch : branches)
-        {
-            if (branch == mainBranch)
-            {
-                hit = true;
-                std::cout << "\033[1;32m* " << branch << "\033[0m\n";
-            }
-        }
-        /// Detached HEAD case
-        if (not hit)
-        {
-            std::cout << "\033[1;32m* " << ReadHEAD() << " (Detached HEAD)\033[0m\n";
-        }
-        for (const auto& branch : branches)
-        {
-            if (branch != mainBranch)
-                std::cout << "  " << branch << '\n';
-        }
-    }
-
-    bool CheckRepoHasOneCommit ()
-    {
-        std::string headContents = utils::GetMostRecentCommit();
-        return not headContents.empty();
-    }
-
-    bool CheckBranchExists (const std::string& branchName)
-    {
-        std::vector<std::string> branches = utils::ListBranches();
-        return std::find(branches.begin(), branches.end(), branchName) != branches.end();
-    }
-
-    bool IsCommitObject (const std::string& commitHash)
-    {
-        /// commitName could be a commit or a branch
-        std::vector<std::string> branches = utils::ListBranches();
-        /// Branch case
-        if (std::find(branches.begin(), branches.end(), commitHash) != branches.end())
-            return true;
-        /// Commit case (detached head)
-        std::string commitPath = utils::PathToObjectFile(commitHash);
-        if (IsFileExists(commitPath))
-            return true;
-        return false;
-    }
-
-    std::string GetCommitHash (const std::string& commitOrBranch)
-    {
-        /// Branch case
-        if (CheckBranchExists(commitOrBranch))
-        {
-            std::string commitPath = utils::PathToBranch(commitOrBranch);
-            return ReadFile(commitPath);
-        }
-        /// Commit case
-        return commitOrBranch;
-    }
-
-    std::string GetTreeHashFromCommit (const std::string& commitHash)
-    {
-        std::string commitPath = utils::PathToObjectFile(commitHash);
-        std::string rawContents = utils::ReadFile(commitPath);
-
-        utils::ExitIfTrue(rawContents.empty(), "Commit contents = empty (GetTreeHashFromCommit method).");
-
-        std::string commitContents = utils::DecompressString(rawContents);
-
-        std::string match = "tree ";
-        std::string::size_type ind = commitContents.find(match);
-
-        utils::ExitIfTrue(ind == std::string::npos, "Commit wrongly formatted (GetTreeHashFromCommit method).");
-
-        std::string treeHash;
-        for (size_t i = ind + match.size(); i < commitContents.size() and commitContents[i] != '\n'; i++)
-        {
-            treeHash += commitContents[i];
-        }
-
-        return treeHash;
-    }
-
     void GetWorkDirFileStatus (std::map<std::string, std::string>& added, std::map<std::string, std::string>& deleted,
                                std::map<std::string, std::string>& modified)
     {
@@ -643,16 +471,6 @@ namespace utils
     bool IsDirEmpty (const std::string& path)
     {
         return ListEntriesInDirOneLayer(path).empty();
-    }
-
-    bool IsAlreadyOnCommit (const std::string& commit)
-    {
-        std::string headContents = ReadHEAD();
-        if (headContents == commit)
-            return true;
-        if (GetCurrentBranch() == commit)
-            return true;
-        return false;
     }
 
     void DeleteDirectoryIfEmpty (const std::string& pathFileFromDotMyGit)

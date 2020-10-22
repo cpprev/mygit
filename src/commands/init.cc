@@ -1,5 +1,7 @@
-#include "commands.hh"
+#include "commands/commands.hh"
+
 #include "utils/wrappers.hh"
+#include "utils/utils.hh"
 
 namespace mygit
 {

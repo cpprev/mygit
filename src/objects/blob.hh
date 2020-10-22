@@ -2,9 +2,6 @@
 
 #include <string>
 #include <iostream>
-#include <openssl/sha.h>
-
-#include "utils/utils.hh"
 
 namespace objects
 {

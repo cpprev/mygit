@@ -4,7 +4,6 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <cstring>
 
 #include "objects/object_type.hh"
 

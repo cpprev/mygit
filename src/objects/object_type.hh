@@ -1,6 +1,6 @@
 #pragma once
 
-#include "blob.hh"
+#include <string>
 
 namespace objects
 {
