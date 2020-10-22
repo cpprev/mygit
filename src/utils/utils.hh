@@ -56,6 +56,9 @@ namespace utils
 
     std::string CleanPath (const std::string& path);
 
+    void GetWorkDirFileStatus (std::map<std::string, std::string>& added, std::map<std::string, std::string>& deleted,
+                               std::map<std::string, std::string>& modified);
+
     std::string GetCwd ();
 
     std::string SHA1_Wrapper (const std::string& input);

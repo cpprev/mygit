@@ -13,71 +13,53 @@ namespace mygit
 
     std::string diff_str ()
     {
-        /// Read index files
-        std::vector<std::string> indexEntries = utils::ReadIndexAndGetEntriesIndexAsList();
         std::map<std::string, std::string> indexEntriesAsMap = utils::ReadIndexAndGetEntries();
-        /// Read working directory files
-        std::vector<std::string> workDirEntries = utils::GetWorkingDirectoryFiles();
-        std::vector<std::string> workDirEntriesFromActualPos = workDirEntries;
-        for (size_t i = 0; i < workDirEntries.size(); i++)
-        {
-            workDirEntriesFromActualPos[i] = utils::GetPathRelativeToYourself(workDirEntries[i]);
-            workDirEntries[i] = utils::GetPathRelativeToDotMyGit(workDirEntries[i]);
-        }
+
+        std::map<std::string, std::string> added, deleted, modified;
+        utils::GetWorkDirFileStatus(added, deleted, modified);
 
         std::string output;
-        for (size_t i = 0; i < workDirEntries.size(); i++)
-        {
-            std::string wdFile = workDirEntries[i];
-            std::string wdFileFromActualPos = workDirEntriesFromActualPos[i];
-            if (std::find(indexEntries.begin(), indexEntries.end(), wdFile) != indexEntries.end() and not utils::IsFileExcluded(wdFile))
-            {
-                objects::Blob blob = objects::Blob(wdFile, wdFileFromActualPos);
-                std::string hash = blob.ToHash();
-                std::string blobPath = utils::PathToObjectFile(hash);
-                if (not utils::IsFileExists(blobPath))
-                {
-                    std::string hashExBlob = indexEntriesAsMap[wdFile];
-                    std::string exBlobPath = utils::PathToObjectFile(hashExBlob);
-                    std::string contentsBlob = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(exBlobPath)));
-                    std::string contentsWd = utils::ReadFile(wdFileFromActualPos);
 
-                    std::vector<std::string> oldLines = utils::GetLinesAsVect(contentsBlob);
-                    std::vector<std::string> newLines = utils::GetLinesAsVect(contentsWd);
-                    std::vector<std::vector<int>> LCSMatrix = BuildLcsMatrix(oldLines, newLines);
-                    std::string result;
-                    int count = 0;
-                    std::list<std::string> previousLines;
-                    GetDiffModifiedFiles(LCSMatrix, oldLines, newLines, oldLines.size(), newLines.size(), result, count, previousLines);
-                    output += "\033[1;32m[" + wdFileFromActualPos + "]\033[0m\n\n" + result + "\n";
-                }
-            }
-            /// File not in index, there was added
-            else
-            {
-                if (not utils::IsFileExcluded(wdFile))
-                {
-                    std::string contents = utils::ReadFile(wdFileFromActualPos);
-                    utils::AddDiffCharacterBeforeLine(contents, true);
-                    output += "\033[1;32m[" + wdFileFromActualPos + "]\033[0m\n\n" + contents + "\n";
-                }
-            }
+        for (const auto& f : added)
+        {
+            std::string wdFile = f.first;
+            std::string wdFileFromActualPos = f.second;
+
+            std::string contents = utils::ReadFile(wdFileFromActualPos);
+            utils::AddDiffCharacterBeforeLine(contents, true);
+            output += "\033[1;32m[" + wdFileFromActualPos + "]\033[0m\n\n" + contents + "\n\n";
         }
 
-        for (const auto& indexEntry : indexEntries)
+        for (const auto& f : deleted)
         {
-            if (std::find(workDirEntries.begin(), workDirEntries.end(), indexEntry) == workDirEntries.end())
-            {
-                if (not utils::IsFileExcluded(indexEntry))
-                {
-                    std::string hashBlob = indexEntriesAsMap[indexEntry];
-                    std::string pathToBlob = utils::PathToObjectFile(hashBlob);
-                    std::string contents = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathToBlob)));
-                    utils::AddDiffCharacterBeforeLine(contents, false);
-                    output += "\033[1;31m[" + utils::GetPathRelativeToYourself(
-                            utils::CleanPath(utils::AppendPathToRootRepo(indexEntry))) + "]\033[0m\n\n" + contents + "\n";
-                }
-            }
+            std::string indexEntry = f.first;
+            std::string indexEntryFromActualPos = f.second;
+
+            std::string hashBlob = indexEntriesAsMap[indexEntry];
+            std::string pathToBlob = utils::PathToObjectFile(hashBlob);
+            std::string contents = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathToBlob)));
+            utils::AddDiffCharacterBeforeLine(contents, false);
+            output += "\033[1;31m[" + indexEntryFromActualPos + "]\033[0m\n\n" + contents + "\n\n";
+        }
+
+        for (const auto& f : modified)
+        {
+            std::string wdFile = f.first;
+            std::string wdFileFromActualPos = f.second;
+
+            std::string hashExBlob = indexEntriesAsMap[wdFile];
+            std::string exBlobPath = utils::PathToObjectFile(hashExBlob);
+            std::string contentsBlob = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(exBlobPath)));
+            std::string contentsWd = utils::ReadFile(wdFileFromActualPos);
+
+            std::vector<std::string> oldLines = utils::GetLinesAsVect(contentsBlob);
+            std::vector<std::string> newLines = utils::GetLinesAsVect(contentsWd);
+            std::vector<std::vector<int>> LCSMatrix = BuildLcsMatrix(oldLines, newLines);
+            std::string result;
+            int count = 0;
+            std::list<std::string> previousLines;
+            GetDiffModifiedFiles(LCSMatrix, oldLines, newLines, oldLines.size(), newLines.size(), result, count, previousLines);
+            output += "\033[1;32m[" + wdFileFromActualPos + "]\033[0m\n\n" + result + "\n\n";
         }
 
         return output;

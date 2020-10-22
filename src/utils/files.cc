@@ -565,7 +565,8 @@ namespace utils
         return treeHash;
     }
 
-    bool IsWorkingDirectoryClean ()
+    void GetWorkDirFileStatus (std::map<std::string, std::string>& added, std::map<std::string, std::string>& deleted,
+                               std::map<std::string, std::string>& modified)
     {
         /// Read index files
         std::vector<std::string> indexEntries = utils::ReadIndexAndGetEntriesIndexAsList();
@@ -588,25 +589,37 @@ namespace utils
                 std::string hash = blob.ToHash();
                 std::string blobPath = utils::PathToObjectFile(hash);
                 if (not utils::IsFileExists(blobPath))
-                    return false;
+                {
+                    modified.insert({ wdFile, wdFileFromActualPos });
+                }
             }
-                /// File not in index, there was added
+            /// File not in index, there was added
             else
             {
                 if (not utils::IsFileExcluded(wdFile))
-                    return false;
+                {
+                    added.insert({ wdFile, wdFileFromActualPos });
+                }
             }
         }
 
-        for (const auto& indEntry : indexEntries)
+        for (const auto& indexEntry : indexEntries)
         {
-            if (std::find(workDirEntries.begin(), workDirEntries.end(), indEntry) == workDirEntries.end())
+            if (std::find(workDirEntries.begin(), workDirEntries.end(), indexEntry) == workDirEntries.end())
             {
-                if (not utils::IsFileExcluded(indEntry))
-                    return false;
+                if (not utils::IsFileExcluded(indexEntry))
+                {
+                    deleted.insert({indexEntry, utils::GetPathRelativeToYourself(utils::CleanPath(utils::AppendPathToRootRepo(indexEntry))) });
+                }
             }
         }
-        return true;
+    }
+
+    bool IsWorkingDirectoryClean ()
+    {
+        std::map<std::string, std::string> added, deleted, modified;
+        utils::GetWorkDirFileStatus(added, deleted, modified);
+        return added.empty() and deleted.empty() and modified.empty();
     }
 
     std::vector<std::string> ListEntriesInDirOneLayer (const std::string& path)
