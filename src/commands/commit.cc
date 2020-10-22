@@ -5,6 +5,7 @@
 #include "utils/wrappers.hh"
 #include "utils/get_paths.hh"
 #include "utils/config.hh"
+#include "utils/utils.hh"
 
 namespace mygit
 {
