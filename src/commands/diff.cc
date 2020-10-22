@@ -88,6 +88,15 @@ namespace mygit
         return lookup;
     }
 
+    void ShrinkPreviousLines (std::string& result, std::list<std::string>& previousLines)
+    {
+        while (not previousLines.empty())
+        {
+            result += "\033[0m\t\t" + previousLines.front() + "\033[0m";
+            previousLines.pop_front();
+        }
+    }
+
     void GetDiffModifiedFiles (const std::vector<std::vector<int>>& lookup, const std::vector<std::string>& x,
                                const std::vector<std::string>& y, int m, int n, std::string& result, int& count, std::list<std::string>& previousLines)
     {
@@ -106,11 +115,8 @@ namespace mygit
         {
             GetDiffModifiedFiles(lookup, x, y, m, n - 1, result, count, previousLines);
 
-            while (not previousLines.empty())
-            {
-                result += "\033[0m\t\t" + previousLines.front() + "\033[0m";
-                previousLines.pop_front();
-            }
+            ShrinkPreviousLines(result, previousLines);
+
             count = LINES_BEFORE_DIFF;
             result += "\033[1;33m[" + std::to_string(n) + "]\t\033[1;32m+\t" + y[n - 1] + "\033[0m";
         }
@@ -118,11 +124,8 @@ namespace mygit
         {
             GetDiffModifiedFiles(lookup, x, y, m - 1, n, result, count, previousLines);
 
-            while (not previousLines.empty())
-            {
-                result += "\033[0m\t\t" + previousLines.front() + "\033[0m";
-                previousLines.pop_front();
-            }
+            ShrinkPreviousLines(result, previousLines);
+
             count = LINES_BEFORE_DIFF;
             result += "\033[1;33m[" + std::to_string(n) + "]\t\033[1;31m-\t" + x[m - 1] + "\033[0m";
         }
