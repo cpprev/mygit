@@ -24,6 +24,8 @@ namespace mygit
             output += "\033[0;31m\tModified:\t" + f.second + "\033[0m\n";
         }
 
+        output += "\n";
+
         return output;
     }
 
