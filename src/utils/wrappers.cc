@@ -96,14 +96,14 @@ namespace utils
 
     std::string GetDateIntValue ()
     {
-        time_t  timev;
+        time_t timev;
         time(&timev);
         return std::to_string(timev);
     }
 
     std::string GetDateCommitFormat ()
     {
-        time_t  timev;
+        time_t timev;
         time(&timev);
         char buf[96];
         struct tm tm = *gmtime(&timev);
