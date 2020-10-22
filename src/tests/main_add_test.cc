@@ -1,6 +1,7 @@
 #include <cstdlib>
 
 #include "utils/utils.hh"
+#include "utils/wrappers.hh"
 #include "commands/commands.hh"
 
 std::string init_test ()

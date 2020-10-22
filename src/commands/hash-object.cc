@@ -1,4 +1,6 @@
 #include "commands.hh"
+#include "utils/wrappers.hh"
+#include "utils/get_paths.hh"
 
 namespace mygit
 {

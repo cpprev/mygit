@@ -1,4 +1,6 @@
 #include "config.hh"
+#include "utils/wrappers.hh"
+#include "utils/get_paths.hh"
 
 namespace utils
 {

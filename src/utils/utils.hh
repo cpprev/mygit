@@ -34,11 +34,9 @@ constexpr const char *RequireOneOrMoreArguments[] = { "add", "commit", "push", "
 
 namespace utils
 {
-    void ExitIfTrue (bool assertion, const std::string& message);
+    std::string ReadFile (const std::string& path);
 
-    void ExitProgramWithMessage(const int& status, const std::string& message);
-
-    void SetGlobalVariables ();
+    void WriteFile (const std::string& path, const std::string& str);
 
     bool IsDirExists(const std::string &path);
 
@@ -49,10 +47,6 @@ namespace utils
     bool CreateFile(const std::string &name);
 
     std::string FindPathToRootRepo();
-
-    std::string ReadFile (const std::string& path);
-
-    void WriteFile (const std::string& path, const std::string& str);
 
     std::string CleanPath (const std::string& path);
 
@@ -87,14 +81,6 @@ namespace utils
 
     std::vector<std::string> ReadMyGitIgnorePatterns(const std::string& contents);
 
-    bool DoesRequireRepo (const std::string& command);
-
-    bool DoesRequireOneOrMoreArguments (const std::string& command);
-
-    bool ChangeDirWrapper(const std::string& path);
-
-    void GoToCharAfterNextSlash (const std::string& path, size_t& i);
-
     std::string ReadHEAD();
 
     std::string GetMostRecentCommit ();
@@ -104,8 +90,6 @@ namespace utils
     std::string ReadBranchPathInHead ();
 
     std::string ReadBranchPathInHead (const std::string& headContents);
-
-    void AddDiffCharacterBeforeLine (std::string& input, bool plus);
 
     std::vector<std::string> GetLinesAsVect (const std::string& input);
 
@@ -138,40 +122,4 @@ namespace utils
     void CreateDirectoriesAboveFile (const std::string& pathFileFromDotMyGit);
 
     std::string CreateDirectoriesAboveFileReturnFirstToDelete (const std::string& pathFileFromDotMyGit);
-
-    std::string StripPaddingSpaces (const std::string& str);
-
-    std::string GetDate ();
-
-    void AddToNElementsList(const std::string& elm, std::list<std::string>& vect, size_t maxSize);
-
-    std::string GetDateIntValue ();
-
-    std::string GetDateCommitFormat ();
-
-    void LessCommandWrapper (const std::string& contents);
-
-    std::string PathToRootRepo ();
-
-    std::string PathToHEAD ();
-
-    std::string PathToIndex ();
-
-    std::string PathToLocalConfig ();
-
-    std::string PathToGlobalConfig ();
-
-    std::string PathToGitIgnore ();
-
-    std::string PathToRefsHeads ();
-
-    std::string PathToBranch (const std::string& branchName);
-
-    std::string PathToObjectDir (const std::string& hash);
-
-    std::string PathToObjectFile (const std::string& hash);
-
-    std::string AppendPathToRootRepo (const std::string& path);
-
-    std::string AppendPathToDotMyGit (const std::string& path);
 }

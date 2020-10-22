@@ -1,4 +1,5 @@
 #include "object_type.hh"
+#include "utils/wrappers.hh"
 
 namespace objects
 {

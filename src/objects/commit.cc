@@ -1,4 +1,5 @@
 #include "commit.hh"
+#include "utils/get_paths.hh"
 
 namespace objects
 {

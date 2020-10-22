@@ -1,4 +1,5 @@
 #include "commands.hh"
+#include "utils/wrappers.hh"
 
 namespace mygit
 {

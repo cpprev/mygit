@@ -1,4 +1,6 @@
 #include "commands.hh"
+#include "utils/wrappers.hh"
+#include "utils/get_paths.hh"
 
 #define LINES_BEFORE_DIFF 4
 

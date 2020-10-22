@@ -1,4 +1,6 @@
 #include "tree.hh"
+#include "utils/wrappers.hh"
+#include "utils/get_paths.hh"
 
 namespace objects
 {

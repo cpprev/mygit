@@ -1,4 +1,5 @@
 #include "options.hh"
+#include "utils/wrappers.hh"
 
 namespace options
 {

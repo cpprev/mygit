@@ -1,6 +1,8 @@
 #include <string>
 
 #include "utils/utils.hh"
+#include "utils/wrappers.hh"
+#include "utils/get_paths.hh"
 #include "commands/commands.hh"
 
 int main(int argc, char *argv[])
@@ -15,9 +17,6 @@ int main(int argc, char *argv[])
     /// Pre parse arguments
     utils::ExitIfTrue(utils::DoesRequireRepo(command) and utils::PathToRootRepo().empty(), "You are not in a MyGit repository.");
     utils::ExitIfTrue(utils::DoesRequireOneOrMoreArguments(command) and argc <= 2, "You need to specify more parameters to this command.");
-
-    /// TODEL FIXME
-    utils::GetDate();
 
     if (command == "init")
         mygit::init();

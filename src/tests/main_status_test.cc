@@ -3,6 +3,8 @@
 
 #include "utils/utils.hh"
 #include "commands/commands.hh"
+#include "utils/wrappers.hh"
+
 
 std::string init_test ()
 {
