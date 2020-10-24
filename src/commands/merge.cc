@@ -39,5 +39,10 @@ namespace mygit
                 utils::WriteFile(utils::PathToHEAD(), hashCommitToMerge);
             }
         }
+        /// Non fastforward merge
+        else
+        {
+            /// FIXME
+        }
     }
 }
