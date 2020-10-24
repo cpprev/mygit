@@ -3,6 +3,10 @@
 #include <dirent.h>
 #include <sys/wait.h>
 
+#include "objects/blob.hh"
+#include "objects/commit.hh"
+#include "objects/tree.hh"
+
 #include "utils/utils.hh"
 #include "utils/wrappers.hh"
 #include "utils/config.hh"
@@ -256,6 +260,8 @@ namespace utils
         if (std::find(branches.begin(), branches.end(), commitHash) != branches.end())
             return true;
         /// Commit case (detached head)
+        if (commitHash.size() < 2)
+            return false;
         std::string commitPath = utils::PathToObjectFile(commitHash);
         if (IsFileExists(commitPath))
             return true;
@@ -329,6 +335,80 @@ namespace utils
         {
             return headContents;
         }
+    }
+
+    bool IsCommitAncestorOf (const std::string& c1, const std::string& c2)
+    {
+        std::string currentCommitHash = c2;
+        while (not currentCommitHash.empty())
+        {
+            if (currentCommitHash == c1)
+            {
+                return true;
+            }
+
+            std::string commitPath = utils::PathToObjectFile(currentCommitHash);
+            std::string commitRawContent = utils::DecompressString(utils::ReadFile(commitPath));
+            std::string contentContent = objects::GetContentBlobDecompressed(commitRawContent);
+
+            /// Update commit
+            currentCommitHash = objects::ExtractParentCommit(contentContent);
+        }
+
+        return false;
+    }
+
+    void UpdateWorkingDirectoryAndIndex (const std::string& hashCommitCurrent, const std::string& hashCommitToCopy)
+    {
+        std::string hashTreeToCopy = utils::GetTreeHashFromCommit(hashCommitToCopy);
+        std::string hashTreeCurrent = utils::GetTreeHashFromCommit(hashCommitCurrent);
+
+        std::map<std::string, std::string> entryToCopy = objects::Tree::TreeHashToEntryMap(hashTreeToCopy);
+        std::map<std::string, std::string> entryCurrent = objects::Tree::TreeHashToEntryMap(hashTreeCurrent);
+
+        for (const auto& wantedEntry : entryToCopy)
+        {
+            std::string file = wantedEntry.first;
+            std::string hash = wantedEntry.second;
+
+            std::string pathFile = utils::PathToObjectFile(hash);
+            std::string fileContents = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathFile)));
+
+            auto it = entryCurrent.find(file);
+            std::string pathFileFromDotMyGit = utils::CleanPath(utils::AppendPathToRootRepo(file));
+            /// Case where we need to add a file
+            if (it == entryCurrent.end())
+            {
+                /// Add directories if needed
+                utils::CreateDirectoriesAboveFile(pathFileFromDotMyGit);
+            }
+            /// Write to file in case of Add/Modify
+            utils::WriteFile(pathFileFromDotMyGit, fileContents);
+        }
+
+        for (const auto& curEntry : entryCurrent)
+        {
+            std::string file = curEntry.first;
+            /// Delete file
+            auto it = entryToCopy.find(file);
+            if (it == entryToCopy.end())
+            {
+                std::string pathFileFromDotMyGit = utils::CleanPath(utils::AppendPathToRootRepo(file));
+                remove(pathFileFromDotMyGit.c_str());
+
+                /// If dir containing file is empty, delete it
+                utils::DeleteDirectoryIfEmpty(pathFileFromDotMyGit);
+            }
+        }
+
+        /// Update INDEX
+        std::string indexUpdate;
+        for (const auto& wantedEntry : entryToCopy)
+        {
+            indexUpdate += wantedEntry.second + ' ' + wantedEntry.first + '\n';
+        }
+        std::string compressedIndex = utils::CompressString(indexUpdate);
+        utils::WriteFile(utils::PathToIndex(), compressedIndex);
     }
 
     std::string GetMostRecentCommit ()

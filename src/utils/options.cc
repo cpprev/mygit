@@ -149,4 +149,15 @@ namespace options
                 utils::ExitProgramWithMessage(1, "Unknown option to command 'config': " + std::string(argv[i]));
         }
     }
+
+    MergeOptions::MergeOptions(int argc, char *argv[])
+    {
+        for (int i = 2; i < argc; i++)
+        {
+            if (argv[i][0] != '-')
+                branchToMerge = argv[i];
+            else
+                utils::ExitProgramWithMessage(1, "Unknown option to command 'merge': " + std::string(argv[i]));
+        }
+    }
 }

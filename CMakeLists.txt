@@ -26,6 +26,7 @@ set(SRC_FILES
         src/commands/branch.cc
         src/commands/checkout.cc
         src/commands/config.cc
+        src/commands/merge.cc
 
         # Utils
         src/utils/files.cc

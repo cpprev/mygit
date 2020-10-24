@@ -43,7 +43,11 @@ namespace utils
 
     std::string GetCurrentBranch ();
 
+    bool IsCommitAncestorOf (const std::string& c1, const std::string& c2);
+
     bool CheckRepoHasOneCommit ();
+
+    void UpdateWorkingDirectoryAndIndex (const std::string& hashCommitCurrent, const std::string& hashCommitToCopy);
 
     bool CheckBranchExists (const std::string& branchName);
 

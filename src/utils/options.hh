@@ -87,4 +87,12 @@ namespace options
         std::string unset;
         std::string get;
     };
+
+    class MergeOptions
+    {
+    public:
+        MergeOptions(int argc, char *argv[]);
+
+        std::string branchToMerge;
+    };
 }

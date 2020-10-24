@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
         mygit::commit(options::CommitOptions(argc, argv));
     else if (command == "config")
         mygit::config(options::ConfigOptions(argc, argv));
+    else if (command == "merge")
+        mygit::merge(options::MergeOptions(argc, argv));
     else
         utils::ExitProgramWithMessage(1, "Unknown command.");
 
