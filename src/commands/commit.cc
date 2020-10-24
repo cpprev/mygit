@@ -53,7 +53,6 @@ namespace mygit
             utils::WriteFile(branchPath, hashCommit);
         }
 
-
         std::cout << "[" << hashCommit << "] " << opt.commitMessage << "\n";
     }
 }
