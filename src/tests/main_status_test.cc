@@ -21,7 +21,7 @@ std::string init_test ()
 
 void clean_test (std::string& pathToRootRepo)
 {
-    std::string command = "rm -rf " + pathToRootRepo + "/.mygit";
+    std::string command = "rm -rf " + pathToRootRepo + "/" + g_DB_FILE;
     system(command.c_str());
     std::string cmd2 = "rm -rf " + pathToRootRepo + "/../testarea/";
     system(cmd2.c_str());

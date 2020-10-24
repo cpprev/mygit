@@ -56,7 +56,7 @@ namespace utils
                 break;
             else
                 closedir(dir);
-            if (IsDirExists(currentPath + ".mygit/"))
+            if (IsDirExists(currentPath + "/" + g_DB_FILE + "/"))
                 return currentPath;
             else
                 currentPath += "../";
@@ -341,7 +341,8 @@ namespace utils
 
     bool IsFileExcluded (const std::string& path)
     {
-        if (not fnmatch("*.mygit*", path.c_str(), 0))
+        std::string db_pattern = "*" + g_DB_FILE + "*";
+        if (not fnmatch(db_pattern.c_str(), path.c_str(), 0))
             return true;
 
         for (const auto& pattern : g_myGitIgnorePatterns)

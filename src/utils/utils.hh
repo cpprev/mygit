@@ -6,6 +6,7 @@
 #include <vector>
 
 /// Globals
+extern std::string g_DB_FILE;
 extern std::vector<std::string> g_myGitIgnorePatterns;
 extern std::string g_pathToRootRepo;
 

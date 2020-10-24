@@ -38,11 +38,6 @@ is_argument ()
     return 1
 }
 
-# init tests
-if is_argument "$*" "$#" "init"; then
-    . subscripts/init_test.sh
-fi
-
 # add tests
 if is_argument "$*" "$#" "add"; then
     cd ../build

@@ -15,7 +15,7 @@ namespace mygit
         std::string hashPath = utils::PathToObjectFile(hash);
 
         /// Error checking
-        utils::ExitIfTrue(not utils::IsFileExists(hashPath), "Object is not present in .mygit/objects directory.");
+        utils::ExitIfTrue(not utils::IsFileExists(hashPath), "Object is not present in " + g_DB_FILE + "/objects directory.");
 
         std::string contentsFile = utils::ReadFile(hashPath);
         std::string decompressed = utils::DecompressString(contentsFile);
