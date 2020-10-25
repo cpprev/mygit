@@ -127,11 +127,7 @@ namespace mygit
             else if (it->second != add2Hash or inCurrentStatus[it->first] != add2Status)
             {
                 /// FIXME
-                /// Cases possible : Added/Added ; Modified/Modified ; Deleted/Deleted ; Modified/Deleted
-
-                /// Case deleted in Current and deleted in ToMerge
-                if (inCurrentStatus[it->first] == "deleted" and add2Status == "deleted")
-                    continue;
+                /// Cases possible : Added/Added ; Modified/Modified ; Modified/Deleted
 
                 /// Case modified in Current and deleted in ToMerge
                 /// Case modified in ToMerge and deleted in Current
