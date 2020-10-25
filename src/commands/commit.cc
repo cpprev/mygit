@@ -9,7 +9,7 @@
 
 namespace mygit
 {
-    void commit (const options::CommitOptions& opt)
+    void commit (const options::CommitOptions& opt, const std::string& secondParent)
     {
         std::string hashTree = write_tree_wrap();
         std::string headContents = utils::ReadHEAD();
@@ -17,6 +17,9 @@ namespace mygit
 
         std::string hashTreeString = "tree " + hashTree + "\n";
         std::string hashParentCommitString = (not hashParentCommit.empty()) ? ("parent " + hashParentCommit + "\n") : "";
+        /// Merge case (mygit merge calls this method)
+        if (not secondParent.empty())
+            hashParentCommitString += "parent " + secondParent + "\n";
         std::string authorName = g_Config.GetVariable("user.name");
         std::string authorEmail = g_Config.GetVariable("user.email");
         utils::ExitIfTrue(authorName.empty() or authorEmail.empty(), "No username or useremail found, consider using mygit config --add user.name \"...\"");

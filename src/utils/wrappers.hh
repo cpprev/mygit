@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <map>
 #include <list>
 #include <vector>
 
@@ -63,9 +64,14 @@ namespace utils
 
     std::string GetMostRecentCommit (const std::string& headContents);
 
+    std::string GetCommonAncestor (const std::string& c1, const std::string& c2);
+
     std::string ReadBranchPathInHead ();
 
     std::string ReadBranchPathInHead (const std::string& headContents);
 
     std::string GetCwd ();
+
+    void GetDiffBetweenTrees (const std::map<std::string, std::string>& tree1Entries, const std::map<std::string, std::string>& tree2Entries,
+                              std::map<std::string, std::string>& inTree1, std::map<std::string, std::string>& inTree1Status);
 }

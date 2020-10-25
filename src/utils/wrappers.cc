@@ -358,6 +358,37 @@ namespace utils
         return false;
     }
 
+    std::string GetCommonAncestor (const std::string& c1, const std::string& c2)
+    {
+        std::string slowIterationCommitHash = c1;
+        while (not slowIterationCommitHash.empty())
+        {
+            std::string fastIterationCommitHash = c2;
+            while (not fastIterationCommitHash.empty())
+            {
+                /// Common ancestor found
+                if (fastIterationCommitHash == slowIterationCommitHash)
+                {
+                    return fastIterationCommitHash;
+                }
+
+                /// Update fastCommit
+                std::string fastCommitPath = utils::PathToObjectFile(fastIterationCommitHash);
+                std::string fastCommitRawContent = utils::DecompressString(utils::ReadFile(fastCommitPath));
+                std::string fastContentContent = objects::GetContentBlobDecompressed(fastCommitRawContent);
+                fastIterationCommitHash = objects::ExtractParentCommit(fastContentContent);
+            }
+
+            /// Update slowCommit
+            std::string slowCommitPath = utils::PathToObjectFile(slowIterationCommitHash);
+            std::string slowCommitRawContent = utils::DecompressString(utils::ReadFile(slowCommitPath));
+            std::string slowContentContent = objects::GetContentBlobDecompressed(slowCommitRawContent);
+            slowIterationCommitHash = objects::ExtractParentCommit(slowContentContent);
+        }
+
+        return "";
+    }
+
     void UpdateWorkingDirectoryAndIndex (const std::string& hashCommitCurrent, const std::string& hashCommitToCopy)
     {
         std::string hashTreeToCopy = utils::GetTreeHashFromCommit(hashCommitToCopy);
@@ -409,6 +440,44 @@ namespace utils
         }
         std::string compressedIndex = utils::CompressString(indexUpdate);
         utils::WriteFile(utils::PathToIndex(), compressedIndex);
+    }
+
+    void GetDiffBetweenTrees (const std::map<std::string, std::string>& tree1Entries, const std::map<std::string, std::string>& tree2Entries,
+                              std::map<std::string, std::string>& inTree1, std::map<std::string, std::string>& inTree1Status)
+    {
+        for (const auto& curEntry : tree1Entries)
+        {
+            std::string curFile = curEntry.first;
+            std::string curHash = curEntry.second;
+            auto it = tree2Entries.find(curFile);
+            if (it == tree2Entries.end())
+            {
+                /// Added in Tree1
+                inTree1.insert({curFile, curHash});
+                inTree1Status.insert({curFile, "added"});
+            }
+            else
+            {
+                if (curHash != it->second)
+                {
+                    /// Modified in Tree1
+                    inTree1.insert({curFile, curHash});
+                    inTree1Status.insert({curFile, "modified"});
+                }
+            }
+        }
+        for (const auto& ancestorEntry : tree2Entries)
+        {
+            std::string ancestorFile = ancestorEntry.first;
+            std::string ancestorHash = ancestorEntry.second;
+            auto it = tree1Entries.find(ancestorFile);
+            if (it == tree1Entries.end())
+            {
+                /// Removed in Tree1
+                inTree1.insert({ancestorFile, ancestorHash});
+                inTree1Status.insert({ancestorFile, "deleted"});
+            }
+        }
     }
 
     std::string GetMostRecentCommit ()

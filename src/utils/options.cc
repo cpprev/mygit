@@ -76,6 +76,11 @@ namespace options
         }
     }
 
+    CommitOptions::CommitOptions(const std::string &msg)
+    {
+        commitMessage = msg;
+    }
+
     LogOptions::LogOptions(int argc, char *argv[])
     {
         (void) argv;

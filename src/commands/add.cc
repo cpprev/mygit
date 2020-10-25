@@ -72,17 +72,8 @@ namespace mygit
             hashesAndPaths.insert({pathFileFromDotMyGit, hash});
         }
 
-        /// Read contents of 'index' file
-        std::string indexPath = utils::PathToIndex();
-        std::string contents = utils::ReadFile(indexPath);
-
-        /// Decompress .mygit/index file
-        std::string decompressed;
-        if (not contents.empty())
-            decompressed = utils::DecompressString(contents);
-
         /// Get entries from 'index' file
-        std::map<std::string, std::string> entries = utils::GetEntriesFromIndex(decompressed);
+        std::map<std::string, std::string> entries = utils::ReadIndexAndGetEntries();
 
         for (const auto& pair : hashesAndPaths)
         {
@@ -96,14 +87,14 @@ namespace mygit
         }
 
         /// Update the contents
-        decompressed.clear();
+        std::string res;
         for (const auto& p : entries)
         {
-            decompressed += p.second + ' ' + p.first + '\n';
+            res += p.second + ' ' + p.first + '\n';
         }
 
         /// Compress and update .mygit/index file
-        std::string compressed = utils::CompressString(decompressed);
-        utils::WriteFile(indexPath, compressed);
+        std::string compressed = utils::CompressString(res);
+        utils::WriteFile(utils::PathToIndex(), compressed);
     }
 }

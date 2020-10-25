@@ -44,6 +44,7 @@ namespace options
     class CommitOptions
     {
     public:
+        CommitOptions(const std::string& msg);
         CommitOptions(int argc, char *argv[]);
 
         std::string commitMessage;
