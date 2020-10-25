@@ -126,7 +126,7 @@ namespace mygit
             /// Conflict case
             else if (it->second != add2Hash or inCurrentStatus[it->first] != add2Status)
             {
-                std::cout << "Conflict: " << add2File << '\n';
+                std::cout << "Conflict in file: " << add2File << '\n';
                 conflicts.push_back(add2File);
                 /// FIXME
             }
@@ -153,7 +153,9 @@ namespace mygit
             if (conflicts.empty())
             {
                 options::CommitOptions commitOpt("Merge branch \'" + opt.branchToMerge + "\' into branch \'" + utils::GetCurrentBranch() + "\'.");
-                mygit::commit(commitOpt, hashCommitToMerge);
+                /// FIXME When implementing multiple parents for a commit, uncomment this line
+                //mygit::commit(commitOpt, hashCommitToMerge);
+                mygit::commit(commitOpt);
             }
             else
             {
