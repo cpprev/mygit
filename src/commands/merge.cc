@@ -94,9 +94,9 @@ namespace mygit
             std::cout << add2Status << ' ' << add2File << ' ' << add2Hash << '\n';
 
             auto it = inCurrent.find(add2File);
+            std::string pathFileFromDotMyGit = utils::CleanPath(utils::AppendPathToRootRepo(add2File));
             if (it == inCurrent.end())
             {
-                std::string pathFileFromDotMyGit = utils::CleanPath(utils::AppendPathToRootRepo(add2File));
                 //std::cout << "pathDotGit: " << pathFileFromDotMyGit << '\n';
                 if (add2Status == "added" or add2Status == "modified")
                 {
@@ -126,9 +126,36 @@ namespace mygit
             /// Conflict case
             else if (it->second != add2Hash or inCurrentStatus[it->first] != add2Status)
             {
+                /// FIXME
+                /// Cases possible : Added/Added ; Modified/Modified ; Deleted/Deleted ; Modified/Deleted
+
+                /// Case deleted in Current and deleted in ToMerge
+                if (inCurrentStatus[it->first] == "deleted" and add2Status == "deleted")
+                    continue;
+
+                /// Case modified in Current and deleted in ToMerge
+                /// Case modified in ToMerge and deleted in Current
+                /// -> create file with contents modified
+                if ((inCurrentStatus[it->first] == "modified" and add2Status == "deleted")
+                or (inCurrentStatus[it->first] == "deleted" and add2Status == "modified"))
+                {
+                    /// Add directories if needed
+                    utils::CreateDirectoriesAboveFile(pathFileFromDotMyGit);
+                    /// Write to file in case of Add/Modify
+                    //utils::WriteFile(pathFileFromDotMyGit, fileContents);
+                }
+
+                /// Case Added in Current and Added in ToMerge
+                /// Case Modified in Current and Modified in ToMerge
+                /// -> annoying case, make the diff in one file
+                if ((inCurrentStatus[it->first] == "added" and add2Status == "added")
+                or (inCurrentStatus[it->first] == "modified" and add2Status == "modified"))
+                {
+                    /// FIXME
+                }
+
                 std::cout << "Conflict in file: " << add2File << '\n';
                 conflicts.push_back(add2File);
-                /// FIXME
             }
 
             /// Update INDEX
