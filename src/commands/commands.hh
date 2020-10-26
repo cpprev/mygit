@@ -37,4 +37,6 @@ namespace mygit
                                const std::vector<std::string>& y, int m, int n, std::string& result, int& count, std::list<std::string>& previousLines);
     void FastForwardMerge (const std::string& hashCommitCurrent, const std::string& hashCommitToMerge);
     void RecursiveMerge (const options::MergeOptions& opt, const std::string& hashCommitCurrent, const std::string& hashCommitToMerge);
+    void GetMergeDiff (const std::string& mergeBranchName, const std::vector<std::vector<int>>& lookup, const std::vector<std::string>& x,
+                       const std::vector<std::string>& y, int m, int n, std::string& result, std::string& beforeState, bool& after);
 }

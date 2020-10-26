@@ -126,8 +126,9 @@ namespace mygit
             /// Conflict case
             else if (it->second != add2Hash or inCurrentStatus[it->first] != add2Status)
             {
-                /// FIXME
                 /// Cases possible : Added/Added ; Modified/Modified ; Modified/Deleted
+                std::string pathFileCurrent = utils::PathToObjectFile(it->second);
+                std::string pathFileToMerge = utils::PathToObjectFile(add2Hash);
 
                 /// Case modified in Current and deleted in ToMerge
                 /// Case modified in ToMerge and deleted in Current
@@ -135,6 +136,7 @@ namespace mygit
                 if ((inCurrentStatus[it->first] == "modified" and add2Status == "deleted")
                 or (inCurrentStatus[it->first] == "deleted" and add2Status == "modified"))
                 {
+                    /// FIXME
                     /// Add directories if needed
                     utils::CreateDirectoriesAboveFile(pathFileFromDotMyGit);
                     /// Write to file in case of Add/Modify
@@ -147,7 +149,24 @@ namespace mygit
                 if ((inCurrentStatus[it->first] == "added" and add2Status == "added")
                 or (inCurrentStatus[it->first] == "modified" and add2Status == "modified"))
                 {
-                    /// FIXME
+                    std::string contentsInCurrent = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathFileCurrent)));
+                    std::string contentsInToMerge = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathFileToMerge)));
+
+                    std::cout << "ay: " << contentsInCurrent << "\n\n";
+
+                    std::cout << "ay: " << contentsInToMerge << '\n';
+
+                    std::vector<std::string> currentLines = utils::GetLinesAsVect(contentsInCurrent);
+                    std::vector<std::string> toMergeLines = utils::GetLinesAsVect(contentsInToMerge);
+                    std::vector<std::vector<int>> LCSMatrix = BuildLcsMatrix(currentLines, toMergeLines);
+                    std::string result;
+                    std::string beforeState;
+                    bool after = false;
+                    GetMergeDiff(opt.branchToMerge, LCSMatrix, currentLines, toMergeLines, currentLines.size(), toMergeLines.size(), result, beforeState, after);
+                    if (after)
+                        result += "==========\n";
+
+                    std::cout << "\n_____________\nRESULT:\n" << result << "____________\n";
                 }
 
                 std::cout << "Conflict in file: " << add2File << '\n';
@@ -184,6 +203,46 @@ namespace mygit
             {
                 std::cout << "You need to resolve your conflicts first and then commit for the merge to complete.\n";
             }
+        }
+    }
+
+    void GetMergeDiff (const std::string& mergeBranchName, const std::vector<std::vector<int>>& lookup, const std::vector<std::string>& x,
+                               const std::vector<std::string>& y, int m, int n, std::string& result, std::string& beforeState, bool& after)
+    {
+        if (m > 0 and n > 0 and x[m - 1] == y[n - 1])
+        {
+            GetMergeDiff(mergeBranchName, lookup, x, y, m - 1, n - 1, result, beforeState, after);
+            beforeState.clear();
+            if (after)
+            {
+                result += "==========\n";
+                after = false;
+            }
+            result += "\033[0m" + x[m - 1] + "\033[0m";
+        }
+        else if (n > 0 and (m == 0 || lookup[m][n - 1] >= lookup[m - 1][n]))
+        {
+            GetMergeDiff(mergeBranchName, lookup, x, y, m, n - 1, result, beforeState, after);
+
+            after = true;
+            if (beforeState != "add")
+            {
+                result += "<<<<<<<<<< [" + mergeBranchName + "]\n";
+                beforeState = "add";
+            }
+            result +=  "\033[1;32m" + y[n - 1] + "\033[0m";
+        }
+        else if (m > 0 and (n == 0 || lookup[m][n - 1] < lookup[m - 1][n]))
+        {
+            GetMergeDiff(mergeBranchName, lookup, x, y, m - 1, n, result, beforeState, after);
+
+            after = true;
+            if (beforeState != "rm")
+            {
+                result += "<<<<<<<<<< [HEAD]\n";
+                beforeState = "rm";
+            }
+            result += "\033[1;31m" + x[m - 1] + "\033[0m";
         }
     }
 }
