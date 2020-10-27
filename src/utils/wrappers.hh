@@ -78,4 +78,10 @@ namespace utils
                               std::map<std::string, std::string>& inTree1, std::map<std::string, FileState>& inTree1Status);
 
     void AddOrRemoveElementsInIndex (const std::map<std::string, std::string>& toAdd, const std::vector<std::string>& toRemove);
+
+    void DeleteEntriesInWorkdir (const std::map<std::string, std::string>& entryCurrent,
+                                 const std::map<std::string, std::string>& entryToCopy);
+
+    void AddOrModifyEntriesInWorkdir (const std::map<std::string, std::string>& entryCurrent,
+                                      const std::map<std::string, std::string>& entryToCopy);
 }

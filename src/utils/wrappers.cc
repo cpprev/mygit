@@ -398,6 +398,38 @@ namespace utils
         std::map<std::string, std::string> entryToCopy = objects::Tree::TreeHashToEntryMap(hashTreeToCopy);
         std::map<std::string, std::string> entryCurrent = objects::Tree::TreeHashToEntryMap(hashTreeCurrent);
 
+        /// Adds entries in workdir
+        AddOrModifyEntriesInWorkdir(entryCurrent, entryToCopy);
+
+        /// Deletes entries in workdir
+        DeleteEntriesInWorkdir(entryCurrent, entryToCopy);
+
+        /// Update INDEX
+        WriteEntriesToIndex(entryToCopy);
+    }
+
+    void DeleteEntriesInWorkdir (const std::map<std::string, std::string>& entryCurrent,
+                                 const std::map<std::string, std::string>& entryToCopy)
+    {
+        for (const auto& curEntry : entryCurrent)
+        {
+            std::string file = curEntry.first;
+            /// Delete file
+            auto it = entryToCopy.find(file);
+            if (it == entryToCopy.end())
+            {
+                std::string pathFileFromDotMyGit = utils::CleanPath(utils::AppendPathToRootRepo(file));
+                remove(pathFileFromDotMyGit.c_str());
+
+                /// If dir containing file is empty, delete it
+                utils::DeleteDirectoryIfEmpty(pathFileFromDotMyGit);
+            }
+        }
+    }
+
+    void AddOrModifyEntriesInWorkdir (const std::map<std::string, std::string>& entryCurrent,
+                                      const std::map<std::string, std::string>& entryToCopy)
+    {
         for (const auto& wantedEntry : entryToCopy)
         {
             std::string file = wantedEntry.first;
@@ -417,24 +449,6 @@ namespace utils
             /// Write to file in case of Add/Modify
             utils::WriteFile(pathFileFromDotMyGit, fileContents);
         }
-
-        for (const auto& curEntry : entryCurrent)
-        {
-            std::string file = curEntry.first;
-            /// Delete file
-            auto it = entryToCopy.find(file);
-            if (it == entryToCopy.end())
-            {
-                std::string pathFileFromDotMyGit = utils::CleanPath(utils::AppendPathToRootRepo(file));
-                remove(pathFileFromDotMyGit.c_str());
-
-                /// If dir containing file is empty, delete it
-                utils::DeleteDirectoryIfEmpty(pathFileFromDotMyGit);
-            }
-        }
-
-        /// Update INDEX
-        WriteEntriesToIndex(entryToCopy);
     }
 
     void GetDiffBetweenTrees (const std::map<std::string, std::string>& tree1Entries, const std::map<std::string, std::string>& tree2Entries,
