@@ -32,11 +32,7 @@ namespace mygit
                 objects::SetupBlob(blob, hash);
             }
         }
-        else if (opt.type == objects::TREE)
-        {
-
-        }
-        else if (opt.type == objects::COMMIT)
+        else
         {
             utils::ExitProgramWithMessage(1, "FIXME: NOT IMPLEMENTED (HASH OBJECT: COMMIT/TREE)");
         }
