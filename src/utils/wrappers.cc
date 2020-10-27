@@ -434,13 +434,7 @@ namespace utils
         }
 
         /// Update INDEX
-        std::string indexUpdate;
-        for (const auto& wantedEntry : entryToCopy)
-        {
-            indexUpdate += wantedEntry.second + ' ' + wantedEntry.first + '\n';
-        }
-        std::string compressedIndex = utils::CompressString(indexUpdate);
-        utils::WriteFile(utils::PathToIndex(), compressedIndex);
+        WriteEntriesToIndex(entryToCopy);
     }
 
     void GetDiffBetweenTrees (const std::map<std::string, std::string>& tree1Entries, const std::map<std::string, std::string>& tree2Entries,
@@ -511,6 +505,11 @@ namespace utils
         }
 
         /// Update the contents
+        WriteEntriesToIndex(entries);
+    }
+
+    void WriteEntriesToIndex (const std::map<std::string, std::string>& entries)
+    {
         std::string res;
         for (const auto& elm : entries)
         {
