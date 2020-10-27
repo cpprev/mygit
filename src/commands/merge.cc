@@ -10,8 +10,11 @@
 
 namespace mygit
 {
-    void merge (const options::MergeOptions& opt)
+    void merge (int argc, char *argv[])
     {
+        /// Create opt object
+        auto opt = options::MergeOptions(argc, argv);
+
         /// Check ref/destination is a commit object
         utils::ExitIfTrue(not utils::IsCommitObject(opt.branchToMerge), "Not valid commit object.");
 
@@ -197,7 +200,7 @@ namespace mygit
                 options::CommitOptions commitOpt("Merge branch \'" + opt.branchToMerge + "\' into branch \'" + utils::GetCurrentBranch() + "\'.");
                 /// FIXME When implementing multiple parents for a commit, uncomment this line
                 //mygit::commit(commitOpt, hashCommitToMerge);
-                mygit::commit(commitOpt);
+                mygit::commit_wrapper(commitOpt);
             }
             else
             {

@@ -5,10 +5,13 @@
 #include <string>
 #include <vector>
 
+typedef void (*MyGitCommand)(int argc, char *argv[]);
+
 /// Globals
 extern std::string g_DB_FILE;
 extern std::vector<std::string> g_myGitIgnorePatterns;
 extern std::string g_pathToRootRepo;
+extern std::map<std::string, MyGitCommand> g_commands;
 
 /// Constexprs
 constexpr const char *RequireRepoCommands[] = { "add", "status", "diff", "branch", "checkout", "commit", "push", "pull", "hash-object", "cat-file", "ls-files", "merge", "log" };

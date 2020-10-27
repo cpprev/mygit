@@ -6,8 +6,11 @@
 
 namespace mygit
 {
-    void ls_files ()
+    void ls_files (int argc, char *argv[])
     {
+        (void) argc;
+        (void) argv;
+
         std::cout << "Files currently in the 'staging area' / 'index' :\n\n";
         std::string indexContents = utils::ReadFile(utils::PathToIndex());
         if (not indexContents.empty())

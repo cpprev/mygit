@@ -8,8 +8,11 @@
 
 namespace mygit
 {
-    void hash_object (const options::HashObjectOptions& opt)
+    void hash_object (int argc, char *argv[])
     {
+        /// Create opt object
+        auto opt = options::HashObjectOptions(argc, argv);
+
         if (opt.type == objects::BLOB)
         {
             /// FIXME With all params

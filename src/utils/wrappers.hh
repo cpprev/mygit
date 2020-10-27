@@ -12,7 +12,7 @@ namespace utils
 
     void ExitProgramWithMessage(const int& status, const std::string& message);
 
-    void SetGlobalVariables ();
+    void SetGlobals ();
 
     bool DoesRequireRepo (const std::string& command);
 

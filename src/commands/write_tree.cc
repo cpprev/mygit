@@ -6,6 +6,14 @@
 
 namespace mygit
 {
+    void write_tree(int argc, char *argv[])
+    {
+        (void) argc;
+        (void) argv;
+
+        std::cout << write_tree_wrap() << "\n";
+    }
+
     std::string write_tree_wrap ()
     {
         std::map<std::string, std::string> map = utils::ReadIndexAndGetEntries();
@@ -15,10 +23,5 @@ namespace mygit
 
         //tree.PrintTree(0);
         return tree._hash;
-    }
-
-    void write_tree()
-    {
-        std::cout << write_tree_wrap() << "\n";
     }
 }

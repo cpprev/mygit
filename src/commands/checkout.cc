@@ -10,8 +10,11 @@
 
 namespace mygit
 {
-    void checkout (const options::CheckoutOptions& opt)
+    void checkout (int argc, char *argv[])
     {
+        /// Create opt object
+        auto opt = options::CheckoutOptions(argc, argv);
+
         /// Display branches case
         if (opt.displayBranches)
         {

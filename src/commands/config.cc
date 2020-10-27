@@ -3,8 +3,11 @@
 
 namespace mygit
 {
-    void config (const options::ConfigOptions& opt)
+    void config (int argc, char *argv[])
     {
+        /// Create opt object
+        auto opt = options::ConfigOptions(argc, argv);
+
         /// mygit config --add case
         if (opt.add.has_value())
         {

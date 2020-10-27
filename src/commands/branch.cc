@@ -6,8 +6,11 @@
 
 namespace mygit
 {
-    void branch (const options::BranchOptions& opt)
+    void branch (int argc, char *argv[])
     {
+        /// Create opt object
+        auto opt = options::BranchOptions(argc, argv);
+
         /// Display branches case
         if (opt.displayBranches)
         {

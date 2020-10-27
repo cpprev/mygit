@@ -9,8 +9,11 @@
 
 namespace mygit
 {
-    void add(const options::AddOptions& opt)
+    void add(int argc, char *argv[])
     {
+        /// Create opt object
+        auto opt = options::AddOptions(argc, argv);
+
         for (const auto& path : opt.pathArguments)
         {
             /// Handle git add of deleted files

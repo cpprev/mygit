@@ -10,6 +10,15 @@
 
 namespace mygit
 {
+    void log(int argc, char *argv[])
+    {
+        /// Create opt object
+        auto opt = options::LogOptions(argc, argv);
+
+        std::string logStr = log_str(opt);
+        utils::LessCommandWrapper(logStr);
+    }
+
     std::string log_str(const options::LogOptions& opt)
     {
         (void) opt;
@@ -31,11 +40,5 @@ namespace mygit
             currentCommitHash = objects::ExtractParentCommit(contentContent);
         }
         return output;
-    }
-
-    void log(const options::LogOptions& opt)
-    {
-        std::string logStr = log_str(opt);
-        utils::LessCommandWrapper(logStr);
     }
 }

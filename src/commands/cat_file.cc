@@ -9,8 +9,11 @@
 
 namespace mygit
 {
-    void cat_file (const options::CatFileOptions& opt)
+    void cat_file (int argc, char *argv[])
     {
+        /// Create opt object
+        auto opt = options::CatFileOptions(argc, argv);
+
         std::string hash = opt.first_param;
         std::string hashPath = utils::PathToObjectFile(hash);
 

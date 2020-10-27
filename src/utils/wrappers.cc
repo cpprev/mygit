@@ -27,7 +27,7 @@ namespace utils
         exit(status);
     }
 
-    void SetGlobalVariables ()
+    void SetGlobals ()
     {
         g_pathToRootRepo = utils::FindPathToRootRepo();
         std::string myGitIgnoreContents = utils::ReadFile(utils::PathToGitIgnore());

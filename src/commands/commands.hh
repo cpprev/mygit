@@ -11,20 +11,20 @@
 namespace mygit
 {
     /// MyGit commands
-    void init();
-    void add(const options::AddOptions& opt);
-    void ls_files ();
-    void hash_object (const options::HashObjectOptions& opt);
-    void cat_file (const options::CatFileOptions& opt);
-    void status();
-    void write_tree ();
-    void commit (const options::CommitOptions& opt, const std::string& secondParent = "");
-    void diff ();
-    void log(const options::LogOptions& opt);
-    void branch (const options::BranchOptions& opt);
-    void checkout (const options::CheckoutOptions& opt);
-    void config (const options::ConfigOptions& opt);
-    void merge (const options::MergeOptions& opt);
+    void init(int argc = 0, char *argv[] = nullptr);
+    void add(int argc, char *argv[]);
+    void ls_files (int argc, char *argv[]);
+    void hash_object (int argc, char *argv[]);
+    void cat_file (int argc, char *argv[]);
+    void status(int argc, char *argv[]);
+    void write_tree (int argc, char *argv[]);
+    void diff (int argc, char *argv[]);
+    void commit (int argc, char *argv[]);
+    void log(int argc, char *argv[]);
+    void branch (int argc, char *argv[]);
+    void checkout (int argc, char *argv[]);
+    void config (int argc, char *argv[]);
+    void merge (int argc, char *argv[]);
 
     /// Sub functions
     std::string status_str ();
@@ -39,4 +39,6 @@ namespace mygit
     void RecursiveMerge (const options::MergeOptions& opt, const std::string& hashCommitCurrent, const std::string& hashCommitToMerge);
     void GetMergeDiff (const std::string& mergeBranchName, const std::vector<std::vector<int>>& lookup, const std::vector<std::string>& x,
                        const std::vector<std::string>& y, int m, int n, std::string& result, std::string& beforeState, bool& after);
+    void commit_wrapper (const options::CommitOptions& opt, const std::string& secondParent = "");
+    std::string log_str(const options::LogOptions& opt);
 }

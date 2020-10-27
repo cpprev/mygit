@@ -4,6 +4,14 @@
 
 namespace mygit
 {
+    void status(int argc, char *argv[])
+    {
+        (void) argc;
+        (void) argv;
+
+        std::cout << status_str();
+    }
+
     std::string status_str ()
     {
         std::map<std::string, std::string> added, deleted, modified;
@@ -29,10 +37,5 @@ namespace mygit
         output += "\n";
 
         return output;
-    }
-
-    void status()
-    {
-        std::cout << status_str();
     }
 }

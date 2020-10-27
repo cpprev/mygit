@@ -12,8 +12,11 @@
 namespace mygit
 {
 
-    void diff ()
+    void diff (int argc, char *argv[])
     {
+        (void) argc;
+        (void) argv;
+
         std::string diffStr = diff_str();
         utils::LessCommandWrapper(diffStr);
     }

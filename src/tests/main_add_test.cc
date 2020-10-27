@@ -54,7 +54,7 @@ void TestAddOneFileAtRoot (std::string pathToRootRepo)
     utils::WriteFile(filename, fileContents);
     const char *argv[] = { "mygit", "add", filename };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(argc, const_cast<char **>(argv));
 
     /// Check that .mygit/index exists
     process_test_bool(utils::IsFileExists(pathToRootRepo + "/" + g_DB_FILE + "/index"), "index file exists");
@@ -100,7 +100,7 @@ void TestAddOneFileInSubdirWhileInSubDir (std::string pathToRootRepo)
     utils::WriteFile(filename, fileContents);
     const char *argv[] = { "mygit", "add", filename };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(argc, const_cast<char **>(argv));
 
     /// Check that .mygit/index exists
     process_test_bool(utils::IsFileExists(pathToRootRepo + "/" + g_DB_FILE + "/index"), "index file exists");
@@ -145,7 +145,7 @@ void TestAddOneFileInSubdirWhileNotInSubDir (std::string pathToRootRepo)
     utils::WriteFile(filename, fileContents);
     const char *argv[] = { "mygit", "add", filename };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(argc, const_cast<char **>(argv));
 
     /// Check that .mygit/index exists
     process_test_bool(utils::IsFileExists(pathToRootRepo + "/" + g_DB_FILE + "/index"), "index file exists");
@@ -196,7 +196,7 @@ void TestAddMultipleFilesAtRoot (std::string pathToRootRepo)
 
     const char *argv[] = { "mygit", "add", "." };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(argc, const_cast<char **>(argv));
 
     /// Check that .mygit/index exists
     process_test_bool(utils::IsFileExists(pathToRootRepo + "/" + g_DB_FILE + "/index"), "index file exists");
@@ -257,7 +257,7 @@ void TestAddMultipleFilesInSubdirWhileInSubdir(std::string pathToRootRepo)
 
     const char *argv[] = { "mygit", "add", "." };
     int argc = sizeof(argv) / sizeof(char *);
-    mygit::add(options::AddOptions(argc, const_cast<char **>(argv)));
+    mygit::add(argc, const_cast<char **>(argv));
 
     /// Check that .mygit/index exists
     process_test_bool(utils::IsFileExists(pathToRootRepo + "/" + g_DB_FILE + "/index"), "index file exists");

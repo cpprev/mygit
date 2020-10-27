@@ -6,8 +6,11 @@
 
 namespace mygit
 {
-    void init ()
+    void init (int argc, char *argv[])
     {
+        (void) argc;
+        (void) argv;
+
         /// Error checking
         utils::ExitIfTrue(utils::IsDirExists(g_DB_FILE + "/"), "Repository has already been initialized.");
         utils::ExitIfTrue(not utils::CreateDir(g_DB_FILE + "/"), "'" + g_DB_FILE + "' can not be created.");

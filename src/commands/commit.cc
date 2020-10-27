@@ -9,7 +9,14 @@
 
 namespace mygit
 {
-    void commit (const options::CommitOptions& opt, const std::string& secondParent)
+    void commit (int argc, char *argv[])
+    {
+        /// Create opt object
+        auto opt = options::CommitOptions(argc, argv);
+        commit_wrapper(opt);
+    }
+
+    void commit_wrapper (const options::CommitOptions& opt, const std::string& secondParent)
     {
         std::string hashTree = write_tree_wrap();
         std::string headContents = utils::ReadHEAD();
