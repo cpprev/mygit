@@ -6,6 +6,8 @@
 #include <list>
 #include <vector>
 
+#include "utils/file_state.hh"
+
 namespace utils
 {
     void ExitIfTrue (bool assertion, const std::string& message);
@@ -73,5 +75,5 @@ namespace utils
     std::string GetCwd ();
 
     void GetDiffBetweenTrees (const std::map<std::string, std::string>& tree1Entries, const std::map<std::string, std::string>& tree2Entries,
-                              std::map<std::string, std::string>& inTree1, std::map<std::string, std::string>& inTree1Status);
+                              std::map<std::string, std::string>& inTree1, std::map<std::string, FileState>& inTree1Status);
 }

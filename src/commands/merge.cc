@@ -3,6 +3,7 @@
 #include "objects/tree.hh"
 #include "objects/blob.hh"
 
+#include "utils/file_state.hh"
 #include "utils/zlib.hh"
 #include "utils/wrappers.hh"
 #include "utils/utils.hh"
@@ -75,10 +76,12 @@ namespace mygit
         std::map<std::string, std::string> entryCurrent = objects::Tree::TreeHashToEntryMap(hashTreeCurrent);
 
         /// Diff between entryCommonAncestor and entryCurrent
-        std::map<std::string, std::string> inCurrent, inCurrentStatus;
+        std::map<std::string, std::string> inCurrent;
+        std::map<std::string, utils::FileState> inCurrentStatus;
         utils::GetDiffBetweenTrees(entryCurrent, entryCommonAncestor, inCurrent, inCurrentStatus);
 
-        std::map<std::string, std::string> inToMerge, inToMergeStatus;
+        std::map<std::string, std::string> inToMerge;
+        std::map<std::string, utils::FileState> inToMergeStatus;
         utils::GetDiffBetweenTrees(entryToMerge, entryCommonAncestor, inToMerge, inToMergeStatus);
 
         /// FIXME TODEL
@@ -92,7 +95,7 @@ namespace mygit
         {
             std::string add2File = add2.first;
             std::string add2Hash = add2.second;
-            std::string add2Status = inToMergeStatus[add2File];
+            utils::FileState add2Status = inToMergeStatus[add2File];
 
             std::cout << add2Status << ' ' << add2File << ' ' << add2Hash << '\n';
 
@@ -101,9 +104,9 @@ namespace mygit
             if (it == inCurrent.end())
             {
                 //std::cout << "pathDotGit: " << pathFileFromDotMyGit << '\n';
-                if (add2Status == "added" or add2Status == "modified")
+                if (add2Status == utils::ADDED or add2Status == utils::MODIFIED)
                 {
-                    std::cout << ((add2Status == "added") ? "Adding : " : "Modifying : ") << pathFileFromDotMyGit << '\n';
+                    std::cout << ((add2Status == utils::ADDED) ? "Adding : " : "Modifying : ") << pathFileFromDotMyGit << '\n';
 
                     addToIndex.insert({add2File, add2Hash});
 
@@ -114,7 +117,7 @@ namespace mygit
                     /// Write to file in case of Add/Modify
                     utils::WriteFile(pathFileFromDotMyGit, fileContents);
                 }
-                else if (add2Status == "deleted")
+                else if (add2Status == utils::DELETED)
                 {
                     std::cout << "Removing :" << pathFileFromDotMyGit << '\n';
 
@@ -136,8 +139,8 @@ namespace mygit
                 /// Case modified in Current and deleted in ToMerge
                 /// Case modified in ToMerge and deleted in Current
                 /// -> create file with contents modified
-                if ((inCurrentStatus[it->first] == "modified" and add2Status == "deleted")
-                or (inCurrentStatus[it->first] == "deleted" and add2Status == "modified"))
+                if ((inCurrentStatus[it->first] == utils::MODIFIED and add2Status == utils::DELETED)
+                or (inCurrentStatus[it->first] == utils::DELETED and add2Status == utils::MODIFIED))
                 {
                     /// FIXME
                     /// Add directories if needed
@@ -149,8 +152,8 @@ namespace mygit
                 /// Case Added in Current and Added in ToMerge
                 /// Case Modified in Current and Modified in ToMerge
                 /// -> annoying case, make the diff in one file
-                if ((inCurrentStatus[it->first] == "added" and add2Status == "added")
-                or (inCurrentStatus[it->first] == "modified" and add2Status == "modified"))
+                if ((inCurrentStatus[it->first] == utils::ADDED and add2Status == utils::ADDED)
+                or (inCurrentStatus[it->first] == utils::MODIFIED and add2Status == utils::MODIFIED))
                 {
                     std::string contentsInCurrent = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathFileCurrent)));
                     std::string contentsInToMerge = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathFileToMerge)));

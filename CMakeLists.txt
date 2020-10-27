@@ -36,6 +36,7 @@ set(SRC_FILES
         src/utils/options.cc
         src/utils/config.cc
         src/utils/get_paths.cc
+        src/utils/file_state.cc
 
         # Objects
         src/objects/blob.cc

@@ -7,6 +7,7 @@
 #include "objects/commit.hh"
 #include "objects/tree.hh"
 
+#include "utils/file_state.hh"
 #include "utils/utils.hh"
 #include "utils/wrappers.hh"
 #include "utils/config.hh"
@@ -443,7 +444,7 @@ namespace utils
     }
 
     void GetDiffBetweenTrees (const std::map<std::string, std::string>& tree1Entries, const std::map<std::string, std::string>& tree2Entries,
-                              std::map<std::string, std::string>& inTree1, std::map<std::string, std::string>& inTree1Status)
+                              std::map<std::string, std::string>& inTree1, std::map<std::string, FileState>& inTree1Status)
     {
         for (const auto& curEntry : tree1Entries)
         {
@@ -454,7 +455,7 @@ namespace utils
             {
                 /// Added in Tree1
                 inTree1.insert({curFile, curHash});
-                inTree1Status.insert({curFile, "added"});
+                inTree1Status.insert({curFile, utils::ADDED});
             }
             else
             {
@@ -462,7 +463,7 @@ namespace utils
                 {
                     /// Modified in Tree1
                     inTree1.insert({curFile, curHash});
-                    inTree1Status.insert({curFile, "modified"});
+                    inTree1Status.insert({curFile, utils::MODIFIED});
                 }
             }
         }
@@ -475,7 +476,7 @@ namespace utils
             {
                 /// Removed in Tree1
                 inTree1.insert({ancestorFile, ancestorHash});
-                inTree1Status.insert({ancestorFile, "deleted"});
+                inTree1Status.insert({ancestorFile, utils::DELETED});
             }
         }
     }
