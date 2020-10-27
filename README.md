@@ -34,4 +34,12 @@
 | hash-object               | mygit hash-object FILE [--write] [--type type] |
 | config                    | mygit config [--add user.id "hello w"] [--get user.id ] [--unset user.id] [--local/--global]|
 | merge                     | mygit merge BRANCH    |
-| stash||
+| rm | TODO |
+| mv | TODO |
+| rebase | TODO |
+| stash | TODO |
+| remote | TODO |
+| clone | TODO |
+| push | TODO |
+| pull | TODO |
+| fetch | TODO |
