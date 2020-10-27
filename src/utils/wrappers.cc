@@ -412,7 +412,7 @@ namespace utils
             if (it == entryCurrent.end())
             {
                 /// Add directories if needed
-                utils::CreateDirectoriesAboveFile(pathFileFromDotMyGit);
+                utils::CreateDirectoriesAboveFileReturnFirstToDelete(pathFileFromDotMyGit);
             }
             /// Write to file in case of Add/Modify
             utils::WriteFile(pathFileFromDotMyGit, fileContents);

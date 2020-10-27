@@ -495,23 +495,6 @@ namespace utils
         }
     }
 
-    void CreateDirectoriesAboveFile (const std::string& pathFileFromDotMyGit)
-    {
-        std::string dummy;
-        for (size_t i = 0; i < pathFileFromDotMyGit.size(); i++)
-        {
-            dummy += pathFileFromDotMyGit[i];
-            if (dummy[i] == '/')
-            {
-                if (not utils::IsDirExists(dummy))
-                {
-                    //std::cout << "CREATED: " << dummy << '\n';
-                    utils::CreateDir(dummy);
-                }
-            }
-        }
-    }
-
     std::string CreateDirectoriesAboveFileReturnFirstToDelete (const std::string& pathFileFromDotMyGit)
     {
         std::string dummy;
@@ -525,7 +508,6 @@ namespace utils
                 {
                     if (todel.empty())
                         todel = dummy;
-                    //std::cout << "CREATED: " << dummy << '\n';
                     utils::CreateDir(dummy);
                 }
             }

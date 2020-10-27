@@ -72,7 +72,5 @@ namespace utils
 
     void DeleteDirectoryIfEmpty (const std::string& pathFileFromDotMyGit);
 
-    void CreateDirectoriesAboveFile (const std::string& pathFileFromDotMyGit);
-
     std::string CreateDirectoriesAboveFileReturnFirstToDelete (const std::string& pathFileFromDotMyGit);
 }

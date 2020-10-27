@@ -113,7 +113,7 @@ namespace mygit
                     std::string pathFile = utils::PathToObjectFile(add2Hash);
                     std::string fileContents = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathFile)));
                     /// Add directories if needed
-                    utils::CreateDirectoriesAboveFile(pathFileFromDotMyGit);
+                    utils::CreateDirectoriesAboveFileReturnFirstToDelete(pathFileFromDotMyGit);
                     /// Write to file in case of Add/Modify
                     utils::WriteFile(pathFileFromDotMyGit, fileContents);
                 }
@@ -144,7 +144,7 @@ namespace mygit
                 {
                     /// FIXME
                     /// Add directories if needed
-                    utils::CreateDirectoriesAboveFile(pathFileFromDotMyGit);
+                    utils::CreateDirectoriesAboveFileReturnFirstToDelete(pathFileFromDotMyGit);
                     /// Write to file in case of Add/Modify
                     //utils::WriteFile(pathFileFromDotMyGit, fileContents);
                 }
