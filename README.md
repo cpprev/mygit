@@ -37,4 +37,9 @@
 | rm | TODO |
 | mv | TODO |
 | rebase | TODO |
-| stash | TODO|
+| stash | TODO |
+| remote | TODO |
+| clone | TODO |
+| push | TODO |
+| pull | TODO |
+| fetch | TODO |
