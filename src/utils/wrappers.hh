@@ -76,4 +76,6 @@ namespace utils
 
     void GetDiffBetweenTrees (const std::map<std::string, std::string>& tree1Entries, const std::map<std::string, std::string>& tree2Entries,
                               std::map<std::string, std::string>& inTree1, std::map<std::string, FileState>& inTree1Status);
+
+    void AddOrRemoveElementsInIndex (const std::map<std::string, std::string>& toAdd, const std::vector<std::string>& toRemove);
 }

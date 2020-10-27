@@ -75,29 +75,7 @@ namespace mygit
             hashesAndPaths.insert({pathFileFromDotMyGit, hash});
         }
 
-        /// Get entries from 'index' file
-        std::map<std::string, std::string> entries = utils::ReadIndexAndGetEntries();
-
-        for (const auto& pair : hashesAndPaths)
-        {
-            entries[pair.first] = pair.second;
-        }
-
-        /// Delete elements from removeFromIndex vector
-        for (const auto& toDelete : removeFromIndex)
-        {
-            entries.erase(toDelete);
-        }
-
-        /// Update the contents
-        std::string res;
-        for (const auto& p : entries)
-        {
-            res += p.second + ' ' + p.first + '\n';
-        }
-
-        /// Compress and update .mygit/index file
-        std::string compressed = utils::CompressString(res);
-        utils::WriteFile(utils::PathToIndex(), compressed);
+        /// Update Index file
+        utils::AddOrRemoveElementsInIndex(hashesAndPaths, removeFromIndex);
     }
 }

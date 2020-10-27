@@ -90,7 +90,8 @@ namespace mygit
         std::cout << '\n';
 
         std::vector<std::string> conflicts;
-        std::map<std::string, std::string> addToIndex, rmFromIndex;
+        std::map<std::string, std::string> addToIndex;
+        std::vector<std::string> rmFromIndex;
         for (const auto& add2 : inToMerge)
         {
             std::string add2File = add2.first;
@@ -121,7 +122,7 @@ namespace mygit
                 {
                     std::cout << "Removing :" << pathFileFromDotMyGit << '\n';
 
-                    rmFromIndex.insert({add2File, add2Hash});
+                    rmFromIndex.push_back(add2File);
 
                     remove(pathFileFromDotMyGit.c_str());
 
@@ -179,23 +180,8 @@ namespace mygit
                 conflicts.push_back(add2File);
             }
 
-            /// Update INDEX
-            std::map<std::string, std::string> entries = utils::ReadIndexAndGetEntries();
-            for (const auto& toAdd : addToIndex)
-            {
-                entries[toAdd.first] = toAdd.second;
-            }
-            for (const auto& toDelete : rmFromIndex)
-            {
-                entries.erase(toDelete.first);
-            }
-            std::string res;
-            for (const auto& p : entries)
-            {
-                res += p.second + ' ' + p.first + '\n';
-            }
-            std::string compressed = utils::CompressString(res);
-            utils::WriteFile(utils::PathToIndex(), compressed);
+            /// Update Index file
+            utils::AddOrRemoveElementsInIndex(addToIndex, rmFromIndex);
 
             /// No conflicts -> commit changes (with 2 parent commits)
             if (conflicts.empty())

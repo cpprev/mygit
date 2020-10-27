@@ -493,4 +493,32 @@ namespace utils
         std::string cwd = getcwd(buf, sizeof(buf) / sizeof(char));
         return buf;
     }
+
+    void AddOrRemoveElementsInIndex (const std::map<std::string, std::string>& toAdd, const std::vector<std::string>& toRemove)
+    {
+        /// Get entries from 'index' file
+        std::map<std::string, std::string> entries = utils::ReadIndexAndGetEntries();
+
+        for (const auto& elm : toAdd)
+        {
+            entries[elm.first] = elm.second;
+        }
+
+        /// Delete elements from removeFromIndex vector
+        for (const auto& elm : toRemove)
+        {
+            entries.erase(elm);
+        }
+
+        /// Update the contents
+        std::string res;
+        for (const auto& elm : entries)
+        {
+            res += elm.second + ' ' + elm.first + '\n';
+        }
+
+        /// Compress and update .mygit/index file
+        std::string compressed = utils::CompressString(res);
+        utils::WriteFile(utils::PathToIndex(), compressed);
+    }
 }
