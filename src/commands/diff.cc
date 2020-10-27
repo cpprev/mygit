@@ -137,7 +137,7 @@ namespace mygit
             ShrinkPreviousLines(result, previousLines);
 
             count = LINES_BEFORE_DIFF;
-            result += "\033[1;33m[" + std::to_string(n) + "]\t\033[1;31m-\t" + x[m - 1] + "\033[0m";
+            result += "\033[1;33m[" + std::to_string(m) + "]\t\033[1;31m-\t" + x[m - 1] + "\033[0m";
         }
     }
 }
