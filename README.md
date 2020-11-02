@@ -13,10 +13,10 @@
 
 ---
 
-| Libraries Required        | 
-| -----------------         |
-| <zlib.h>                  | 
-| <openssl/sha.h>           |
+| Libraries Required        | Download |
+| -----------------         | -------- |
+| <zlib.h>                  | sudo apt install zlib1g-dev |
+| <openssl/sha.h>           | sudo apt install libssl-dev |
 
 | Commands implemented      | Usage                 |
 |---------------------------|-----------------------|
