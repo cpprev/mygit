@@ -340,14 +340,6 @@ void TestStatusOneFileInSubdirDeletedWhileAtRoot ()
     rmdir("dummySubDir99/");
 }
 
-void tmp ()
-{
-    for (int i = 0; i < 100000; i++)
-    {
-
-    }
-}
-
 int main()
 {
 

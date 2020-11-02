@@ -19,10 +19,8 @@ int main(int argc, char *argv[])
 
     /// Execute the command
     auto it = g_commands.find(command);
-    if (it != g_commands.end())
-        it->second(argc, argv);
-    else
-        utils::ExitProgramWithMessage(1, "Unknown command.");
+    utils::ExitIfTrue(it == g_commands.end(), "Unknown command.");
+    it->second(argc, argv);
 
     return 0;
 }
