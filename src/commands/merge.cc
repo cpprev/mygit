@@ -84,10 +84,10 @@ namespace mygit
         std::map<std::string, utils::FileState> inToMergeStatus;
         utils::GetDiffBetweenTrees(entryToMerge, entryCommonAncestor, inToMerge, inToMergeStatus);
 
-        /// FIXME TODEL
+        /*/// FIXME TODEL
         for (const auto& add1 : inCurrent)
             std::cout << inCurrentStatus[add1.first] << ' ' << add1.first << ' ' << add1.second << '\n';
-        std::cout << '\n';
+        std::cout << '\n';*/
 
         std::vector<std::string> conflicts;
         std::map<std::string, std::string> addToIndex;
@@ -98,7 +98,7 @@ namespace mygit
             std::string add2Hash = add2.second;
             utils::FileState add2Status = inToMergeStatus[add2File];
 
-            std::cout << add2Status << ' ' << add2File << ' ' << add2Hash << '\n';
+            //std::cout << add2Status << ' ' << add2File << ' ' << add2Hash << '\n';
 
             auto it = inCurrent.find(add2File);
             std::string pathFileFromDotMyGit = utils::CleanPath(utils::AppendPathToRootRepo(add2File));
@@ -107,7 +107,7 @@ namespace mygit
                 //std::cout << "pathDotGit: " << pathFileFromDotMyGit << '\n';
                 if (add2Status == utils::ADDED or add2Status == utils::MODIFIED)
                 {
-                    std::cout << ((add2Status == utils::ADDED) ? "Adding : " : "Modifying : ") << pathFileFromDotMyGit << '\n';
+                    //std::cout << ((add2Status == utils::ADDED) ? "Adding : " : "Modifying : ") << pathFileFromDotMyGit << '\n';
 
                     addToIndex.insert({add2File, add2Hash});
 
@@ -120,7 +120,7 @@ namespace mygit
                 }
                 else if (add2Status == utils::DELETED)
                 {
-                    std::cout << "Removing :" << pathFileFromDotMyGit << '\n';
+                    //std::cout << "Removing :" << pathFileFromDotMyGit << '\n';
 
                     rmFromIndex.push_back(add2File);
 
@@ -143,11 +143,17 @@ namespace mygit
                 if ((inCurrentStatus[it->first] == utils::MODIFIED and add2Status == utils::DELETED)
                 or (inCurrentStatus[it->first] == utils::DELETED and add2Status == utils::MODIFIED))
                 {
-                    /// FIXME
                     /// Add directories if needed
                     utils::CreateDirectoriesAboveFileReturnFirstToDelete(pathFileFromDotMyGit);
                     /// Write to file in case of Add/Modify
-                    //utils::WriteFile(pathFileFromDotMyGit, fileContents);
+                    std::string fileContents, filePath;
+                    if (add2Status == utils::MODIFIED)
+                        filePath = pathFileToMerge;
+                    else if (inCurrentStatus[it->first] == utils::MODIFIED)
+                        filePath = pathFileCurrent;
+                    fileContents = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(filePath)));
+
+                    utils::WriteFile(pathFileFromDotMyGit, fileContents);
                 }
 
                 /// Case Added in Current and Added in ToMerge
@@ -159,9 +165,9 @@ namespace mygit
                     std::string contentsInCurrent = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathFileCurrent)));
                     std::string contentsInToMerge = objects::GetContentBlobDecompressed(utils::DecompressString(utils::ReadFile(pathFileToMerge)));
 
-                    std::cout << "ay: " << contentsInCurrent << "\n\n";
+                    //std::cout << "ay: " << contentsInCurrent << "\n\n";
 
-                    std::cout << "ay: " << contentsInToMerge << '\n';
+                    //std::cout << "ay: " << contentsInToMerge << '\n';
 
                     std::vector<std::string> currentLines = utils::GetLinesAsVect(contentsInCurrent);
                     std::vector<std::string> toMergeLines = utils::GetLinesAsVect(contentsInToMerge);
@@ -173,7 +179,8 @@ namespace mygit
                     if (after)
                         result += "==========\n";
 
-                    std::cout << "\n_____________\nRESULT:\n" << result << "____________\n";
+                    //std::cout << "\n_____________\nRESULT:\n" << result << "____________\n";
+                    utils::WriteFile(pathFileFromDotMyGit, result);
                 }
 
                 std::cout << "Conflict in file: " << add2File << '\n';
@@ -210,7 +217,7 @@ namespace mygit
                 result += "==========\n";
                 after = false;
             }
-            result += "\033[0m" + x[m - 1] + "\033[0m";
+            result +=  x[m - 1];
         }
         else if (n > 0 and (m == 0 || lookup[m][n - 1] >= lookup[m - 1][n]))
         {
@@ -222,7 +229,7 @@ namespace mygit
                 result += "<<<<<<<<<< [" + mergeBranchName + "]\n";
                 beforeState = "add";
             }
-            result +=  "\033[1;32m" + y[n - 1] + "\033[0m";
+            result +=  y[n - 1];
         }
         else if (m > 0 and (n == 0 || lookup[m][n - 1] < lookup[m - 1][n]))
         {
@@ -234,7 +241,7 @@ namespace mygit
                 result += "<<<<<<<<<< [HEAD]\n";
                 beforeState = "rm";
             }
-            result += "\033[1;31m" + x[m - 1] + "\033[0m";
+            result += x[m - 1];
         }
     }
 }
