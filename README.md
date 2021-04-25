@@ -1,4 +1,4 @@
-# mygit Project [started 3/10/2020]
+# mygit Project
 ---
 
 :pushpin: The Project was implemented in C++ and uses Bash for the testsuite scripts.
